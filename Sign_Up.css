@@ -1,11 +1,22 @@
 *{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: flexbox;
+    color: #e35311ff;
+    background-color: #fef4bcff;
+}
+
+body{
+    background-color: ;
 }
 
 header{
     text-align: center;
     
+}
+
+h1{
+    margin: 0px 0px 22px 0px ; 
+
 }
 
 h2{
@@ -14,17 +25,19 @@ h2{
 
 .Form{
     text-align: center;
-    border: 2px solid black;
+    border: 2px solid #e35311ff;
     border-radius: 5%;
     margin: 0% 40%;
     padding: 20px;
     min-width: 250px;
+    outline: solid 2px #e35311ff;
+    outline-offset: 2px ;
 
 }
 
 input{
 
-    border: 1px solid black;
+    border: 1px solid #e35311ff;
     margin: 5px;
 
 }
@@ -33,7 +46,7 @@ input{
     box-sizing: border-box; 
     width: 100px;
     height: 25px;
-    border: 2px solid black;
+    border: 2px solid #e35311ff;
     border-radius: 0%;
     margin: 5px;
 
@@ -45,7 +58,7 @@ input{
 }
 
 .captcha-input{
-    border: 1px solid black;
+    border: 1px solid #e35311ff;
     box-sizing: border-box; 
     margin: 10px;
     width:60px ;

@@ -1,4 +1,17 @@
-// make shift backedend for code to work 
+
+const bcrypt = require('bcrypt')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6,6 +19,24 @@
 
 
 let userInfo=[]
+
+
+
+console.log("server is running")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -26,7 +57,9 @@ function checkUser(userObj){
 }
 
 
-function createUser(userObj){
+
+
+async function createUser(userObj){
 
     let password= userObj.password
     const saltRounds = 10

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ADIIN11/EstherGate/issues"
   },
-  "homepage": "https://github.com/ADIIN11/EstherGate#readme"
+  "homepage": "https://github.com/ADIIN11/EstherGate#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
 }
