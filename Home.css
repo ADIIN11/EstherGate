@@ -1,0 +1,43 @@
+*{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flexbox;
+    color: #e35311ff;
+    background-color: #fef4bc;
+}
+
+
+body{
+    margin: 0px;
+}
+
+.side-bar{
+    text-align: center;
+    background-color:#ef720a ;
+    
+   width:10rem ;
+  height: 50rem;
+ 
+  
+   position: absolute;
+   z-index: 1;
+
+}
+
+
+.search-bar{
+    text-align: center;
+    
+    background-color:#ef720a ;
+    
+    height: 2.5rem ;
+   
+ position: relative;
+ z-index: 0;
+ 
+}
+
+.logo-text{
+    margin: 1rem;
+}
+
+

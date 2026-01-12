@@ -11,7 +11,7 @@ body {
   background-image: url(assets/background.png);
   background-repeat: no-repeat;
   background-position:  center; /* stays at bottom */
-  background-size: 1540px 824px ;
+  background-size: 1540px 840px ;
 }
 
 header{
@@ -28,6 +28,8 @@ h2{
    font-size: 25px;
 }
 
+
+
 .Form{
     text-align: center;
     border: 2px solid #e35311ff;
@@ -37,7 +39,8 @@ h2{
     min-width: 250px;
     outline: solid 2px #e35311ff;
     outline-offset: 2px ;
-
+    background-color: rgba(254, 244, 188, 0.7);
+   
 }
 
 input{
@@ -84,4 +87,7 @@ input{
 
 .msg-para{
     color: red;
+    background-color: #fef4bc;
+   
+    margin: 0px 25px;
 }
