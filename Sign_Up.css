@@ -2,11 +2,16 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: flexbox;
     color: #e35311ff;
-    background-color: #fef4bcff;
+    /* background-color: #fef4bc; */
 }
 
-body{
-    background-color: ;
+
+
+body {
+  background-image: url(assets/background.png);
+  background-repeat: no-repeat;
+  background-position:  center; /* stays at bottom */
+  background-size: 1540px 824px ;
 }
 
 header{
@@ -39,8 +44,11 @@ input{
 
     border: 1px solid #e35311ff;
     margin: 5px;
+   
 
 }
+
+
 
 .submit-btn {
     box-sizing: border-box; 

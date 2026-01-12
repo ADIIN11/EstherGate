@@ -1,0 +1,7 @@
+--spicy-paprika: #e35311ff;
+--golden-orange: #f3a000ff;
+--harvest-orange: #ef720aff;
+--amber-flame: #feb60bff;
+--lemon-chiffon: #fef4bcff;
+
+rgb(254, 244, 188)
