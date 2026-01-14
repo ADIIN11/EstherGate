@@ -1,0 +1,23 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" fill="#fef4bc" />
+
+  <!-- Bigger cart basket -->
+  <path d="M25 30 H85 L80 65 H30 Z" stroke="#ef720a" stroke-width="5" fill="none" />
+
+  <!-- Horizontal handle -->
+  <line x1="25" y1="30" x2="15" y2="30" stroke="#ef720a" stroke-width="5" stroke-linecap="round" />
+
+  <!-- Handle bar at ~150° -->
+  <line x1="15" y1="30" x2="8" y2="15" stroke="#ef720a" stroke-width="5" stroke-linecap="round" />
+
+  <!-- Basket lines -->
+  <line x1="35" y1="42" x2="75" y2="42" stroke="#ef720a" stroke-width="3" stroke-linecap="round" />
+  <line x1="35" y1="52" x2="75" y2="52" stroke="#ef720a" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Wheels with holes -->
+  <circle cx="40" cy="70" r="7" fill="#ef720a" />
+  <circle cx="40" cy="70" r="2" fill="#fef4bc" />
+
+  <circle cx="70" cy="70" r="7" fill="#ef720a" />
+  <circle cx="70" cy="70" r="2" fill="#fef4bc" />
+</svg>
