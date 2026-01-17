@@ -8,7 +8,7 @@
 
 
 body {
-  background-image: url(assets/background.png);
+  background-image: url(/assets/background.png);
   background-repeat: no-repeat;
   background-position:  center; /* stays at bottom */
   background-size: 1540px 840px ;

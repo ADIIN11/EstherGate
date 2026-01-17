@@ -78,20 +78,25 @@ ul{
 
 }
 
-li{ background-color: #e35311;
-    
+li{
+     background-color: #e35311;
+    margin: 1rem;
 }
 
 a{
     color: #fef4bc;
     background-color: #e35311;
     
+    
 }
 
 
 
 .content{
-    
+
+    margin-left:10rem ;
+
+
    
 }
 
@@ -99,4 +104,8 @@ a{
 .filter-bar{
     text-align: right;
     border-bottom:2px solid #ef720a;
+   
+}
+
+.item-grid{
 }
