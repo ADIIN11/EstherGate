@@ -50,11 +50,15 @@ body{
 
 
 
+
+
+
+
 .side-bar{
     text-align: center;
     background-color:#e35311 ;
     
-   width:10rem ;
+   width:4.5rem ;
   height: 47rem;
  
   
@@ -63,9 +67,23 @@ body{
 
 }
 
+.side-bar:hover {
+      
+   width:10rem ;
+  height: 47rem;
+}
+
+
+
 
 .logo-text{
-    margin: 1rem;
+    height: 50px;
+    margin: 0.5rem;
+}
+
+.side-bar:hover .logo-text {
+      height: 100px;
+   margin: 1rem;
 }
 
 
@@ -83,12 +101,19 @@ li{
     margin: 1rem;
 }
 
+.side-bar:hover li {
+      margin: 1rem;
+}
+
 a{
     color: #fef4bc;
     background-color: #e35311;
     
     
 }
+
+
+
 
 
 
