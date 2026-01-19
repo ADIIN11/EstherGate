@@ -7,6 +7,33 @@
     <link rel="stylesheet" href="/Store.css">
 </head>
 <body>
+    <div class="search-bar">
+         <div class="filter-bar">
+            <form class="filter-form"action="" method="post">
+            <select  title="filter" class="filter" id="filter" name="filter"> 
+                <option value="0"disabled selected>Filter</option> 
+                <optgroup label="Electronics">
+
+                    <option value="Mobiles">Mobiles </option> 
+                    <option value="Laptop">Laptop</option>
+                </optgroup>
+                <optgroup label="Clothes">
+                    <option value="Jeans">Jeans</option> 
+                </optgroup>
+            </select>
+            
+            <select title="sort" class="Sort" id="sort" name="sort"> 
+                
+                <option value="0" disabled selected>Sort</option> 
+                <option value="1">A-Z </option> 
+                <option value="2">Z-A</option> 
+                <option value="3">Low to High</option> 
+                <option value="4">High to Low</option> 
+                <option value="5">None</option> 
+            </select>
+        </form>
+        </div>
+       
     <div class="side-bar">
         <img src="assets/logo-text.png" alt="logo"  class="logo-text" height="100px" >
         <br>
@@ -99,7 +126,7 @@
 
     </div>
     
-    <div class="search-bar">
+    
         <input class="search-inpt" id="search-inpt" type="text" placeholder="Search">
         <button class="search-btn" id="search-button" type="button" > 
             <img src="assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
@@ -108,44 +135,47 @@
          <button class="cart-btn" id="cart-button" type="button" > 
             <img src="assets/cart-icon.svg" alt="icon"  class="search-icon" height="22px" >
         </button>
-    </div>
-<div class="content">
-    <div class="filter-bar">
-        <form action="" method="post">
-           <select  title="filter" class="filter" id="filter" name="filter"> 
-              <option value="0"disabled selected>Filter</option> 
-            <optgroup label="Electronics">
 
-                <option value="Mobiles">Mobiles </option> 
-                <option value="Laptop">Laptop</option>
-            </optgroup>
-            <optgroup label="Clothes">
-                <option value="Jeans">Jeans</option> 
-            </optgroup>
-           </select>
         
-        <select title="sort" class="Sort" id="sort" name="sort"> 
-            
-            <option value="0" disabled selected>Sort</option> 
-            <option value="1">A-Z </option> 
-            <option value="2">Z-A</option> 
-            <option value="3">Low to High</option> 
-            <option value="4">High to Low</option> 
-            <option value="5">None</option> 
-        </select>
-    </form>
     </div>
-    <div class="item-grid">
-        <table>
-            <th>
-                
-            </th>
-        </table>
+    <div class="content">
+        
+    <div class="product-grid" id="product-grid">
 
+        <div class="product-card">
+            <img src="" alt="Product image" class="product-image" />
+                <h3>Product Name</h3>
+                <p>₹ Price</p>
+            <button>Add to Cart</button>
+        </div>
+    <!-- Repeat for other products -->
+
+    <div class="product-card">
+            <img src="" alt="Product image" />
+                <h3>Product Name</h3>
+                <p>₹ Price</p>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <img src="" alt="Product image" />
+                <h3>Product Name</h3>
+                <p>₹ Price</p>
+            <button>Add to Cart</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="" alt="Product image" />
+                <h3>Product Name</h3>
+                <p>₹ Price</p>
+            <button>Add to Cart</button>
+        </div>
     </div>
 
+    
+    </div>
 
-    <script src="Store.js"></script>
-</div>
+<script src="Store.js"></script>
 </body>
 </html>
