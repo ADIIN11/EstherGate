@@ -1,0 +1,27 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="100" height="100" fill="#fef4bc" />
+
+  <!-- Cargo box (scaled and shifted) -->
+  <rect x="12" y="26" width="50" height="40" fill="none" stroke="#ef720a" stroke-width="4" />
+
+  <!-- Cabin: composed of square, triangle, and rectangle -->
+  <!-- Square part of cabin -->
+  <rect x="62" y="47" width="26" height="19" fill="none" stroke="#ef720a" stroke-width="4" />
+
+  <!-- Triangle for angled front -->
+  <polygon points="72,29.5 88,45.5 72,45.5" fill="none" stroke="#ef720a" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Rectangle to fill the rest of the cabin -->
+  <rect x="62" y="29.5" width="10" height="17.5" fill="none" stroke="#ef720a" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Cargo stripe -->
+  <line x1="22" y1="47" x2="40" y2="47" stroke="#ef720a" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Cabin detail line -->
+  <line x1="72" y1="53" x2="68" y2="53" stroke="#ef720a" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Wheels (larger and shifted) -->
+  <circle cx="28" cy="72" r="6" fill="none" stroke="#ef720a" stroke-width="4" />
+  <circle cx="72" cy="72" r="6" fill="none" stroke="#ef720a" stroke-width="4" />
+</svg>

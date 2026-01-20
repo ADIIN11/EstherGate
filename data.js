@@ -1,18 +1,3 @@
-// const tabButton= addEventListener.getElementById("tab-btn")
-
-// template for array
-
-// let products=[{
-//   name:"teddybear",
-//   id:"3532643",
-//   img:"/assets/product image/Teddy-Bear-Day.jpg",
-//   category:{Toys:"plushies"},
-//   price:400,
-//   seller:"ToyShopIN"
-//   inventory:2,
-//   description:"para about product "
-// }]
-
 let products = [
   {
     name: "gloves",
@@ -132,56 +117,6 @@ let products = [
     description: "Elegant wristwatch with analog display and leather strap."
   }
 ];
+  
 
-
-
-
-  const productGrid=document.getElementById("product-grid")
-
-
-  let productRow=""
-
-  for(let i=0;i<products.length;i++){
-    productRow +=` 
-        <div class="product-card">
-          <a href="/Store/${products[i].id}" >
-              <img src="${products[i].img}" alt="Product image" class="product-image"/>
-                  <h3>${products[i].name}</h3>
-                  <p>₹ ${products[i].price}</p>
-          </a>
-            <button>Add to Cart</button>
-        </div> `
-    if(i%4==0){
-      console.log("checkpoint")
-      productGrid.innerHTML+=productRow
-      console.log(productRow)
-      productRow=""
-    }
-  }
-
-
-
-
-
-
-
-
-  const btn = document.getElementById("tab-btn")
-  const icon = document.getElementById("tab-icon")
-  const sidebar = document.querySelector(".side-bar")
-
- 
-
-
-  if (btn && icon && sidebar) {
-  btn.addEventListener("click", () => {
-    sidebar.classList.toggle("toggleSideBar")
-    icon.classList.toggle("collapsed");
-  });
-} else {
-  console.error("Missing required elements.")
-}
-
-
-
-
+module.exports={products}

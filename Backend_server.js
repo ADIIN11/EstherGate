@@ -57,8 +57,8 @@ const PORT = 5000;
 app.use(express.static(path.join(__dirname, "public")));
 
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "store.html"));
+app.get("/Store", (req, res) => {
+  res.sendFile(path.join(__dirname, "Store.html"));
 });
 
 
