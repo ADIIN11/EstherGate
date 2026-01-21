@@ -11,9 +11,9 @@ const submitBtn=document.getElementById("submit-btn")
 
 
 
-const axios= require("axios")
 
-let now = new Date();
+
+
 
 
 
@@ -23,7 +23,7 @@ let now = new Date();
 form.addEventListener("submit",submit) //only function reference is given in the 2nd argu as funtion is defined down 
 
 async function submit(event){ 
-    console.log("submit")     // event is a parameter to refer the event within the function
+         // event is a parameter to refer the event within the function
     event.preventDefault()       // this prevents the default submit event from occuring
 
    
@@ -54,7 +54,7 @@ else{
             username: nameInpt.value,
             email: emailInpt.value,
             password: passwordInpt.value,
-            createdAt: now.toDateString(),
+            createdAt: new Date().toDateString(),
             verfication:0, 
             myOrders:null,
             sellerVerification:0,
@@ -65,26 +65,35 @@ else{
 
 
 
+
+
     try{
-        if(checkUser(userData)){                              // call to check user already exist in db
+
+        const res = await axios.post("/Sign_Up", userData)
+
+        if(res.data.exists){                              // call to check user already exist in db
             msgPara.textContent="Account already exists, Pls Sign-In"
             console.log("Account already exists")
         }
         else{
-            createUser(userData)                             // call to create user in db
+                                      // call to create user in db
             msgPara.textContent="Account Created successfully"
             console.log("Account Created successfully")
 
         }
+        form.reset()
 
     }
-    catch(error){
+    catch(err){
+        console.error("Error:", err) 
+        msgPara.textContent = "Something went wrong, try again"
     
         }
 
 }
     
 }
+
 
 
 

@@ -1,4 +1,4 @@
-let userData = []
+let userList= []
 
 
 
@@ -10,7 +10,7 @@ let userData = []
 
 
 
-let products = [
+let productsList = [
   {
     name: "gloves",
     id: "1002341",
@@ -131,4 +131,4 @@ let products = [
 ];
   
 
-module.exports={products}
+module.exports={productsList,userList}
