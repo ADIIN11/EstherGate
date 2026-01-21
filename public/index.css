@@ -286,7 +286,17 @@ div.super-li{
  /* overflow-y: auto; */
 }
 
+.slide-holder{
+      border: 2px solid #ef720a;
+}
+
+.slide-name{
+    margin: 0px;
+}
+
 .product-slides {
+
+  
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

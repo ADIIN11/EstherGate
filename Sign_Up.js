@@ -9,6 +9,8 @@ const msgPara=document.getElementById("msg-id")
 const form=document.getElementById("form-id")
 
 
+const axios= require("axios")
+
 let now = new Date();
 
 
@@ -34,31 +36,7 @@ function submit(event){   // event is a parameter to refer the event within the 
          { console.log("confirm password")
             msgPara.textContent="Confirm password, Please"
          }
-    else 
-        {  
-        let userData = {
-            username: nameInpt.value,
-            email: emailInpt.value,
-            password: passwordInpt.value,
-            createdAt: now.toDateString()
-            };
-            console.log(userData)
-        if(checkUser(userData)){                              // call to check user already exist in db
-            msgPara.textContent="Account already exists, Pls Sign-In"
-            console.log("Account already exists")
-        }
-        else{
-            createUser(userData)                             // call to create user in db
-            msgPara.textContent="Account Created successfully"
-            console.log("Account Created successfully")
-
-        }
-
-        
-
-        form.reset()
-        
-        }
+    
 }
 
 

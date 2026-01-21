@@ -1,56 +1,10 @@
-// const http=require("http")
-// const fs=require("fs")
-// const path=require("path")
-
-// const server=http.createServer((req,res)=>{
-//     if(req.url==='/'){
-//         const filePath= path.join(__dirname,"store.html")
-
-//         fs.readFile(filePath,(err,data)=>{
-//             if(err){
-//                 res.writeHead(500,{"content-type":"text/plain"})
-//                 res.end("Internal Error")
-//             }
-//             else{
-//                 res.writeHead(200,{"content-type":"text/html"})
-//                 res.end(data)
-//             }
-//         })
-//     }
-//     else if(req.url==='/Sign_Up'){
-//         const filePath= path.join(__dirname,"Sign_Up.html")
-//           fs.readFile(filePath,(err,data)=>{
-//             if(err){
-//                 res.writeHead(500,{"content-type":"text/plain"})
-//                 res.end("Internal Error")
-//             }
-//             else{
-//                 res.writeHead(200,{"content-type":"text/html"})
-//                 res.end(data)
-//             }
-//         })
-
-//     }
-//     else{
-//         res.writeHead(404, { 'Content-Type': 'text/plain' })
-//         res.end('Page Not Found')
-//     }
-// })
-// server.listen(5000,()=>{
-//     console.log("listening to port 5000")
-// })
-
-
-
-//access server by http://localhost:5000
-
-
-
-
 const express = require("express");
 const path = require("path");
 
 const app = express();
+
+const {products} = require("./data")
+
 const PORT = 5000;
 
 
@@ -59,6 +13,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/Store", (req, res) => {
   res.sendFile(path.join(__dirname, "Store.html"));
+});
+
+
+app.get("/Sign_In", (req, res) => {
+  res.sendFile(path.join(__dirname, "Sign_In.html"));
 });
 
 
@@ -72,8 +31,19 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
+  console.log("welcome to Esther Gate")
   console.log(`Listening on port ${PORT}`);
 });
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -112,7 +82,37 @@ console.log("server is running")
 
 
 
+else 
+        {  
+        let userData = {
+            username: nameInpt.value,
+            email: emailInpt.value,
+            password: passwordInpt.value,
+            createdAt: now.toDateString(),
+            verfication:0, 
+            myOrders:null,
+            sellerVerification:0,
+            productListed:null,
+            
 
+            };
+            console.log(userData)
+        if(checkUser(userData)){                              // call to check user already exist in db
+            msgPara.textContent="Account already exists, Pls Sign-In"
+            console.log("Account already exists")
+        }
+        else{
+            createUser(userData)                             // call to create user in db
+            msgPara.textContent="Account Created successfully"
+            console.log("Account Created successfully")
+
+        }
+
+        
+
+        form.reset()
+        
+        }
 
 
 
