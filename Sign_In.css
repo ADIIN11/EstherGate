@@ -44,6 +44,9 @@ h2{
     background-color: rgba(254, 244, 188, 0.7);
    
 }
+.form-text{
+    margin: 0px;
+}
 
 input{
 
@@ -55,18 +58,19 @@ input{
 
 
 
-.submit-btn {
+.form-btn {
     box-sizing: border-box; 
     width: 100px;
     height: 25px;
     border: 2px solid #e35311ff;
     border-radius: 0%;
     margin: 5px;
+    background-color:#fef4bc ;
 
 
 }
 
-.submit-btn:hover{
+.form-btn:hover{
     background-color: lightgray;
 }
 

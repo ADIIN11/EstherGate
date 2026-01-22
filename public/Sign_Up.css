@@ -44,6 +44,9 @@ h2{
    
 }
 
+.form-text{
+    margin: 0px;
+}
 input{
 
     border: 1px solid #e35311ff;
@@ -54,7 +57,7 @@ input{
 
 
 
-.submit-btn {
+.form-btn {
     box-sizing: border-box; 
     width: 100px;
     height: 25px;
@@ -65,7 +68,7 @@ input{
 
 }
 
-.submit-btn:hover{
+.form-btn:hover{
     background-color: lightgray;
 }
 

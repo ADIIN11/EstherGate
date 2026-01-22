@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign_In</title>
     <link rel="stylesheet" href="/Sign_In.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <header>
@@ -16,18 +17,20 @@
             <form id="form-id">
                 <h2>Sign-In</h2>
                 <br>
-                <input type="text" placeholder="Username or Email" id="username-ip">
+                <input type="text" placeholder="Username or Email" id="username-email-inp">
                 <br>
-                <input type="password" placeholder="password" id="password-ip">
+                <input type="password" placeholder="password" id="password-inp">
                 <br>
                 <img src="" alt="captcha">
                 <br>
-                <input class="captcha-input" type="text" placeholder="captcha" id="captcha-ip">
+                <input class="captcha-input" type="text" placeholder="captcha" id="captcha-inp">
                 <button type="reset" onclick="" class="captcha-btn">
                     <img src="assets/reload-icon.png" alt="icon"  class="reload-icon" >
                 </button>
                 <br>
-                <button type="submit" class="submit-btn">Submit</button>
+                <button type="submit" class="form-btn">Submit</button>
+                <h4 class="form-text">------or------</h4>
+                <button type="button" class="form-btn" onclick="window.location.href='/Sign_Up';" >Sign-Up</button>
                 <p id="msg-id" class="msg-para"></p>
 
             </form> 

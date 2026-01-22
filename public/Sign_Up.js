@@ -1,13 +1,13 @@
 
-const nameInpt=document.getElementById("username-ip")
-const emailInpt=document.getElementById("email-ip")
-const passwordInpt=document.getElementById("password-ip")
-const cnfmPasswordInpt=document.getElementById("cnfm-password-ip")
-const captchaInpt=document.getElementById("captcha-ip")
+const nameInpt=document.getElementById("username-inp")
+const emailInpt=document.getElementById("email-inp")
+const passwordInpt=document.getElementById("password-inp")
+const cnfmPasswordInpt=document.getElementById("cnfm-password-inp")
+const captchaInpt=document.getElementById("captcha-inp")
 
 const msgPara=document.getElementById("msg-id")
 const form=document.getElementById("form-id")
-const submitBtn=document.getElementById("submit-btn")
+
 
 
 
@@ -22,21 +22,34 @@ const submitBtn=document.getElementById("submit-btn")
 
 form.addEventListener("submit",submit) //only function reference is given in the 2nd argu as funtion is defined down 
 
-async function submit(event){ 
-         // event is a parameter to refer the event within the function
+async function submit(event){ // event is a parameter to refer the event within the function
     event.preventDefault()       // this prevents the default submit event from occuring
 
    
-if(nameInpt.value===""||
-        emailInpt.value===""||
+if(!nameInpt.value||
+        !emailInpt.value||
 
-        passwordInpt.value===""||
-        cnfmPasswordInpt.value===""||
-        captchaInpt.value===""
+        !passwordInpt.value||
+        !cnfmPasswordInpt.value&&
+        !captchaInpt.value
     )
     {
     msgPara.textContent="Fill all the box"
     console.log("Fill all the box")
+
+    return
+
+}
+else if(nameInpt.value&&
+        emailInpt.value&&
+
+        passwordInpt.value&&
+        cnfmPasswordInpt.value&&
+        !captchaInpt.value
+    )
+    {
+    msgPara.textContent="Pls Fill Captcha"
+    console.log("Pls Fill Captcha")
 
     return
 
@@ -56,9 +69,12 @@ else{
             password: passwordInpt.value,
             createdAt: new Date().toDateString(),
             verfication:0, 
+            myCart:null,
             myOrders:null,
+            address:null,
             sellerVerification:0,
             productListed:null,
+            role:"customerAccount"
             
 
             }
@@ -77,8 +93,8 @@ else{
         }
         else{
                                       // call to create user in db
-            msgPara.textContent="Account Created successfully"
-            console.log("Account Created successfully")
+            msgPara.textContent="Account Created Successfully"
+            console.log("Account Created Successfully")
 
         }
         form.reset()
