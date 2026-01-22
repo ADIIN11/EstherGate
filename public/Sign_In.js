@@ -62,8 +62,13 @@ else{
             return
         }
         else{
+            console.log(res.data)
+            
+            localStorage.setItem("token", res.data.token)
             msgPara.textContent="Signed In Successfully"
             console.log("Signed In Successfully")
+            verifyToken()
+            
 
         }
         form.reset()
@@ -76,5 +81,37 @@ else{
         }
 
 }
+
+}
+
+async function verifyToken(){
+    const token = localStorage.getItem("token")
+    const tokenObj={
+        token:token
+    }
+
+    try{
+
+        const res = await axios.post("/Token_Verification", tokenObj)
+        if(res.data.tokenVerified){
+            const username=res.data.username
+            const role=res.data.role
+            const id=res.data.id
+            
+            localStorage.setItem("currentUsername",username)
+            localStorage.setItem("currentUserRole",role)
+            localStorage.setItem("currentUserId",id)
+
+        }
+        else{
+            console.log("token expired pls login again")
+        }
+    }  
+        catch(err){
+        console.error("Error:", err)
+        }
+
+
+
 
 }

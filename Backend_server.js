@@ -48,20 +48,42 @@ app.get("/Sign_In", (req, res) => {
   res.sendFile(path.join(__dirname, "Sign_In.html"))
 })
 
-app.post("/Sign_In", (req, res) => {
-  const userData = req.body; // axios sends JSON here
+app.post("/Sign_In", async(req, res) => {
+  const userData = req.body 
   console.log(userData)
   if (!checkUserSignIn(userData)) {
     res.json({ exists: false })
   } else {          // create user logic here
      if(checkPassword(userData)){
-      //  tokenGenerator(userData)
-      res.json({ exists: true,passwordCorrect:true })}
+     
+      const token=await tokenGenerator(userData)
+      console.log(token)
+      
+      res.json({ exists: true,passwordCorrect:true,token:token })}
       else
         res.json({ exists: true,passwordCorrect:false })
   }
 })
 
+
+app.post("/Token_Verification", async (req, res) => {
+  const token=req.body
+  console.log(token)
+  const userData=await verifyToken(token)
+  if(userData){
+    const username=userData.username
+    const role=userData.role
+    const id=userData.id
+
+    res.json({ tokenVerified:true,
+      username:username,
+      role:role,
+      id:id
+    })}
+  else{
+    res.json({ tokenVerified:false })
+  }
+})
 
 app.use((req, res) => {
   res.status(404).send("Page Not Found")
@@ -142,7 +164,6 @@ async function checkPassword(userObj){
     
     try {
     const isMatch = await bcrypt.compare(userObj.password, accountPassword)
-      console.log(isMatch)
       return isMatch
     }catch (err){ 
     console.error("Error password matching:", err) 
@@ -151,16 +172,42 @@ async function checkPassword(userObj){
 
 }
 
+
+
+
 async function tokenGenerator(userObj){
   
-  const payload=()=>{
+  function getUserData(){
    for(let i=0;i<userList.length;i++)
-        if(userList.username[i]===userObj.usernameEmail||userList.email[i]===userObj.usernameEmail)
-          return {id:userList.id[i],
-                  role:userList.role[i]}
+        if(userList[i].username===userObj.usernameEmail||userList[i].email===userObj.usernameEmail)
+          return {id:userList[i].id,
+                  username:userList[i].username,
+                  role:userList[i].role}
     
   }
-  const secretKey=process.env.secretKey
-  const token = jwt.sign(payload, secretKey, { expiresIn: '1h' }); 
-  console.log(token);
+  const payload=getUserData()
+  const secretKey=process.env.JWT_SECRET
+  if (!secretKey) {
+     throw new Error("JWT_SECRET is not defined in .env")
+    }
+  const token =  jwt.sign(payload, secretKey, { expiresIn: '2h' })
+  return token
+}
+
+
+
+
+
+async function verifyToken(tokenObj){
+  console.log(tokenObj)
+  const token=tokenObj.token
+
+  try { const decoded = jwt.verify(token, process.env.JWT_SECRET) 
+    console.log(decoded) 
+    return decoded
+  } catch (err) { 
+    console.error("Invalid token:", err) 
+    return false
+  }
+
 }

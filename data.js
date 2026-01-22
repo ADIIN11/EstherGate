@@ -68,6 +68,20 @@ let userList= [
   productListed: null,
   role: 'customerAccount',
   id: 4
+},
+{
+  username: 'adi',
+  email: 'adawd',
+  password: '$2b$10$5t/ry8QJR1C8vviYFfCtzO2Go9/oLqpY0UESQf2Li0Wg5BUppDpHu',
+  createdAt: 'Thu Jan 22 2026',
+  verfication: 0,
+  myCart: null,
+  myOrders: null,
+  address: null,
+  sellerVerification: 0,
+  productListed: null,
+  role: 'customerAccount',
+  id: 5
 }
 
 ]
