@@ -54,14 +54,16 @@ else{
         if(!res.data.exists){                              // call to check user already exist in db
             msgPara.textContent="Account Does Not Exists, Pls Sign-Up"
             console.log("Account already exists")
+            return
         }
-        else if(!res.data.checkPassword){
+        else if(!res.data.passwordCorrect){
             msgPara.textContent="Password Incorrect"
             console.log("Password Incorrect")
+            return
         }
         else{
-            msgPara.textContent="Account Created successfully"
-            console.log("Account Created successfully")
+            msgPara.textContent="Signed In Successfully"
+            console.log("Signed In Successfully")
 
         }
         form.reset()

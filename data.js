@@ -1,9 +1,145 @@
-let userList= []
+let userList= [
+  {
+  username: 'alice123',
+  email: 'alice@example.com',
+  password: '$2b$10$Z82meHPeRoOJ55ScD5pPcej.mdshewzIwZvBnkFLkGV8R0KOnlW8.',
+  createdAt: 'Thu Jan 22 2026',
+  verfication: 0,
+  myCart: null,
+  myOrders: null,
+  address: null,
+  sellerVerification: 0,
+  productListed: null,
+  role: 'customerAccount',
+  id: 0
+},
+{
+  username: 'bob456',
+  email: 'bob@example.com',
+  password: '$2b$10$Xi/LDY62YCV9L2TeaxX1veoRjmKn1sPsxddS34BsKmcCsRFpY6MNm',
+  createdAt: 'Thu Jan 22 2026',
+  verfication: 0,
+  myCart: null,
+  myOrders: null,
+  address: null,
+  sellerVerification: 0,
+  productListed: null,
+  role: 'customerAccount',
+  id: 1
+},
+{
+  username: 'charlie789',
+  email: 'charlie@example.com',
+  password: '$2b$10$eyo6rnkU9ujmUj.jvica0u/aUWg.0qqEGAnx8NTt5Nf.oY2DW6T6G',
+  createdAt: 'Thu Jan 22 2026',
+  verfication: 0,
+  myCart: null,
+  myOrders: null,
+  address: null,
+  sellerVerification: 0,
+  productListed: null,
+  role: 'customerAccount',
+  id: 2
+},
+{
+  username: 'diana321',
+  email: 'diana@example.com',
+  password: '$2b$10$TCKdwa9NeffzvrAm8EeAjOt6EPi8D7cXFgzk/8gD.wWlEVziujlK.',
+  createdAt: 'Thu Jan 22 2026',
+  verfication: 0,
+  myCart: null,
+  myOrders: null,
+  address: null,
+  sellerVerification: 0,
+  productListed: null,
+  role: 'customerAccount',
+  id: 3
+},
+{
+  username: 'edward654',
+  email: 'edward@example.com',
+  password: '$2b$10$rw6FRbL03mlZQvoh6p/viOZL7/3Bok72q0HdEZCNqNA/JBr3IkIR6',
+  createdAt: 'Thu Jan 22 2026',
+  verfication: 0,
+  myCart: null,
+  myOrders: null,
+  address: null,
+  sellerVerification: 0,
+  productListed: null,
+  role: 'customerAccount',
+  id: 4
+}
+
+]
 
 
-
-
-
+let userListNotHashed = [
+  {
+    username: "alice123",
+    email: "alice@example.com",
+    password: "passAlice!",
+    createdAt: "Thu Jan 22 2026",
+    verification: 1,
+    myCart: [],
+    myOrders: [],
+    address: "123 Main St, NY",
+    sellerVerification: 0,
+    productListed: [],
+    role: "customerAccount"
+  },
+  {
+    username: "bob456",
+    email: "bob@example.com",
+    password: "bobSecure99",
+    createdAt: "Mon Feb 10 2025",
+    verification: 0,
+    myCart: null,
+    myOrders: null,
+    address: "456 Oak Ave, CA",
+    sellerVerification: 0,
+    productListed: null,
+    role: "customerAccount"
+  },
+  {
+    username: "charlie789",
+    email: "charlie@example.com",
+    password: "charliePwd77",
+    createdAt: "Sat Mar 15 2024",
+    verification: 1,
+    myCart: ["item1", "item2"],
+    myOrders: ["order1"],
+    address: "789 Pine Rd, TX",
+    sellerVerification: 1,
+    productListed: ["productA"],
+    role: "sellerAccount"
+  },
+  {
+    username: "diana321",
+    email: "diana@example.com",
+    password: "dianaPass22",
+    createdAt: "Wed Apr 20 2022",
+    verification: 0,
+    myCart: ["itemX"],
+    myOrders: null,
+    address: "321 Maple St, FL",
+    sellerVerification: 0,
+    productListed: null,
+    role: "customerAccount"
+  },
+  {
+    username: "edward654",
+    email: "edward@example.com",
+    password: "edwardKey88",
+    createdAt: "Fri May 05 2023",
+    verification: 1,
+    myCart: [],
+    myOrders: ["orderX", "orderY"],
+    address: "654 Cedar Blvd, WA",
+    sellerVerification: 1,
+    productListed: ["productB", "productC"],
+    role: "sellerAccount"
+  }
+];
 
 
 
