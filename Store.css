@@ -142,8 +142,9 @@ div.super-li{
 .side-bar.toggleSideBar div.super-li{
     flex-direction: row;
    
-
 }
+
+
 
  div.sub-li{
     display: none;
@@ -157,6 +158,7 @@ div.super-li{
 .side-bar.toggleSideBar .sidebar-li:hover div.sub-li{
     display: flex;
     flex-direction: column;
+    height: auto;
 }
 
 .sidebar-li:hover{
