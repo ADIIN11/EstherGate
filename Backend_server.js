@@ -8,6 +8,50 @@ require('dotenv').config({ quiet: true });
 
 
 const {productsList,userList} = require("./data");
+
+const mongoose= require("mongoose");
+const { exit } = require("process");
+
+mongoose.connect(process.env.MONGO_DB_URL).then(()=>console.log("MongoDB Connected Successfully :)")).catch(err=>{console.log("MongoDB Connection Error :",err)
+})
+
+const userSchema=new mongoose.Schema({
+    username: String,
+    email: String,
+    password: String,
+    createdAt: String,
+    verification: Boolean,
+    myCart: Array,
+    myOrders: Array,
+    address: Object,
+    sellerVerification: Boolean,
+    productListed:Array,
+    role: String
+  },{ versionKey: false })
+  const userModel = mongoose.model("User",userSchema,"users")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const app = express();
 
 app.use(express.json())
@@ -31,8 +75,12 @@ app.get("/Sign_Up", (req, res) => {
 app.post("/Sign_Up", (req, res) => {
   const userData = req.body; // axios sends JSON here
   console.log(userData)
-  if (checkUserSignUp(userData)) {
-    res.json({ exists: true })
+  const checkUser=checkUserSignUp(userData)
+  if (checkUser) {
+    if(checkUser===1)
+      res.json({ exists: 1 })
+    else if(checkUser===2)
+      res.json({ exists: 2 })
   } else {          
      createUser(userData)  
     res.json({ exists: false })
@@ -104,8 +152,10 @@ function checkUserSignUp(userObj){
 
    for(let i=0;i<uniqueUserNameEmail.length;i++)
    {
-    if(uniqueUserNameEmail[i]===userObj.username||uniqueUserNameEmail[i]===userObj.email)
-        return true
+    if(uniqueUserNameEmail[i]===userObj.username)
+        return 1
+    if(uniqueUserNameEmail[i]===userObj.email)
+      return 2
    
    }
     return false
@@ -130,8 +180,8 @@ async function createUser(userObj){
     let id="id"
     userObj[id]=userList.length
     console.log(userObj)
-    userList.push(userObj)
-   
+    const newUser= new userModel(userObj)
+    await newUser.save().then(()=>console.log("New Account Saved")).catch(err=>console.log("Saving Error",err))
 }
 
 

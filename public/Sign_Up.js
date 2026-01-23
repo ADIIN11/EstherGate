@@ -68,12 +68,12 @@ else{
             email: emailInpt.value,
             password: passwordInpt.value,
             createdAt: new Date().toDateString(),
-            verfication:0, 
-            myCart:null,
-            myOrders:null,
+            verfication:false, 
+            myCart:[],
+            myOrders:[],
             address:null,
-            sellerVerification:0,
-            productListed:null,
+            sellerVerification:false,
+            productListed:[],
             role:"customerAccount"
             
 
@@ -86,11 +86,16 @@ else{
     try{
 
         const res = await axios.post("/Sign_Up", userData)
-
-        if(res.data.exists){                              // call to check user already exist in db
-            msgPara.textContent="Account already exists, Pls Sign-In"
+        console.log(res.data)
+        if(res.data.exists===1){   // call to check user already exist in db
+            msgPara.textContent="Username already taken"
+            console.log("username already taken")
+        }
+        else if(res.data.exists===2){
+            msgPara.textContent="Account already exists,Pls Sign in"   
             console.log("Account already exists")
         }
+        
         else{
                                       // call to create user in db
             msgPara.textContent="Account Created Successfully"
