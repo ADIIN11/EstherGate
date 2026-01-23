@@ -85,6 +85,7 @@ else{
 }
 
 async function verifyToken(){
+    
     const token = localStorage.getItem("token")
     const tokenObj={
         token:token
@@ -94,6 +95,7 @@ async function verifyToken(){
 
         const res = await axios.post("/Token_Verification", tokenObj)
         if(res.data.tokenVerified){
+            
             const username=res.data.username
             const role=res.data.role
             const id=res.data.id
@@ -101,8 +103,11 @@ async function verifyToken(){
             localStorage.setItem("currentUsername",username)
             localStorage.setItem("currentUserRole",role)
             localStorage.setItem("currentUserId",id)
+            localStorage.setItem("TokenData","true")
+            console.log("Token Verified")
 
         }
+
         else{
             console.log("token expired pls login again")
         }

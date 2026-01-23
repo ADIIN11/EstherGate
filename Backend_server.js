@@ -26,7 +26,8 @@ const userSchema=new mongoose.Schema({
     address: Object,
     sellerVerification: Boolean,
     productListed:Array,
-    role: String
+    role: String,
+    id: Number
   },{ versionKey: false })
   const userModel = mongoose.model("User",userSchema,"users")
 
@@ -72,10 +73,10 @@ app.get("/Sign_Up", (req, res) => {
 })
 
 
-app.post("/Sign_Up", (req, res) => {
+app.post("/Sign_Up",async (req, res) => {
   const userData = req.body; // axios sends JSON here
   console.log(userData)
-  const checkUser=checkUserSignUp(userData)
+  const checkUser=await checkUserSignUp(userData)
   if (checkUser) {
     if(checkUser===1)
       res.json({ exists: 1 })
@@ -99,7 +100,8 @@ app.get("/Sign_In", (req, res) => {
 app.post("/Sign_In", async(req, res) => {
   const userData = req.body 
   console.log(userData)
-  if (!checkUserSignIn(userData)) {
+  const checkUserEmail=await checkUserSignIn(userData)
+  if (!checkUserEmail) {
     res.json({ exists: false })
   } else {          // create user logic here
      if(checkPassword(userData)){
@@ -145,10 +147,14 @@ app.listen(PORT, () => {
 
 
 
-function checkUserSignUp(userObj){
+async function checkUserSignUp(userObj){
 
-    let uniqueUserNameEmail=[... new Set(userList.map((objName)=>objName.username)),... new Set(userList.map((objEamil)=>objEamil.email))]
+    // let uniqueUserNameEmail=[... new Set(userList.map((objName)=>objName.username)),... new Set(userList.map((objEamil)=>objEamil.email))]
+
+    const uniqueUserNameEmailObjArr= await userModel.find().select('-_id username email')
+    const uniqueUserNameEmail=[... new Set(uniqueUserNameEmailObjArr.map((objName)=>objName.username)),... new Set(uniqueUserNameEmailObjArr.map((objEamil)=>objEamil.email))]
     console.log(uniqueUserNameEmail)
+
 
    for(let i=0;i<uniqueUserNameEmail.length;i++)
    {
@@ -178,7 +184,7 @@ async function createUser(userObj){
     }
 
     let id="id"
-    userObj[id]=userList.length
+    userObj[id]=await userModel.countDocuments()
     console.log(userObj)
     const newUser= new userModel(userObj)
     await newUser.save().then(()=>console.log("New Account Saved")).catch(err=>console.log("Saving Error",err))
@@ -186,10 +192,11 @@ async function createUser(userObj){
 
 
 
-function checkUserSignIn(userObj){
+async function checkUserSignIn(userObj){
 
-    let uniqueUserNameEmail=[... new Set(userList.map((objName)=>objName.username)),... new Set(userList.map((objEamil)=>objEamil.email))]
-   
+    const uniqueUserNameEmailObjArr= await userModel.find().select('-_id username email')
+    const uniqueUserNameEmail=[... new Set(uniqueUserNameEmailObjArr.map((objName)=>objName.username)),... new Set(uniqueUserNameEmailObjArr.map((objEamil)=>objEamil.email))]
+    console.log(uniqueUserNameEmail)
 
    for(let i=0;i<uniqueUserNameEmail.length;i++)
    {
@@ -203,13 +210,32 @@ function checkUserSignIn(userObj){
 
 async function checkPassword(userObj){
 
-    function getPassword(){
-      for(let i=0;i<userList.length;i++)
-        if(userList[i].username===userObj.usernameEmail||userList[i].email===userObj.usernameEmail)
-          return userList[i].password
+    // function getPassword(){
+    //   for(let i=0;i<userList.length;i++)
+    //     if(userList[i].username===userObj.usernameEmail||userList[i].email===userObj.usernameEmail)
+    //       return userList[i].password
       
+    // }
+
+    async function getPassword(){
+      try{
+      const password= userModel.find({username:userObj.usernameEmail}).select('-_id password')
+      return password
+      }catch(err){
+        console.log("did not find username :",err)
+      }
+      try{
+      const password= userModel.find({email:userObj.usernameEmail}).select('-_id password')
+      return password
+      }catch(err){
+        console.log("did not find email :",err)
+      }
+
+
     }
-    const accountPassword=getPassword()
+    const password= await getPassword() 
+    console.log(password)
+    const accountPassword=password[0].password
     console.log(accountPassword)
     
     try {
@@ -227,20 +253,40 @@ async function checkPassword(userObj){
 
 async function tokenGenerator(userObj){
   
-  function getUserData(){
-   for(let i=0;i<userList.length;i++)
-        if(userList[i].username===userObj.usernameEmail||userList[i].email===userObj.usernameEmail)
-          return {id:userList[i].id,
-                  username:userList[i].username,
-                  role:userList[i].role}
+  // function getUserData(){
+  //  for(let i=0;i<userList.length;i++)
+  //       if(userList[i].username===userObj.usernameEmail||userList[i].email===userObj.usernameEmail)
+  //         return {id:userList[i].id,
+  //                 username:userList[i].username,
+  //                 role:userList[i].role}
     
-  }
-  const payload=getUserData()
+  // }
+async function getUserData(){
+      try{
+      const password= userModel.find({username:userObj.usernameEmail}).select('-_id username role id')
+      return password
+      }catch(err){
+        console.log("did not find username :",err)
+      }
+      try{
+      const password= userModel.find({email:userObj.usernameEmail}).select('-_id username role id')
+      return password
+      }catch(err){
+        console.log("did not find email :",err)
+      }
+
+
+    }
+
+  const payloadArrObj=await getUserData()
+   console.log(payloadArrObj)
+  const payload=payloadArrObj[0].toObject()
+  console.log(payload)
   const secretKey=process.env.JWT_SECRET
   if (!secretKey) {
      throw new Error("JWT_SECRET is not defined in .env")
     }
-  const token =  jwt.sign(payload, secretKey, { expiresIn: '2h' })
+  const token =  jwt.sign(payload, secretKey, { expiresIn: '1h' })
   return token
 }
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
     <link rel="stylesheet" href="/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <div class="search-bar">
@@ -44,17 +45,14 @@
             
             <li class="sidebar-li">
                 <div class="super-li">
-                 <a href="Profile.html" class="sidebar-anchors icon">
+                 <a href="/Sign_In" class="sidebar-anchors icon">
                         <img src="assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
                  </a>
-                <a href="Profile.html" class="sidebar-anchors">
-                    
-                    Profile</a>
+                <a href="/Sign_In" class="sidebar-anchors" id="sidebar-profile-text">Profile</a>
                 </div>
-                <div class="sub-li"> 
+                <div class="sub-li" id="profile-sub-li"> 
                     <a href="/Sign_Up" class="sidebar-anchors sub">Sign-Up</a>
-                    <a href="Profile/Sign_In.html" class="sidebar-anchors sub">Sign-In</a>
-                    <a href="Profile/logout.html" class="sidebar-anchors sub">Sign-out</a>
+                    <a href="/Sign_In" class="sidebar-anchors sub">Sign-In</a>
                 </div>
             
             </li>
