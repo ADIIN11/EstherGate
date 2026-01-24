@@ -1,7 +1,7 @@
---spicy-paprika: #e35311;
---golden-orange: #f3a000;
---harvest-orange: #ef720a;
---amber-flame: #feb60b;
---lemon-chiffon: #fef4bc;
+--spicy-paprika: #e35311;   text highlight
+--golden-orange: #f3a000;  background select / text highlight
+--harvest-orange: #ef720a;  text 
+--amber-flame: #feb60b;    background highlight 
+--lemon-chiffon: #fef4bc;  background
 
 rgb(254, 244, 188)

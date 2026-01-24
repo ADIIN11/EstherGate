@@ -178,7 +178,7 @@ div.super-li{
 
 
 .sidebar-icon{
-    height: 2.2rem;
+   height: 2.2rem;
     width: 2.2rem;
     margin: 0rem 0rem;
 
@@ -287,32 +287,99 @@ div.super-li{
  /* overflow-y: auto; */
 }
 
-.slide-holder{
-      border: 2px solid #ef720a;
+.content-ul{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 3rem;
+    border: 2px solid #ef720a ;
 }
 
-.slide-name{
-    margin: 0px;
+.content-li{
+    padding: 1rem;
+    border-bottom: 1px solid #ef720a;
 }
 
-.product-slides {
+.content-li:hover{
+    
+    background-color:  #feb60b;
+}
 
-  
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
- overflow-x: auto;
- overflow-y: hidden;
- scroll-snap-type: x mandatory;
+a.content-anchors{
+    text-decoration: none;
+    color:#ef720a;
 }
-.product-card {
-    scroll-snap-align: start;
-  border: 1px solid #ef720a;
-  padding: 10px;
-  text-align: center;
- 
+
+
+
+.content-li:hover a.content-anchors{
+    background-color: #feb60b ;
+    color:#fef4bc;
 }
-.product-image{
-    width: 300px;
+.content-li:hover a.content-anchors:hover{
+   
+    color:#e35311;
+}
+
+.content-li.verification{
+    display:block;
+}
+.content-li.verification.toggleVerificationOff{
+    display: none;
+}
+
+
+
+
+
+
+.profile{
+    margin: 1rem 3rem;
+    border: 2px solid #ef720a;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+
+
+.profile-img-holder{
+    margin: 1rem;
+    border: 2px solid #ef720a;
+    width: 5rem;
+    height: 5rem;
+    
+}
+.content-profile-img{
+    width: 5rem;
+    
+}
+
+.profile-datails{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+.profile-username{
+    margin: 0rem 2rem;
+}
+.profile-email{
+    margin: 0rem 2rem;
+}
+
+.verification-box{
+    display: flex;
+    flex-direction: row;
+    gap:0.2rem;
+    margin: 0rem 2rem;
+}
+
+.verification-icon{
+    height: 1.2rem;
+    width: 1.2rem;
+    border: 1px solid #ef720a;
+}
+
+.profile-verification{
+    margin: 0rem ;
 }

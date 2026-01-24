@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/Profile.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
@@ -31,7 +31,7 @@
 
                 <div class="super-li">
                 <a href="Home.html" class="sidebar-anchors icon" >
-                    <img src="assets/home-icon.svg" alt="logo"  class="sidebar-icon"  >
+                    <img src="assets/home-icon.svg" alt="home-icon"  class="sidebar-icon"  >
                 </a>
                 <a href="Home.html"  class="sidebar-anchors">Home</a>
                 </div>
@@ -46,7 +46,7 @@
             <li class="sidebar-li">
                 <div class="super-li" id="profile-img">
                  <a href="/Sign_In" class="sidebar-anchors icon" >
-                        <img src="assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
+                        <img src="assets/profile-icon.svg"  alt="profile-icon"  class="sidebar-icon"  >
                  </a>
                 <a href="/Sign_In" class="sidebar-anchors" id="sidebar-profile-text">Profile</a>
                 </div>
@@ -60,7 +60,7 @@
             <li class="sidebar-li">
                 <div class="super-li">
                     <a href="List_Item.html" class="sidebar-anchors icon">
-                        <img src="assets/list-item-icon.svg" alt="logo"  class="sidebar-icon"  >
+                        <img src="assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
                     </a>
                   
                 <a href="List_Item.html"  class="sidebar-anchors">List Item</a>
@@ -70,7 +70,7 @@
             <li class="sidebar-li" >
                 <div class="super-li">
                      <a href="Track_Order.html"  class="sidebar-anchors icon">
-                         <img src="assets/track-order-icon.svg" alt="logo"  class="sidebar-icon"  >
+                         <img src="assets/track-order-icon.svg" alt="track-order-icon"  class="sidebar-icon"  >
                      </a>
                
                 <a href="Track_Order.html"  class="sidebar-anchors">Track Order</a>
@@ -80,7 +80,7 @@
             <li class="sidebar-li">
                  <div class="super-li">
                      <a href="Help.html"  class="sidebar-anchors icon">
-                        <img src="assets/help-icon.svg" alt="logo"  class="sidebar-icon"  >
+                        <img src="assets/help-icon.svg" alt="help-icon"  class="sidebar-icon"  >
                      </a>
                 
                 <a href="Help.html"  class="sidebar-anchors">Help</a>
@@ -90,7 +90,7 @@
             <li class="sidebar-li">
                 <div class="super-li">
                       <a href="about.html"   class="sidebar-anchors icon">
-                        <img src="assets/about-icon.svg" alt="logo"  class="sidebar-icon"  >
+                        <img src="assets/about-icon.svg" alt="about-icon"  class="sidebar-icon"  >
                       </a>
                 
                 <a href="about.html"  class="sidebar-anchors">about</a>
@@ -139,98 +139,65 @@
     </div>
 
      <div class="content">
-        
+     <div class="profile">
+        <div class="profile-img-holder" id="profile-img-holder">
+            <img src="/assets/profile-icon.svg" alt="profile-icon" class="content-profile-img">
+        </div>
 
-    <div class="slide-holder top-selling">  
-        <h3 class="slide-name">Top Selling</h3>
-        <div class="product-slides" id="product-slides">
 
-            <div class="product-card">
-                <img src="" alt="Product image" class="product-image" />
-                    <h3>Product Name</h3>
-                    <p>₹ Price</p>
-                <button>Add to Cart</button>
-            </div>
-            <!-- Repeat for other products -->
-
-            <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
+        <div class="profile-datails" id="profile-datails">
+                <h2 class="profile-username">Username</h2>
+                <h3 class="profile-email">Email@email.com</h2>
+                <div class="verification-box">
+                    <img src="/assets/attention-icon.svg" alt="attention-icon" class="verification-icon">
+                    <h4 class="profile-verification">"Account Not Verified"</h1>
                 </div>
-
-                <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
+                <div class="verification-box">
+                    <img src="/assets/attention-icon.svg" alt="attention-icon" class="verification-icon">
+                    <h4 class="profile-verification">"Seller Not Verified"</h1>
                 </div>
-
-
-                <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
-                </div>
-                 <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
-                </div>
-            </div>
+                
             
+        </div>
+     </div>
+
+        <div class="content-ul">
+
+        <div class="content-li verification" id="content-li verification" onclick="window.location.href='/Verify_Account';" >
+            <a href="" class="content-anchors">Verify Account</a>
+        </div>
+
+        <div class="content-li" onclick="window.location.href='/Set_Address';">
+            <a href="" class="content-anchors">Set Address</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Set Profile Pic</a>
+        </div>
+         <div class="content-li">
+            <a href="" class="content-anchors">My Cart</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">My Orders</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">My Listed Products</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Change Password</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Delete Acccount</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Sign Out</a>
+        </div>
+
+        </div>
         
-    </div>
 
-    <div class="slide-holder On-sale"> 
-        <h3 class="slide-name">On sale</h3> 
-        <div class="product-slides" id="product-slides">
-
-            <div class="product-card">
-                <img src="" alt="Product image" class="product-image" />
-                    <h3>Product Name</h3>
-                    <p>₹ Price</p>
-                <button>Add to Cart</button>
-            </div>
-            <!-- Repeat for other products -->
-
-            <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
-                </div>
-
-                <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
-                </div>
-
-
-                <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
-                </div>
-                 <div class="product-card">
-                    <img src="" alt="Product image" />
-                        <h3>Product Name</h3>
-                        <p>₹ Price</p>
-                    <button>Add to Cart</button>
-                </div>
-            </div>
-            
-        
-    </div>
 
     </div>  
 
-    <script src="index.js"></script>
+    <script src="Profile.js"></script>
 </body>
 </html>

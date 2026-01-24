@@ -141,13 +141,13 @@ app.post("/Token_Verification", async (req, res) => {
   console.log(token)
   const userData=await verifyTokenSignIn(token)
   if(userData){
-    const username=userData.username
-    const role=userData.role
+    // const username=userData.username
+    // const role=userData.role
     const id=userData.id
 
     res.json({ tokenVerified:true,
-      username:username,
-      role:role,
+      // username:username,
+      // role:role,
       id:id
     })}
   else{
@@ -155,15 +155,48 @@ app.post("/Token_Verification", async (req, res) => {
   }
 })
 
+
+
+
 app.post("/Get_Profile_Img", async (req, res) => {
   console.log(req.body)
   try{
   const profileImg=await getProfileImg(req.body)
-  res.json({ profileImg:profileImg })
+  const ProfileUsername=await getProfileUsername(req.body)
+  res.json({ profileImg:profileImg,
+    username:ProfileUsername
+  })
   }catch(err){
     console.log("error while sending profileimg:",err)
   }
 })
+
+
+app.get("/Profile", (req, res) => {
+  res.sendFile(path.join(__dirname, "Profile.html"))
+})
+
+app.post("/Profile/Get_Profile_Details", async (req, res) => {
+  console.log(req.body)
+  try{
+  const profileImg=await getProfileImg(req.body)
+  const profileUsername=await getProfileUsername(req.body)
+  const profileEmail=await getProfileEmail(req.body)
+  const profileVerification=await getProfileVerification(req.body)
+  const sellerVerification=await getSellerVerification(req.body)
+  res.json({ profileImg:profileImg,
+    username:profileUsername,
+    email:profileEmail,
+    verification:profileVerification,
+    sellerVerification:sellerVerification
+   })
+  }catch(err){
+    console.log("error while sending profileimg:",err)
+  }
+})
+
+
+
 
 
 
@@ -354,4 +387,69 @@ async function getProfileImg(userObj){
   let profileImg=await getProfileImgDB(userObj)
   profileImg=profileImg[0].profileImg
   return profileImg
+}
+
+
+async function getProfileUsernameDB(userObj){
+  try{
+      const profileUsername= await userModel.find({id:userObj.id}).select('-_id username')
+      return profileUsername
+      }catch(err){
+        console.log("did not find profile username :",err)
+      }
+    
+}
+
+async function getProfileUsername(userObj){
+  let profileUsername=await getProfileUsernameDB(userObj)
+  profileUsername=profileUsername[0].username
+  return profileUsername
+}
+
+async function getProfileEmailDB(userObj){
+  try{
+      const profileEmail= await userModel.find({id:userObj.id}).select('-_id email')
+      return profileEmail
+      }catch(err){
+        console.log("did not find profile email :",err)
+      }
+    
+}
+
+async function getProfileEmail(userObj){
+  let profileEmail=await getProfileEmailDB(userObj)
+  profileEmail=profileEmail[0].email
+  return profileEmail
+}
+
+async function getProfileVerificationDB(userObj){
+  try{
+      const profileVerification= await userModel.find({id:userObj.id}).select('-_id verification')
+      return profileVerification
+      }catch(err){
+        console.log("did not find profile email :",err)
+      }
+    
+}
+
+async function getProfileVerification(userObj){
+  let profileVerification=await getProfileVerificationDB(userObj)
+  profileVerification=profileVerification[0].verification
+  return profileVerification
+}
+
+async function getSellerVerificationDB(userObj){
+  try{
+      const sellerVerification= await userModel.find({id:userObj.id}).select('-_id sellerVerification')
+      return sellerVerification
+      }catch(err){
+        console.log("did not find profile email :",err)
+      }
+    
+}
+
+async function getSellerVerification(userObj){
+  let sellerVerification=await getSellerVerificationDB(userObj)
+  sellerVerification=sellerVerification[0].sellerVerification
+  return sellerVerification
 }

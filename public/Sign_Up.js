@@ -68,7 +68,7 @@ else{
             email: emailInpt.value,
             password: passwordInpt.value,
             createdAt: new Date().toDateString(),
-            verfication:false, 
+            verification:false, 
             profileImg:null,
             myCart:[],
             myOrders:[],
@@ -76,8 +76,6 @@ else{
             sellerVerification:false,
             productListed:[],
             role:"customerAccount"
-            
-
             }
 
 
