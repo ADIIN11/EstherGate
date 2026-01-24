@@ -68,6 +68,11 @@ else{
             msgPara.textContent="Signed In Successfully"
             console.log("Signed In Successfully")
             verifyToken()
+            setTimeout(() => {
+                window.location.href='/'
+
+                
+            },2500);
             
 
         }
@@ -93,17 +98,16 @@ async function verifyToken(){
 
     try{
 
-        const res = await axios.post("/Token_Verification", tokenObj)
+        const res = await axios.post("/Sign_In/Token_Verification", tokenObj)
         if(res.data.tokenVerified){
             
-            const username=res.data.username
-            const role=res.data.role
+            // const username=res.data.username
+            // const role=res.data.role
             const id=res.data.id
             
-            localStorage.setItem("currentUsername",username)
-            localStorage.setItem("currentUserRole",role)
+            // localStorage.setItem("currentUsername",username)
+            // localStorage.setItem("currentUserRole",role)
             localStorage.setItem("currentUserId",id)
-            localStorage.setItem("TokenData","true")
             console.log("Token Verified")
 
         }

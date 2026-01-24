@@ -69,6 +69,7 @@ else{
             password: passwordInpt.value,
             createdAt: new Date().toDateString(),
             verfication:false, 
+            profileImg:null,
             myCart:[],
             myOrders:[],
             address:null,

@@ -21,6 +21,7 @@ const userSchema=new mongoose.Schema({
     password: String,
     createdAt: String,
     verification: Boolean,
+    profileImg:String,
     myCart: Array,
     myOrders: Array,
     address: Object,
@@ -116,10 +117,29 @@ app.post("/Sign_In", async(req, res) => {
 })
 
 
+app.post("/Sign_In/Token_Verification", async (req, res) => {
+  const token=req.body
+  console.log(token)
+  const userData=await verifyTokenSignIn(token)
+  if(userData){
+    // const username=userData.username
+    // const role=userData.role
+    const id=userData.id
+
+    res.json({ tokenVerified:true,
+      // username:username,
+      // role:role,
+      id:id
+    })}
+  else{
+    res.json({ tokenVerified:false })
+  }
+})
+
 app.post("/Token_Verification", async (req, res) => {
   const token=req.body
   console.log(token)
-  const userData=await verifyToken(token)
+  const userData=await verifyTokenSignIn(token)
   if(userData){
     const username=userData.username
     const role=userData.role
@@ -134,6 +154,18 @@ app.post("/Token_Verification", async (req, res) => {
     res.json({ tokenVerified:false })
   }
 })
+
+app.post("/Get_Profile_Img", async (req, res) => {
+  console.log(req.body)
+  try{
+  const profileImg=await getProfileImg(req.body)
+  res.json({ profileImg:profileImg })
+  }catch(err){
+    console.log("error while sending profileimg:",err)
+  }
+})
+
+
 
 app.use((req, res) => {
   res.status(404).send("Page Not Found")
@@ -217,7 +249,7 @@ async function checkPassword(userObj){
       
     // }
 
-    async function getPassword(){
+    async function getPasswordDB(){
       try{
       const password= userModel.find({username:userObj.usernameEmail}).select('-_id password')
       return password
@@ -233,7 +265,7 @@ async function checkPassword(userObj){
 
 
     }
-    const password= await getPassword() 
+    const password= await getPasswordDB() 
     console.log(password)
     const accountPassword=password[0].password
     console.log(accountPassword)
@@ -261,7 +293,7 @@ async function tokenGenerator(userObj){
   //                 role:userList[i].role}
     
   // }
-async function getUserData(){
+async function getUserDataDB(){
       try{
       const password= userModel.find({username:userObj.usernameEmail}).select('-_id username role id')
       return password
@@ -278,7 +310,7 @@ async function getUserData(){
 
     }
 
-  const payloadArrObj=await getUserData()
+  const payloadArrObj=await getUserDataDB()
    console.log(payloadArrObj)
   const payload=payloadArrObj[0].toObject()
   console.log(payload)
@@ -294,7 +326,7 @@ async function getUserData(){
 
 
 
-async function verifyToken(tokenObj){
+async function verifyTokenSignIn(tokenObj){
   console.log(tokenObj)
   const token=tokenObj.token
 
@@ -306,4 +338,20 @@ async function verifyToken(tokenObj){
     return false
   }
 
+}
+
+async function getProfileImgDB(userObj){
+  try{
+      const profileImg= await userModel.find({id:userObj.id}).select('-_id profileImg')
+      return profileImg
+      }catch(err){
+        console.log("did not find profileImg :",err)
+      }
+    
+}
+
+async function getProfileImg(userObj){
+  let profileImg=await getProfileImgDB(userObj)
+  profileImg=profileImg[0].profileImg
+  return profileImg
 }
