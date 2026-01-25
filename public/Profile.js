@@ -77,7 +77,7 @@ async function getProfileDetails() {
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
-    <a href="" onclick="signOut()" class="sidebar-anchors sub">Sign Out</a>
+    <a href="#" onclick="event.preventDefault(); signOut();" class="sidebar-anchors sub">Sign Out</a>
     `
   if(profileImg){
 
@@ -147,8 +147,21 @@ else{
 }
 }
 
-function signOut(){
-  localStorage.removeItem("token")
-  localStorage.removeItem("currentUserId")
-  checkToken()
+
+async function signOut(){
+  
+  const token = localStorage.getItem("token")
+  const tokenObj={token:token}
+  console.log(tokenObj)
+  try{  
+        
+        const res = await axios.post("/Sign_Out", tokenObj)
+        console.log(res.data.message)
+        localStorage.removeItem("token")
+        localStorage.removeItem("currentUserId")
+        location.reload(true)
+  }catch(err){
+        console.error("Sign Out Error:", err)
+  }
+  
 }

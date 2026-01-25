@@ -96,7 +96,7 @@ async function verifyToken(){
 
     try{
 
-        const res = await axios.post("/Sign_In/Token_Verification", tokenObj)
+        const res = await axios.post("/Token_Verification", tokenObj)
         if(res.data.tokenVerified){
             
             // const username=res.data.username
@@ -117,8 +117,5 @@ async function verifyToken(){
         catch(err){
         console.error("Error:", err)
         }
-
-
-
 
 }

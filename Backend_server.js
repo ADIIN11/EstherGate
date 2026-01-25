@@ -117,29 +117,15 @@ app.post("/Sign_In", async(req, res) => {
 })
 
 
-app.post("/Sign_In/Token_Verification", async (req, res) => {
-  const token=req.body
-  console.log(token)
-  const userData=await verifyTokenSignIn(token)
-  if(userData){
-    // const username=userData.username
-    // const role=userData.role
-    const id=userData.id
-
-    res.json({ tokenVerified:true,
-      // username:username,
-      // role:role,
-      id:id
-    })}
-  else{
-    res.json({ tokenVerified:false })
-  }
-})
 
 app.post("/Token_Verification", async (req, res) => {
-  const token=req.body
-  console.log(token)
-  const userData=await verifyTokenSignIn(token)
+  const tokenObj=req.body
+  console.log(tokenObj)
+  const token=tokenObj.token
+  if (isTokenRevoked(token)){
+    return res.json({ tokenVerified:false })
+  }
+  const userData=await verifyTokenSignIn(tokenObj)
   if(userData){
     // const username=userData.username
     // const role=userData.role
@@ -154,6 +140,15 @@ app.post("/Token_Verification", async (req, res) => {
     res.json({ tokenVerified:false })
   }
 })
+
+app.post("/Sign_Out", (req, res) => {
+ 
+  const tokenObj = req.body
+  const token=tokenObj.token
+  revokeToken(token) 
+  res.json({ message: "Token revoked" }) 
+})
+
 
 
 
@@ -209,6 +204,41 @@ app.listen(PORT, () => {
   console.log("welcome to Esther Gate")
   console.log(`Listening on port ${PORT}`)
 })
+
+
+
+const revokedTokens = new Map()
+
+// puts token in revoked list 
+function revokeToken(token) { 
+  revokedTokens.set(token, Date.now()) 
+   console.log(`Token: ${token} is in the revoked list`) 
+}
+
+// checks if token is revoked 
+function isTokenRevoked(token) {
+   return revokedTokens.has(token) 
+  }
+
+
+// Cleans revokedTokens list every 10 mins 
+setInterval(() => {
+   const now = Date.now()
+  for (const [token, time] of revokedTokens.entries()) {
+     if (now - time > 2 * 60 * 60 * 1000) {
+       revokedTokens.delete(token)
+       console.log(`Token ${token} expired from revoked list`) 
+      } 
+  } 
+}, 10 * 60 * 1000);
+
+
+
+
+
+
+
+
 
 
 
