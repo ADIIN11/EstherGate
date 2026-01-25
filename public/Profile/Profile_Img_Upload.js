@@ -50,7 +50,7 @@
 
     }
   }
-// checkToken()
+checkToken()
 
 
   if (btn && icon && sidebar) {
@@ -245,7 +245,8 @@ imageUploaderBtn.addEventListener("click", async () => {
     const id=localStorage.getItem("currentUserId")
 
     const formData = new FormData();
-    formData.append("image", croppedImage, `Id:${id}-profileImg.webp`)
+    formData.append("image", croppedImage, "croppedImage")
+    formData.append("id",id)
 
     try {
       const response = await axios.post("/Set_Profile_Image", formData, {

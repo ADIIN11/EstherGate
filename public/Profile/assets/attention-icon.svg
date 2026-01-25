@@ -1,0 +1,13 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" >
+  <!-- Background -->
+  <rect width="100" height="100" fill="#fef4bc" />
+
+  <!-- Outer circle -->
+  <circle cx="50" cy="50" r="35" fill="none" stroke="#ef720a" stroke-width="6" />
+
+  <!-- Dot of the "i" -->
+  <circle cx="50" cy="65" r="4" fill="#ef720a" />
+
+  <!-- Vertical line of the "i" -->
+  <line x1="50" y1="55" x2="50" y2="31" stroke="#ef720a" stroke-width="6" stroke-linecap="round" />
+</svg>

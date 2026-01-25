@@ -1,0 +1,5 @@
+<svg  class="tab-icon" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> <!-- Background --> <rect width="100" height="100" fill="#fef4bc" /> <!-- Three lines --> 
+<line class="bar" x1="20" y1="30" x2="80" y2="30" stroke="#ef720a" stroke-width="6" stroke-linecap="round" /> 
+<line class="bar" x1="20" y1="50" x2="80" y2="50" stroke="#ef720a" stroke-width="6" stroke-linecap="round" /> 
+<line class="bar" x1="20" y1="70" x2="80" y2="70" stroke="#ef720a" stroke-width="6" stroke-linecap="round" />
+ </svg>

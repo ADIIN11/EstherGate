@@ -1,6 +1,9 @@
 const express = require("express")
 const path = require("path")
+const axios = require("axios")
+const multer = require("multer")
 const bcrypt = require('bcrypt')
+const FormData = require("form-data")
 
 const jwt = require('jsonwebtoken')
 require('dotenv').config({ quiet: true });
@@ -22,6 +25,7 @@ const userSchema=new mongoose.Schema({
     createdAt: String,
     verification: Boolean,
     profileImg:String,
+    deleteProfileImg:String,
     myCart: Array,
     myOrders: Array,
     address: Object,
@@ -37,9 +41,19 @@ const userSchema=new mongoose.Schema({
 
 
 
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "uploads/") // folder where files will be saved
+//   },
+//   filename: (req, file, cb) => {
+//     const ext = path.extname(file.originalname) || ".webp"
+//     cb(null, Date.now() + ext)
+//   }
+// })
 
+// const upload = multer({ storage })
 
-
+const upload = multer()
 
 
 
@@ -189,6 +203,77 @@ app.post("/Profile/Get_Profile_Details", async (req, res) => {
     console.log("error while sending profileimg:",err)
   }
 })
+
+app.get("/Profile/Profile_Img_Upload", (req, res) => {
+  res.sendFile(path.join(__dirname, "Profile_Img_Upload.html"))
+})
+
+
+
+app.post("/Set_Profile_Image", upload.single("image"), async (req, res) => {
+  const id = req.body.id
+  console.log("ID received:", id)
+  const imgbbKey=process.env.IMG_BB_KEY
+  let profileImg
+  let deleteProfileImg
+
+  try {
+    const formData = new FormData()
+    formData.append("image", req.file.buffer.toString("base64"))
+    formData.append("name", `Id:${id}-profileImg`)
+
+    const response = await axios.post(
+      `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+      formData,
+      { headers: formData.getHeaders() }
+    )
+    profileImg=response.data.data.url
+    deleteProfileImg=response.data.data.delete_url
+    await setProfileImg(id,profileImg,deleteProfileImg)
+
+    res.json({ message: "Image uploaded successfully!"})
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Upload failed" })
+  }
+
+})
+
+app.post("/Change_Profile_Image", upload.single("image"), async (req, res) => {
+  const id = req.body.id
+  console.log("ID received:", id)
+  const imgbbKey=process.env.IMG_BB_KEY
+  let profileImg
+  let deleteProfileImg
+
+  try {
+    const formData = new FormData()
+    formData.append("image", req.file.buffer.toString("base64"))
+    formData.append("name", `Id:${id}-profileImg`)
+
+    const response = await axios.post(
+      `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+      formData,
+      { headers: formData.getHeaders() }
+    )
+    profileImg=response.data.data.url
+    deleteProfileImg=response.data.data.delete_url
+    await setProfileImg(id,profileImg,deleteProfileImg)
+
+    res.json({ message: "Image uploaded successfully!"})
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Upload failed" })
+  }
+
+})
+
+
+
+
+
+
+
 
 
 
@@ -482,4 +567,28 @@ async function getSellerVerification(userObj){
   let sellerVerification=await getSellerVerificationDB(userObj)
   sellerVerification=sellerVerification[0].sellerVerification
   return sellerVerification
+}
+
+async function getDeleteProfileImgDB(userObj){
+  try{
+      const deleteProfileImg= await userModel.find({id:userObj.id}).select('-_id deleteProfileImg')
+      return deleteProfileImg
+      }catch(err){
+        console.log("did not find profile email :",err)
+      }
+    
+}
+
+async function getDeleteProfileImg(userObj){
+  let deleteProfileImg=await getDeleteProfileImgDB(userObj)
+  deleteProfileImg=deleteProfileImg[0].deleteProfileImg
+  return deleteProfileImg
+}
+
+async function setProfileImg(id,profileImg,deleteProfileImg){
+  try{
+  await userModel.updateOne({id:id},{$set:{profileImg:profileImg,deleteProfileImg:deleteProfileImg}})
+  }catch(err){
+    console.log("error while setting profile img:",err)
+  }
 }
