@@ -50,7 +50,7 @@
 
     }
   }
-checkToken()
+// checkToken()
 
 
   if (btn && icon && sidebar) {
@@ -163,3 +163,99 @@ async function signOut(){
   }
   
 }
+
+
+const imageDisplay=document.getElementById("image-display")
+const imageSelectorBtn=document.getElementById("image-selector-btn")
+const imageUploaderBtn=document.getElementById("image-uploader-btn")
+const msgPara=document.getElementById("msg-id")
+
+
+const fileInput = document.createElement("input")
+fileInput.type = "file"
+fileInput.accept = "image/png,image/jpg,image/jpeg,image/webp"
+fileInput.style.display = "none"
+
+imageSelectorBtn.addEventListener("click", () => { 
+    fileInput.click(); 
+})
+
+let croppedImage = null
+
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0]
+    if (!file){ 
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.src = e.target.result
+
+      img.onload = () => {
+        const targetSize = 512
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = targetSize
+        canvas.height = targetSize
+
+        // Crop to centered square
+        const minSide = Math.min(img.width, img.height)
+        const startX = (img.width - minSide) / 2
+        const startY = (img.height - minSide) / 2
+
+        // Draw cropped square scaled to 512x512
+        ctx.drawImage(
+          img,
+          startX, startY, minSide, minSide, // source crop
+          0, 0, targetSize, targetSize      // destination
+        );
+
+        // Convert to DataURL for preview
+        const dataURL = canvas.toDataURL("image/webp",0.9)
+
+        // Clear previous content
+        
+        imageDisplay.innerHTML = ""
+
+        // Show preview
+        const previewImg = document.createElement("img")
+        previewImg.src = dataURL;
+        previewImg.style.maxWidth = "100%"
+        previewImg.style.maxHeight = "100%"
+        previewImg.style.objectFit = "cover"
+
+        imageDisplay.appendChild(previewImg);
+
+        canvas.toBlob((blob) => {
+            croppedImage = blob 
+            }, "image/webp")
+      }
+    }
+reader.readAsDataURL(file)
+})
+
+
+
+imageUploaderBtn.addEventListener("click", async () => {
+    if (!croppedImage) {
+      msgPara.textContent="Pls Select An Image"
+      return
+    }
+    const id=localStorage.getItem("currentUserId")
+
+    const formData = new FormData();
+    formData.append("image", croppedImage, `Id:${id}-profileImg.webp`)
+
+    try {
+      const response = await axios.post("/Set_Profile_Image", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+      console.log("Server response:", response.data)
+      msgPara.textContent="Image Uploaded Succesfully"
+    } catch (error) {
+      console.error("Upload failed:", error)
+      msgPara.textContent="Error While Uploading Image"
+    }
+  })
+

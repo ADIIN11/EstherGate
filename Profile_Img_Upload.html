@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link rel="stylesheet" href="/Profile.css">
+    <link rel="stylesheet" href="/Profile_Img_Upload.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
@@ -100,7 +100,7 @@
         
 
     </div>
-
+    
         <input class="search-inpt" id="search-inpt" type="text" placeholder="Search">
         <button class="search-btn" id="search-button" type="button" > 
             <img src="assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
@@ -160,43 +160,21 @@
         </div>
      </div>
 
-        <div class="content-ul">
-
-        <div class="content-li verification" id="content-li verification" onclick="window.location.href='/Verify_Account';" >
-            <a href="/Verify_Account" class="content-anchors">Verify Account</a>
-        </div>
-
-        <div class="content-li" onclick="window.location.href='/Set_Address';">
-            <a href="" class="content-anchors">Set Address</a>
-        </div>
-        <div class="content-li">
-            <a href="" class="content-anchors">Set Profile Img</a>
-        </div>
-         <div class="content-li">
-            <a href="" class="content-anchors">My Cart</a>
-        </div>
-        <div class="content-li">
-            <a href="" class="content-anchors">My Orders</a>
-        </div>
-        <div class="content-li">
-            <a href="" class="content-anchors">My Listed Products</a>
-        </div>
-        <div class="content-li">
-            <a href="" class="content-anchors">Change Password</a>
-        </div>
-        <div class="content-li">
-            <a href="" class="content-anchors">Delete Acccount</a>
-        </div>
-        <div class="content-li" onclick="signOut()">
-            <a href="#" onclick="event.preventDefault(); signOut();" class="content-anchors">Sign Out</a>
-        </div>
-
+        <div class="image-uploader">
+            <h3 class="Set-Profile-Img">Set Profile Img</h3>
+            <div class="image-display" id="image-display">
+                <img src="assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
+                <h4 class="Upload-Img">Select Img</h4>
+            </div>
+            <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
+            <button id="image-uploader-btn" class="image-uploader-btn">Upload Image</button>
+            <p id="msg-id" class="msg-para"></p>
         </div>
         
 
 
     </div>  
 
-    <script src="Profile.js"></script>
+    <script src="Profile_Img_Upload.js"></script>
 </body>
 </html>
