@@ -77,7 +77,7 @@ async function userSinedIn(){
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
-    <a href="/Profile/log-out" class="sidebar-anchors sub">Sign Out</a>
+    <a href="" onclick="signOut()" class="sidebar-anchors sub">Sign Out</a>
     `
   if(profileImg){
 
@@ -101,3 +101,8 @@ async function userSinedIn(){
 sidebar.classList.toggle("userSignedIn")
 }
 
+function signOut(){
+  localStorage.removeItem("token")
+  localStorage.removeItem("currentUserId")
+  checkToken()
+}

@@ -15,6 +15,7 @@
     
     if(!token){
         console.log("Token does not exis,Pls Login")
+        window.location.href='/'
 
     }
     else {
@@ -41,6 +42,7 @@
 
         else{
             console.log("token expired pls login again")
+            window.location.href='/'
         }
     }  
         catch(err){
@@ -75,7 +77,7 @@ async function getProfileDetails() {
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
-    <a href="/Profile/log-out" class="sidebar-anchors sub">Sign Out</a>
+    <a href="" onclick="signOut()" class="sidebar-anchors sub">Sign Out</a>
     `
   if(profileImg){
 
@@ -143,7 +145,10 @@ else{
   `
 
 }
+}
 
-
-  
+function signOut(){
+  localStorage.removeItem("token")
+  localStorage.removeItem("currentUserId")
+  checkToken()
 }

@@ -70,9 +70,7 @@ else{
             verifyToken()
             setTimeout(() => {
                 window.location.href='/'
-
-                
-            },2500);
+            },2000);
             
 
         }
