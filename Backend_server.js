@@ -212,7 +212,7 @@ app.get("/Profile/Profile_Img_Upload", (req, res) => {
 
 app.post("/Set_Profile_Image", upload.single("image"), async (req, res) => {
   const id = req.body.id
-  console.log("ID received:", id)
+
   const imgbbKey=process.env.IMG_BB_KEY
   let profileImg
   let deleteProfileImg
@@ -241,10 +241,39 @@ app.post("/Set_Profile_Image", upload.single("image"), async (req, res) => {
 
 app.post("/Change_Profile_Image", upload.single("image"), async (req, res) => {
   const id = req.body.id
+   const idObj={id:id}
   console.log("ID received:", id)
+  let deleteProfileImg=await getDeleteProfileImg(idObj)
   const imgbbKey=process.env.IMG_BB_KEY
+  const urlObj = new URL(deleteProfileImg)   
+ const pathname = urlObj.pathname
+ const parts = pathname.split("/")
+ const imageId = parts[1] 
+ const imageHash = parts[2]
+ 
+ const axios = require("axios")
+
+    const payload = new URLSearchParams()
+    payload.append("pathname", `/${imageId}/${imageHash}`)
+    payload.append("action", "delete")
+    payload.append("delete", "image")
+    payload.append("from", "resource")
+    payload.append("deleting[id]", imageId)
+    payload.append("deleting[hash]", imageHash)
+
+   console.log(payload)
+
+  try { 
+   const response = await axios.post("https://ibb.co/json", payload, { headers: { "Content-Type": "application/x-www-form-urlencoded" } })
+    console.log("Delete response:", response.data) 
+  } catch (err) { 
+    console.error("Error deleting image:", err) 
+  }
+
+
+
   let profileImg
-  let deleteProfileImg
+  
 
   try {
     const formData = new FormData()
@@ -256,6 +285,7 @@ app.post("/Change_Profile_Image", upload.single("image"), async (req, res) => {
       formData,
       { headers: formData.getHeaders() }
     )
+    console.log(response.data)
     profileImg=response.data.data.url
     deleteProfileImg=response.data.data.delete_url
     await setProfileImg(id,profileImg,deleteProfileImg)

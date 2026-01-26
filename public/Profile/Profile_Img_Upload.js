@@ -8,6 +8,8 @@
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
  
+  let uploadImgRoute=""
+
   async function checkToken(){
     const token = localStorage.getItem("token")
     
@@ -85,6 +87,7 @@ async function getProfileDetails() {
   </a>
   <a href="/Profile" class="sidebar-anchors" >${username}</a>
   `
+  uploadImgRoute="/Change_Profile_Image"
   }
   else{
      profileImgDiv.innerHTML=`
@@ -93,6 +96,7 @@ async function getProfileDetails() {
   </a>
   <a href="/Profile" class="sidebar-anchors" >${username}</a>
   `
+  uploadImgRoute="/Set_Profile_Image"
   }
 if(profileImg){
   profileImgHolder.innerHTML=`
@@ -112,7 +116,6 @@ if(verification&&sellerVerification){
     <h4 class="profile-verification">"Seller Verified"</h1>
   </div>
   `
-  verificationContentLi.classList.toggle("toggleVerificationOff")
 }
 else if(verification&&!sellerVerification){
   profileDetails.innerHTML=`
@@ -249,12 +252,19 @@ imageUploaderBtn.addEventListener("click", async () => {
     formData.append("id",id)
 
     try {
-      const response = await axios.post("/Set_Profile_Image", formData, {
+      const response = await axios.post(uploadImgRoute, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       })
       console.log("Server response:", response.data)
       msgPara.textContent="Image Uploaded Succesfully"
+      croppedImage = null
+      imageDisplay.innerHTML =`
+        <img src="assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
+        <h4 class="Upload-Img">Select Img</h4>
+      `
+      await getProfileDetails()
     } catch (error) {
+    
       console.error("Upload failed:", error)
       msgPara.textContent="Error While Uploading Image"
     }
