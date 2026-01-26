@@ -8,8 +8,6 @@ const FormData = require("form-data")
 const jwt = require('jsonwebtoken')
 require('dotenv').config({ quiet: true });
 
-
-
 const {productsList,userList} = require("./data");
 
 const mongoose= require("mongoose");
@@ -18,23 +16,6 @@ const { exit } = require("process");
 mongoose.connect(process.env.MONGO_DB_URL).then(()=>console.log("MongoDB Connected Successfully :)")).catch(err=>{console.log("MongoDB Connection Error :",err)
 })
 
-const userSchema=new mongoose.Schema({
-    username: String,
-    email: String,
-    password: String,
-    createdAt: String,
-    verification: Boolean,
-    profileImg:String,
-    deleteProfileImg:String,
-    myCart: Array,
-    myOrders: Array,
-    address: Object,
-    sellerVerification: Boolean,
-    productListed:Array,
-    role: String,
-    id: Number
-  },{ versionKey: false })
-  const userModel = mongoose.model("User",userSchema,"users")
 
 
 
@@ -42,26 +23,16 @@ const userSchema=new mongoose.Schema({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+const authRoutes=require("./routes/authRoutes")
 
 const app = express();
 
 app.use(express.json())
 
-
 const PORT = process.env.PORT
 
+
+app.use("",authRoutes)
 
 app.use(express.static(path.join(__dirname, "public")))
 
@@ -69,54 +40,6 @@ app.use(express.static(path.join(__dirname, "public")))
 app.get("/Store", (req, res) => {
   res.sendFile(path.join(__dirname, "Store.html"))
 })
-
-app.get("/Sign_Up", (req, res) => {
-  res.sendFile(path.join(__dirname, "Sign_Up.html"))
-})
-
-
-app.post("/Sign_Up",async (req, res) => {
-  const userData = req.body; // axios sends JSON here
-  console.log(userData)
-  const checkUser=await checkUserSignUp(userData)
-  if (checkUser) {
-    if(checkUser===1)
-      res.json({ exists: 1 })
-    else if(checkUser===2)
-      res.json({ exists: 2 })
-  } else {          
-     createUser(userData)  
-    res.json({ exists: false })
-  }
-})
-
-
-
-
-
-
-app.get("/Sign_In", (req, res) => {
-  res.sendFile(path.join(__dirname, "Sign_In.html"))
-})
-
-app.post("/Sign_In", async(req, res) => {
-  const userData = req.body 
-  console.log(userData)
-  const checkUserEmail=await checkUserSignIn(userData)
-  if (!checkUserEmail) {
-    res.json({ exists: false })
-  } else {          // create user logic here
-     if(checkPassword(userData)){
-     
-      const token=await tokenGenerator(userData)
-      console.log(token)
-      
-      res.json({ exists: true,passwordCorrect:true,token:token })}
-      else
-        res.json({ exists: true,passwordCorrect:false })
-  }
-})
-
 
 
 app.post("/Token_Verification", async (req, res) => {
@@ -237,8 +160,6 @@ app.post("/Change_Profile_Image", upload.single("image"), async (req, res) => {
  const parts = pathname.split("/")
  const imageId = parts[1] 
  const imageHash = parts[2]
- 
- const axios = require("axios")
 
     const payload = new URLSearchParams()
     payload.append("pathname", `/${imageId}/${imageHash}`)
@@ -257,11 +178,8 @@ app.post("/Change_Profile_Image", upload.single("image"), async (req, res) => {
     console.error("Error deleting image:", err) 
   }
 
-
-
   let profileImg
   
-
   try {
     const formData = new FormData()
     formData.append("image", req.file.buffer.toString("base64"))
@@ -342,27 +260,6 @@ setInterval(() => {
 
 
 
-
-
-async function checkUserSignUp(userObj){
-
-    // let uniqueUserNameEmail=[... new Set(userList.map((objName)=>objName.username)),... new Set(userList.map((objEamil)=>objEamil.email))]
-
-    const uniqueUserNameEmailObjArr= await userModel.find().select('-_id username email')
-    const uniqueUserNameEmail=[... new Set(uniqueUserNameEmailObjArr.map((objName)=>objName.username)),... new Set(uniqueUserNameEmailObjArr.map((objEamil)=>objEamil.email))]
-    console.log(uniqueUserNameEmail)
-
-
-   for(let i=0;i<uniqueUserNameEmail.length;i++)
-   {
-    if(uniqueUserNameEmail[i]===userObj.username)
-        return 1
-    if(uniqueUserNameEmail[i]===userObj.email)
-      return 2
-   
-   }
-    return false
-}
 
 
 

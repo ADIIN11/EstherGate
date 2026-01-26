@@ -1,0 +1,23 @@
+const mongoose = require('mongoose')
+
+
+
+const userSchema=new mongoose.Schema({
+    username: String,
+    email: String,
+    password: String,
+    createdAt: String,
+    verification: Boolean,
+    profileImg:String,
+    deleteProfileImg:String,
+    myCart: Array,
+    myOrders: Array,
+    address: Object,
+    sellerVerification: Boolean,
+    productListed:Array,
+    role: String,
+    id: Number
+  },{ versionKey: false })
+  
+ module.exports = mongoose.models.User ||mongoose.model("User",userSchema,"users")
+
