@@ -85,7 +85,7 @@ else{
 
     try{
 
-        const res = await axios.post("/Sign_Up", userData)
+        const res = await axios.post("/Auth/Sign_Up", userData)
         console.log(res.data)
         if(res.data.exists===1){   // call to check user already exist in db
             msgPara.textContent="Username already taken"

@@ -12,7 +12,7 @@
         
        
     <div class="side-bar">
-        <img src="assets/logo-text.png" alt="logo"  class="logo-text" height="100px" >
+        <img src="/assets/logo-text.png" alt="logo"  class="logo-text" height="100px" >
         <br>
          <button class="tab-btn" id="tab-btn" type="button" aria-label="Toggle menu" > 
             <svg  class="tab-icon"  id="tab-icon" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> 
@@ -31,7 +31,7 @@
 
                 <div class="super-li">
                 <a href="Home.html" class="sidebar-anchors icon" >
-                    <img src="assets/home-icon.svg" alt="home-icon"  class="sidebar-icon"  >
+                    <img src="/assets/home-icon.svg" alt="home-icon"  class="sidebar-icon"  >
                 </a>
                 <a href="Home.html"  class="sidebar-anchors">Home</a>
                 </div>
@@ -45,14 +45,14 @@
             
             <li class="sidebar-li">
                 <div class="super-li" id="profile-img">
-                 <a href="/Sign_In" class="sidebar-anchors icon" >
-                        <img src="assets/profile-icon.svg"  alt="profile-icon"  class="sidebar-icon"  >
+                 <a href="/Auth/Sign_In" class="sidebar-anchors icon" >
+                        <img src="/assets/profile-icon.svg"  alt="profile-icon"  class="sidebar-icon"  >
                  </a>
                 <a href="/Sign_In" class="sidebar-anchors" id="sidebar-profile-text">Profile</a>
                 </div>
                 <div class="sub-li" id="profile-sub-li"> 
-                    <a href="/Sign_Up" class="sidebar-anchors sub">Sign-Up</a>
-                    <a href="/Sign_In" class="sidebar-anchors sub">Sign-In</a>
+                    <a href="/Auth/Sign_Up" class="sidebar-anchors sub">Sign-Up</a>
+                    <a href="/Auth/Sign_In" class="sidebar-anchors sub">Sign-In</a>
                 </div>
             
             </li>
@@ -60,7 +60,7 @@
             <li class="sidebar-li">
                 <div class="super-li">
                     <a href="List_Item.html" class="sidebar-anchors icon">
-                        <img src="assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
+                        <img src="/assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
                     </a>
                   
                 <a href="List_Item.html"  class="sidebar-anchors">List Item</a>
@@ -70,7 +70,7 @@
             <li class="sidebar-li" >
                 <div class="super-li">
                      <a href="Track_Order.html"  class="sidebar-anchors icon">
-                         <img src="assets/track-order-icon.svg" alt="track-order-icon"  class="sidebar-icon"  >
+                         <img src="/assets/track-order-icon.svg" alt="track-order-icon"  class="sidebar-icon"  >
                      </a>
                
                 <a href="Track_Order.html"  class="sidebar-anchors">Track Order</a>
@@ -80,7 +80,7 @@
             <li class="sidebar-li">
                  <div class="super-li">
                      <a href="Help.html"  class="sidebar-anchors icon">
-                        <img src="assets/help-icon.svg" alt="help-icon"  class="sidebar-icon"  >
+                        <img src="/assets/help-icon.svg" alt="help-icon"  class="sidebar-icon"  >
                      </a>
                 
                 <a href="Help.html"  class="sidebar-anchors">Help</a>
@@ -90,7 +90,7 @@
             <li class="sidebar-li">
                 <div class="super-li">
                       <a href="about.html"   class="sidebar-anchors icon">
-                        <img src="assets/about-icon.svg" alt="about-icon"  class="sidebar-icon"  >
+                        <img src="/assets/about-icon.svg" alt="about-icon"  class="sidebar-icon"  >
                       </a>
                 
                 <a href="about.html"  class="sidebar-anchors">about</a>
@@ -103,11 +103,11 @@
     
         <input class="search-inpt" id="search-inpt" type="text" placeholder="Search">
         <button class="search-btn" id="search-button" type="button" > 
-            <img src="assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
+            <img src="/assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
         </button>
         
          <button class="cart-btn" id="cart-button" type="button" > 
-            <img src="assets/cart-icon.svg" alt="icon"  class="search-icon" height="22px" >
+            <img src="/assets/cart-icon.svg" alt="icon"  class="search-icon" height="22px" >
         </button>
 
          <div class="filter-bar">
@@ -163,11 +163,15 @@
         <div class="image-uploader">
             <h3 class="Set-Profile-Img">Set Profile Img</h3>
             <div class="image-display" id="image-display">
-                <img src="assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
+                <img src="/assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
                 <h4 class="Upload-Img">Select Img</h4>
             </div>
-            <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
-            <button id="image-uploader-btn" class="image-uploader-btn">Upload Image</button>
+            <div class="image-uploader-btns" id="image-uploader-btns" >
+                <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
+                <button id="image-uploader-btn" class="image-uploader-btn">Upload Image</button>
+                <button id="image-deletion-btn" class="image-uploader-btn">Delete Image</button>
+            </div>
+            
             <p id="msg-id" class="msg-para"></p>
         </div>
         
@@ -175,6 +179,6 @@
 
     </div>  
 
-    <script src="Profile_Img_Upload.js"></script>
+    <script src="/Profile_Img_Upload.js"></script>
 </body>
 </html>

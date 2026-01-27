@@ -7,6 +7,14 @@
   const profileImgHolder=document.getElementById("profile-img-holder")
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
+  const imageDisplay=document.getElementById("image-display") 
+  const imageUploaderBtns=document.getElementById("image-uploader-btns")
+  const imageSelectorBtn=document.getElementById("image-selector-btn")
+  const imageUploaderBtn=document.getElementById("image-uploader-btn")
+  const imageDeletionBtn=document.getElementById("image-deletion-btn")
+  const msgPara=document.getElementById("msg-id")
+ 
+  
  
   let uploadImgRoute=""
 
@@ -87,22 +95,29 @@ async function getProfileDetails() {
   </a>
   <a href="/Profile" class="sidebar-anchors" >${username}</a>
   `
-  uploadImgRoute="/Change_Profile_Image"
+  uploadImgRoute="/Profile/Change_Profile_Image"
   }
   else{
      profileImgDiv.innerHTML=`
   <a href="/Profile" class="sidebar-anchors icon" >
-  <img src="assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
+  <img src="/assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
   </a>
   <a href="/Profile" class="sidebar-anchors" >${username}</a>
   `
-  uploadImgRoute="/Set_Profile_Image"
+  uploadImgRoute="/Profile/Set_Profile_Image"
   }
 if(profileImg){
   profileImgHolder.innerHTML=`
   <img src="${profileImg}" alt="profile-icon" class="content-profile-img">
   `
+  
+}else{
+  imageUploaderBtns.innerHTML=`
+  <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
+  <button id="image-uploader-btn" class="image-uploader-btn">Upload Image</button>
+  `
 }
+
 if(verification&&sellerVerification){
   profileDetails.innerHTML=`
   <h2 class="profile-username">${username}</h2>
@@ -168,10 +183,6 @@ async function signOut(){
 }
 
 
-const imageDisplay=document.getElementById("image-display")
-const imageSelectorBtn=document.getElementById("image-selector-btn")
-const imageUploaderBtn=document.getElementById("image-uploader-btn")
-const msgPara=document.getElementById("msg-id")
 
 
 const fileInput = document.createElement("input")
@@ -270,3 +281,17 @@ imageUploaderBtn.addEventListener("click", async () => {
     }
   })
 
+imageDeletionBtn.addEventListener("click", async () => {
+  const id=localStorage.getItem("currentUserId")
+  const userObj={id:id}
+   try {
+  const res = await axios.post("/Profile/Delete_Profile_Image", userObj)
+  console.log("Server response:", res.data)
+  msgPara.textContent="Image Deleted Succesfully"
+  await getProfileDetails()
+  } catch (error) {
+    
+      console.error("Upload failed:", error)
+      msgPara.textContent="Error While Deleting Image"
+    }
+})

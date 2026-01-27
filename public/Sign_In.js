@@ -49,7 +49,7 @@ else{
 
     try{
 
-        const res = await axios.post("/Sign_In", userData)
+        const res = await axios.post("/Auth/Sign_In", userData)
 
         if(!res.data.exists){                              // call to check user already exist in db
             msgPara.textContent="Account Does Not Exists, Pls Sign-Up"
