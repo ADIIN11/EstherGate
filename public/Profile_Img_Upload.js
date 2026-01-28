@@ -8,10 +8,10 @@
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
   const imageDisplay=document.getElementById("image-display") 
-  const imageUploaderBtns=document.getElementById("image-uploader-btns")
+
   const imageSelectorBtn=document.getElementById("image-selector-btn")
   const imageUploaderBtn=document.getElementById("image-uploader-btn")
-  const imageDeletionBtn=document.getElementById("image-deletion-btn")
+  const imageDeletionBtn=document.getElementById("image-deletion-btn") 
   const msgPara=document.getElementById("msg-id")
  
   
@@ -110,12 +110,12 @@ if(profileImg){
   profileImgHolder.innerHTML=`
   <img src="${profileImg}" alt="profile-icon" class="content-profile-img">
   `
-  
+  imageDeletionBtn.classList.remove("disappearDeletionBtn")
 }else{
-  imageUploaderBtns.innerHTML=`
-  <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
-  <button id="image-uploader-btn" class="image-uploader-btn">Upload Image</button>
+  profileImgHolder.innerHTML=`
+  <img src="/assets/profile-icon.svg" alt="profile-icon" class="content-profile-img">
   `
+  imageDeletionBtn.classList.add("disappearDeletionBtn")
 }
 
 if(verification&&sellerVerification){
@@ -189,6 +189,11 @@ const fileInput = document.createElement("input")
 fileInput.type = "file"
 fileInput.accept = "image/png,image/jpg,image/jpeg,image/webp"
 fileInput.style.display = "none"
+
+
+imageDisplay.addEventListener("click", () => { 
+    fileInput.click(); 
+})
 
 imageSelectorBtn.addEventListener("click", () => { 
     fileInput.click(); 
@@ -270,7 +275,7 @@ imageUploaderBtn.addEventListener("click", async () => {
       msgPara.textContent="Image Uploaded Succesfully"
       croppedImage = null
       imageDisplay.innerHTML =`
-        <img src="assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
+        <img src="/assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
         <h4 class="Upload-Img">Select Img</h4>
       `
       await getProfileDetails()

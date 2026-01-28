@@ -1,8 +1,9 @@
+const fs=require("fs")
 const userModel = require('../models/userModel')
-const axios = require("axios")
-
-const FormData = require("form-data")
-
+const{
+  uploadProfileImage,
+  deleteImage
+}=require("../services/cloudinaryService")
 
 exports.getProfileDetails=async (req, res) => {
   console.log(req.body)
@@ -108,30 +109,30 @@ async function getProfileUsername(userObj){
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 exports.setProfileImage=async (req, res) => {
   const id = req.body.id
 
-  const imgbbKey=process.env.IMG_BB_KEY
-  let profileImg
-  let deleteProfileImg
-
   try {
-    const formData = new FormData()
-    formData.append("image", req.file.buffer.toString("base64"))
-    formData.append("name", `Id:${id}-profileImg`)
+    const response = await uploadProfileImage(req.file.path, id)
+  
+    await setProfileImg(id,response.secure_url,response.public_id)
 
-    const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-      formData,
-      { headers: formData.getHeaders() }
-    )
-    profileImg=response.data.data.url
-    deleteProfileImg=response.data.data.delete_url
-    await setProfileImg(id,profileImg,deleteProfileImg)
+    await fs.unlink(req.file.path, (err) => { 
+      if (err) 
+        console.error('Failed to delete temp file:', err
+      ) 
+    })
 
     res.json({ message: "Image uploaded successfully!"})
   } catch (err) {
     console.error(err)
+    await fs.unlink(req.file.path, (unlinkErr) => { 
+      if (unlinkErr) 
+        console.error('Failed to delete temp file after error:', unlinkErr)
+      })
     res.status(500).json({ error: "Upload failed" })
   }
 
@@ -142,26 +143,9 @@ exports.changeProfileImage=async (req, res) => {
   const id = req.body.id
    const idObj={id:id}
   console.log("ID received:", id)
-  let deleteProfileImg=await getDeleteProfileImg(idObj)
-  const imgbbKey=process.env.IMG_BB_KEY
-  const urlObj = new URL(deleteProfileImg)   
- const pathname = urlObj.pathname
- const parts = pathname.split("/")
- const imageId = parts[1] 
- const imageHash = parts[2]
-
-    const payload = new URLSearchParams()
-    payload.append("pathname", `/${imageId}/${imageHash}`)
-    payload.append("action", "delete")
-    payload.append("delete", "image")
-    payload.append("from", "resource")
-    payload.append("deleting[id]", imageId)
-    payload.append("deleting[hash]", imageHash)
-
-   console.log(payload)
-
+  let profileImgPubId=await getProfileImgPubId(idObj)
   try { 
-   const response = await axios.post("https://ibb.co/json", payload, { headers: { "Content-Type": "application/x-www-form-urlencoded" } })
+   const response = await deleteImage(profileImgPubId)
     console.log("Delete response:", response.data) 
   } catch (err) { 
     console.error("Error deleting image:", err) 
@@ -169,26 +153,24 @@ exports.changeProfileImage=async (req, res) => {
     return
   }
 
-  let profileImg
-  
   try {
-    const formData = new FormData()
-    formData.append("image", req.file.buffer.toString("base64"))
-    formData.append("name", `Id:${id}-profileImg`)
+    const response = await uploadProfileImage(req.file.path, id)
+    
+    await setProfileImg(id,response.secure_url,response.public_id)
 
-    const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-      formData,
-      { headers: formData.getHeaders() }
-    )
-    console.log(response.data)
-    profileImg=response.data.data.url
-    deleteProfileImg=response.data.data.delete_url
-    await setProfileImg(id,profileImg,deleteProfileImg)
+    await fs.unlink(req.file.path, (err) => { 
+      if (err) 
+        console.error('Failed to delete temp file:', err
+      ) 
+    })
 
     res.json({ message: "Image uploaded successfully!"})
   } catch (err) {
     console.error(err)
+    await fs.unlink(req.file.path, (unlinkErr) => { 
+      if (unlinkErr) 
+        console.error('Failed to delete temp file after error:', unlinkErr)
+      })
     res.status(500).json({ error: "Upload failed" })
   }
 
@@ -199,25 +181,10 @@ exports.deleteProfileImage=async (req, res) => {
   const id = req.body.id
    const idObj={id:id}
   console.log("ID received:", id)
-  let deleteProfileImg=await getDeleteProfileImg(idObj)
-  const urlObj = new URL(deleteProfileImg)   
- const pathname = urlObj.pathname
- const parts = pathname.split("/")
- const imageId = parts[1] 
- const imageHash = parts[2]
-
-    const payload = new URLSearchParams()
-    payload.append("pathname", `/${imageId}/${imageHash}`)
-    payload.append("action", "delete")
-    payload.append("delete", "image")
-    payload.append("from", "resource")
-    payload.append("deleting[id]", imageId)
-    payload.append("deleting[hash]", imageHash)
-
-   console.log(payload)
-
+  let profileImgPubId=await getProfileImgPubId(idObj)
+ 
   try { 
-   const response = await axios.post("https://ibb.co/json", payload, { headers: { "Content-Type": "application/x-www-form-urlencoded" } })
+    const response = await deleteImage(profileImgPubId)
     console.log("Delete response:", response.data) 
     await setProfileImg(id,null,null)
     res.json({ message: "Image deleted successfully!"})
@@ -230,25 +197,26 @@ exports.deleteProfileImage=async (req, res) => {
 }
 
 
-async function getDeleteProfileImgDB(userObj){
-  try{
-      const deleteProfileImg= await userModel.find({id:userObj.id}).select('-_id deleteProfileImg')
-      return deleteProfileImg
+async function getProfileImgPubIdDB(userObj){
+  try{ 
+      const profileImgPubId= await userModel.find({id:userObj.id}).select('-_id profileImgPubId')
+     return profileImgPubId
       }catch(err){
-        console.log("did not find profile email :",err)
+        console.log("did not find delete profile img :",err)
       }
-    
 }
 
-async function getDeleteProfileImg(userObj){
-  let deleteProfileImg=await getDeleteProfileImgDB(userObj)
-  deleteProfileImg=deleteProfileImg[0].deleteProfileImg
-  return deleteProfileImg
+async function getProfileImgPubId(userObj){
+  let profileImgPubId=await getProfileImgPubIdDB(userObj)
+  profileImgPubId=profileImgPubId[0].profileImgPubId
+  
+  return profileImgPubId
+  
 }
 
-async function setProfileImg(id,profileImg,deleteProfileImg){
+async function setProfileImg(id,profileImg,profileImgPubId){
   try{
-  await userModel.updateOne({id:id},{$set:{profileImg:profileImg,deleteProfileImg:deleteProfileImg}})
+  await userModel.updateOne({id:id},{$set:{profileImg:profileImg,profileImgPubId:profileImgPubId}})
   }catch(err){
     console.log("error while setting profile img:",err)
   }

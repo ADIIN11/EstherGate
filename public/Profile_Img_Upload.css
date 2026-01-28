@@ -350,6 +350,15 @@ div.super-li{
     padding: 1rem;
 }
 
+.Set-Profile-Img{
+    margin: 0rem;
+}
+.image-uploader-box{
+    display: flex;
+    flex-direction: row;
+
+}
+
 .image-display{
     border: 2px solid #ef720a ;
     width: 8.5rem;
@@ -357,23 +366,35 @@ div.super-li{
     text-align: center;
     display: flex;
     flex-direction: column;
+    
 }
+.image-display:hover{
+    cursor:pointer;
+}
+
+
+    
 
 .image-preview{
     margin:0.5rem 1rem 0rem 1rem;
 }
 
-.Set-Profile-Img{
-    margin: 0rem;
-}
+
 .Upload-Img{
     margin: 0rem 0rem 0.5rem 0rem;
     height: 1rem;
 }
 
-
+.image-uploader-btns{
+    padding: 0rem 2rem;
+    width: 15rem;
+   align-items: center;
+    display: flex;
+    flex-direction: column;
+}
 
 .image-uploader-btn{
+   
     box-sizing: border-box; 
     width: 6.2rem;
     height: 1.6rem;
@@ -385,6 +406,7 @@ div.super-li{
 
 .image-uploader-btn:hover{
     background-color: #feb60b;
+    cursor:pointer;
 }
 
 .msg-para{
@@ -394,4 +416,16 @@ div.super-li{
     margin: 0rem 1.6rem;
     outline: 2px solid #ef720a;
     outline-offset: -2px;
+    margin: 0.3rem;
+    flex: 1;
+    height:100%;
+}
+
+
+.image-uploader-btn.image-deletion-btn{
+    display: block;
+}
+
+.image-uploader-btn.image-deletion-btn.disappearDeletionBtn{
+    display: none;
 }

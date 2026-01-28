@@ -1,6 +1,6 @@
 const path = require('path')
 const multer = require("multer")
-const upload = multer()
+const upload = multer({ dest: 'uploads/' })
 const express =require ("express")
 const router = express.Router()
 const {

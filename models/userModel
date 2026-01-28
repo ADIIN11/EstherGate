@@ -9,7 +9,7 @@ const userSchema=new mongoose.Schema({
     createdAt: String,
     verification: Boolean,
     profileImg:String,
-    deleteProfileImg:String,
+    profileImgPubId:String,
     myCart: Array,
     myOrders: Array,
     address: Object,

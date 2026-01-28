@@ -70,7 +70,7 @@ else{
             createdAt: new Date().toDateString(),
             verification:false, 
             profileImg:null,
-            deleteProfileImg:null,
+            profileImgPubId:null,
             myCart:[],
             myOrders:[],
             address:null,
