@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 
 router.post("/Get_Profile_Details", getProfileDetails)
 
-router.get("/Profile_Img_Upload", (req, res) => {
+router.get("/Edit_Profile", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/Profile_Img_Upload.html"))
 })
 

@@ -58,7 +58,7 @@ body{
     text-align: center;
     background-color:#e35311 ;
     
-   width:5rem ;
+   width:5.4rem ;
   height: 100%;
  
   
@@ -162,9 +162,9 @@ div.super-li{
 
 .sidebar-li:hover{
     background-color: #fef4bc;
-    margin:#fef4bc;
+    outline:2px solid #fef4bc;
+    outline-offset:0.1rem ;
 }
-
 
 .sidebar-li:hover div.super-li{
     background-color: #fef4bc;
@@ -292,9 +292,11 @@ div.super-li{
 
 .profile{
     margin: 1rem 3rem;
-    border: 2px solid #ef720a;
+    outline: 2px solid #fef4bc;
+    outline-offset: -0.4rem;
     display: flex;
     flex-direction: row;
+    background-color: #ef720a;
     
 }
 
@@ -302,9 +304,11 @@ div.super-li{
 
 .profile-img-holder{
     margin: 1rem;
-    border: 2px solid #ef720a;
+    outline: 2px solid #fef4bc;
+    outline-offset: 0.1rem;
     width: 5rem;
     height: 5rem;
+
     
 }
 .content-profile-img{
@@ -317,12 +321,17 @@ div.super-li{
     flex-direction: column;
     padding: 1rem;
     gap: 0.5rem;
+    background-color: #ef720a;
 }
 .profile-username{
     margin: 0rem 2rem;
+     background-color: #ef720a;
+      color: #fef4bc;
 }
 .profile-email{
     margin: 0rem 2rem;
+     background-color: #ef720a;
+      color: #fef4bc;
 }
 
 .verification-box{
@@ -330,16 +339,20 @@ div.super-li{
     flex-direction: row;
     gap:0.2rem;
     margin: 0rem 2rem;
+    background-color: #ef720a;
 }
 
 .verification-icon{
     height: 1.2rem;
     width: 1.2rem;
-    border: 1px solid #ef720a;
+    outline: 2px solid #fef4bc;
+    outline-offset: 0.1rem;
 }
 
 .profile-verification{
-    margin: 0rem ;
+    margin: 0rem 0.5rem ;
+    background-color: #ef720a;
+    color: #fef4bc;
 }
 
 .image-uploader{
@@ -417,8 +430,7 @@ div.super-li{
     outline: 2px solid #ef720a;
     outline-offset: -2px;
     margin: 0.3rem;
-    flex: 1;
-    height:100%;
+    height:1.6rem;
 }
 
 

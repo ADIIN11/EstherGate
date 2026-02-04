@@ -58,7 +58,7 @@ body{
     text-align: center;
     background-color:#e35311 ;
     
-   width:5rem ;
+   width:5.4rem ;
   height: 100%;
  
   
@@ -162,7 +162,8 @@ div.super-li{
 
 .sidebar-li:hover{
     background-color: #fef4bc;
-    margin:#fef4bc;
+    outline:2px solid #fef4bc;
+    outline-offset:0.1rem ;
 }
 
 
