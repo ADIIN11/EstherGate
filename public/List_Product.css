@@ -355,6 +355,17 @@ div.super-li{
     color: #fef4bc;
 }
 
+
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+.first-row{
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+
 .list-product{
     display: flex;
     flex-direction: column;
@@ -366,16 +377,19 @@ div.super-li{
 .list-product-heading{
     margin: 0rem;
 }
-.image-uploader-box{
+.image-selector-box{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin: 1rem 2rem;
 
 }
 
 .image-display{
     border: 2px solid #ef720a ;
-    width: 8.5rem;
-    height: 8.5rem;
+    width: 14rem;
+    height: 14rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -397,6 +411,50 @@ div.super-li{
     margin: 0rem 0rem 0.5rem 0rem;
     height: 1rem;
 }
+
+
+
+.list-product-detail{
+    display: flex;
+    flex-direction: column;
+}
+
+.text-input-row{
+    display: flex;
+    flex-direction: row;
+
+}
+.text-input-row p{
+    width: 4.5rem;
+    margin: 1rem;
+}
+
+.input-box{
+    border: 1px solid #e35311ff;
+    margin: 0.5rem;
+    outline-color:#e35311 ;
+}
+textarea.input-box {
+    width: 26rem;
+    height: 4.5rem;
+    font-size: 16px;
+    padding: 8px;
+    resize: vertical; 
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    margin: 0rem 2rem;
+}
+
+
+
+.text-input-column{
+     display: flex;
+    flex-direction: column;
+}
+.text-input-column p{
+    margin: 0rem 0rem 0.5em 0rem ;
+}
+
 
 .image-uploader-btns{
     padding: 0rem 2rem;
@@ -440,4 +498,23 @@ div.super-li{
 
 .image-uploader-btn.image-deletion-btn.disappearDeletionBtn{
     display: none;
+}
+
+
+
+.list-product .list-product-form{
+   display: block;
+}
+
+.list-product.disappearForm .list-product-form{
+   display: none;
+}
+
+
+.list-product .seller-not-verified{
+   display: none;
+}
+
+.list-product.disappearForm .seller-not-verified{
+   display: block;
 }

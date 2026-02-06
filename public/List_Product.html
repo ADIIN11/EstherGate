@@ -160,20 +160,61 @@
         </div>
      </div>
 
-        <div class="list-product">
+        <div class="list-product" id="list-product">
+            <div class="list-product-form">
             <h3 class="list-product-heading">List New Product</h3>
-            <div class="image-uploader-box">
+            <div class="first-row">
+                
+            <div class="image-selector-box">
+
                 <div class="image-display" id="image-display">
                     <img src="/assets/product-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
-                    <h4 class="Upload-Img">Select Img</h4>
+                    <h4 class="Upload-Img">Select Product Img</h4>
                 </div>
+                <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
+
+            </div>
+            <div class="list-product-detail">
+                <div class="text-input-row">
+                    <p>Name :</p>
+                    <input type="text" placeholder="Enter Product Name" class="input-box" >
+                </div>
+                <div class="text-input-row">
+                    <p>Price :</p>
+                    <input type="text" placeholder="Enter Product Price" class="input-box">
+                </div>
+                
+                <div class="text-input-row">
+                    <p>Category :</p>
+                     <input type="text" placeholder="Enter Product Category" class="input-box">
+                </div>
+               
+                <div class="text-input-row">
+                    <p>Type :</p>
+                    <input type="text" placeholder="Enter Product Type" class="input-box">
+                </div>
+                
+            </div>
                 <div class="image-uploader-btns" id="image-uploader-btns" >
-                    <button id="image-selector-btn" class="image-uploader-btn">Choose Image</button>
                     <button id="image-uploader-btn" class="image-uploader-btn">Upload Image</button>
                     <button id="image-deletion-btn" class="image-uploader-btn image-deletion-btn">Delete Image</button> 
                     <p id="msg-id" class="msg-para"></p>
                 </div>
-            </div>    
+           </div>
+           <div class="second-row">
+                 <div class="text-input-column">
+                    <p>Product Description :</p>
+                    <textarea type="text" placeholder="Enter Product Description" class="input-box"></textarea>
+                 </div>
+           </div>
+            
+            </div>
+            <div class="seller-not-verified" >
+                <h2 class="list-product-heading">Seller Not Verified</h2>
+                <p>
+                    Pls verfy seller to list products :(
+                </p>
+            </div>
            
         </div>
         

@@ -46,6 +46,7 @@ h2{
 input{
     border: 1px solid #e35311ff;
     margin: 0.3rem;
+    outline-color:#e35311 ;
 }
 
 .form-btn {

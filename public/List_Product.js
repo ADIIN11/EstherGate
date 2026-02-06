@@ -9,6 +9,7 @@
   const verificationContentLi=document.getElementById("content-li verification")
   const imageDisplay=document.getElementById("image-display") 
   const listProductSidebarLi=document.getElementById("list-product-li")
+  const listProduct=document.getElementById("list-product")
 
   const imageSelectorBtn=document.getElementById("image-selector-btn")
   const imageUploaderBtn=document.getElementById("image-uploader-btn")
@@ -160,6 +161,7 @@ else if(verification&&!sellerVerification){
     <h4 class="profile-verification">"Seller Not Verified"</h1>
   </div>
   `
+  listProduct.classList.add("disappearForm")
 }
 else{
   profileDetails.innerHTML=`
@@ -174,7 +176,7 @@ else{
     <h4 class="profile-verification">"Seller Not Verified"</h1>
   </div>
   `
-
+  listProduct.classList.add("disappearForm")
 }
 }
 
