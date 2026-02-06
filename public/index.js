@@ -9,6 +9,7 @@
   const sidebarProfileText=document.getElementById("sidebar-profile-text")
   const profileSubLi=document.getElementById("profile-sub-li")
   const profileImgDiv=document.getElementById("profile-icon")
+  const listProductSidebarLi=document.getElementById("list-product-li")
  
   async function checkToken(){
     const token = localStorage.getItem("token")
@@ -80,6 +81,22 @@ async function userSinedIn(){
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
     <a href="#" onclick="event.preventDefault(); signOut();" class="sidebar-anchors sub">Sign Out</a>
     `
+  listProductSidebarLi.innerHTML=`
+   <div class="super-li" >
+        <a href="/Profile/List_Product" class="sidebar-anchors icon">
+            <img src="/assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
+        </a>
+      
+    <a href="/Profile/List_Product"  class="sidebar-anchors">List Product</a>
+    </div>
+    <div class="sub-li" id="profile-sub-li"> 
+        <a href="/Profile/My_List_Product" class="sidebar-anchors sub">My Listed Products</a>
+        <a href="/Profile/Earnings" class="sidebar-anchors sub">Earnings</a>
+    </div>
+
+
+  `
+
   if(profileImg){
 
   profileImgDiv.innerHTML=`

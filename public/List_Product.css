@@ -279,7 +279,7 @@ div.super-li{
 
 .content{
 
-    margin: 0rem 0rem 0rem 5rem ;
+    margin: 0rem 0rem 0rem 5.4rem  ;
 
     z-index: 0;
    position: relative;
@@ -355,7 +355,7 @@ div.super-li{
     color: #fef4bc;
 }
 
-.image-uploader{
+.list-product{
     display: flex;
     flex-direction: column;
     margin: 1rem 3rem;
@@ -363,7 +363,7 @@ div.super-li{
     padding: 1rem;
 }
 
-.Set-Profile-Img{
+.list-product-heading{
     margin: 0rem;
 }
 .image-uploader-box{
