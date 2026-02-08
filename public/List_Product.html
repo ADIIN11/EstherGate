@@ -224,11 +224,12 @@
                  <div class="product-tag">
                     <p>Tags :</p>
                     <div class="create-tag-box">
-                    <input type="text" placeholder="Enter Product Tag" class="input-box">
-                    <button id="image-uploader-btn" class="uploader-btn">Create Tag</button>
+                    <input type="text" placeholder="Enter Product Tag" class="input-box" id="create-tag-inpt" onkeydown="if(event.key==='Enter'){createTag()}">
+                    <button id="create-tag-btn" class="uploader-btn">Create Tag</button>
+                    <p id="create-tag-msg" class="msg-para"></p>
                  </div>
-                 <div class="tag-box">
-
+                 <div class="tag-box" id="tag-box">
+                
                  </div>
                  </div>
            </div>

@@ -1,9 +1,9 @@
 
-const nameInpt=document.getElementById("username-inp")
-const emailInpt=document.getElementById("email-inp")
-const passwordInpt=document.getElementById("password-inp")
-const cnfmPasswordInpt=document.getElementById("cnfm-password-inp")
-const captchaInpt=document.getElementById("captcha-inp")
+const nameInpt=document.getElementById("username-inpt")
+const emailInpt=document.getElementById("email-inpt")
+const passwordInpt=document.getElementById("password-inpt")
+const cnfmPasswordInpt=document.getElementById("cnfm-password-inpt")
+const captchaInpt=document.getElementById("captcha-inpt")
 
 const msgPara=document.getElementById("msg-id")
 const form=document.getElementById("form-id")

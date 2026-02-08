@@ -1,7 +1,7 @@
 const msgPara=document.getElementById("msg-id")
-const passwordInpt=document.getElementById("password-inp")
-const nameEmailInpt=document.getElementById("username-email-inp")
-const captchaInpt=document.getElementById("captcha-inp")
+const passwordInpt=document.getElementById("password-inpt")
+const nameEmailInpt=document.getElementById("username-email-inpt")
+const captchaInpt=document.getElementById("captcha-inpt")
 
 
 

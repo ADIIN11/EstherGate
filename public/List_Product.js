@@ -22,6 +22,13 @@
   const imageUploaderBtn=document.getElementById("image-uploader-btn")
   const msgPara=document.getElementById("msg-id")
  
+
+  const createTagBtn=document.getElementById("create-tag-btn")
+  const createTagInpt=document.getElementById("create-tag-inpt")
+  const createTagMsg=document.getElementById("create-tag-msg")
+  const tagBox=document.getElementById("tag-box")
+
+
   
  
   let uploadImgRoute=""
@@ -535,9 +542,68 @@ reader.readAsDataURL(file)
 })
 
 
+let tags=[]
 
 
+createTagBtn.addEventListener("click", () => { 
+    createTag()
+})
 
+function createTag(){
+  if(!createTagInpt.value){
+      createTagMsg.classList.add("appear")
+      createTagMsg.textContent="Pls Enter Tag Name"
+      setTimeout(()=>{
+            createTagMsg.textContent=""
+            createTagMsg.classList.remove("appear")
+          },2000)
+    }
+    else{
+      let i
+      for(i=0;i<tags.length;i++){
+        if(tags[i]===createTagInpt.value){
+          createTagMsg.classList.add("appear")
+          createTagMsg.textContent="Tag Already Exists"
+          createTagInpt.value=""
+          setTimeout(()=>{
+            createTagMsg.textContent=""
+            createTagMsg.classList.remove("appear")
+          },2000)
+          return
+        }
+      }
+      tags.push(createTagInpt.value)
+      createTagMsg.classList.add("appear")
+      createTagMsg.textContent="New Tag Created"
+      setTimeout(()=>{
+            createTagMsg.textContent=""
+            createTagMsg.classList.remove("appear")
+          },2000)
+      console.log(tags)
+      tagBox.innerHTML+=`
+      <div class="tag" id="tag-${i+1}">
+          <p>${createTagInpt.value}</p>
+          <img src="/assets/cross-icon-neg.svg" alt="delete tag" onclick="deleteTag(${i+1})">
+      </div>
+      `
+      createTagInpt.value=""
+    }
+}
+
+function deleteTag(tagNumber){
+  tags.splice(1,tagNumber)
+  console.log(tags)
+  const tag = document.getElementById(`tag-${tagNumber}`)
+  if (tag) 
+    tag.remove()
+  createTagMsg.classList.add("appear")
+  createTagMsg.textContent="Tag Deleted" 
+      setTimeout(()=>{
+            createTagMsg.textContent=""
+            createTagMsg.classList.remove("appear")
+          },2000)
+
+}
 
 
 
