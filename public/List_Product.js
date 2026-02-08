@@ -7,13 +7,19 @@
   const profileImgHolder=document.getElementById("profile-img-holder")
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
-  const imageDisplay=document.getElementById("image-display") 
+  const imageDisplay1=document.getElementById("image-display-1") 
+  const imageDisplay2=document.getElementById("image-display-2") 
+  const imageDisplay3=document.getElementById("image-display-3") 
+  const imageDisplay4=document.getElementById("image-display-4") 
+  const imageDisplay5=document.getElementById("image-display-5") 
+
+
+
   const listProductSidebarLi=document.getElementById("list-product-li")
   const listProduct=document.getElementById("list-product")
 
   const imageSelectorBtn=document.getElementById("image-selector-btn")
   const imageUploaderBtn=document.getElementById("image-uploader-btn")
-  const imageDeletionBtn=document.getElementById("image-deletion-btn") 
   const msgPara=document.getElementById("msg-id")
  
   
@@ -126,12 +132,10 @@ if(profileImg){
   profileImgHolder.innerHTML=`
   <img src="${profileImg}" alt="profile-icon" class="content-profile-img">
   `
-  imageDeletionBtn.classList.remove("disappearDeletionBtn")
 }else{
   profileImgHolder.innerHTML=`
   <img src="/assets/profile-icon.svg" alt="profile-icon" class="content-profile-img">
   `
-  imageDeletionBtn.classList.add("disappearDeletionBtn")
 }
 
 if(verification&&sellerVerification){
@@ -202,24 +206,24 @@ async function signOut(){
 
 
 
-const fileInput = document.createElement("input")
-fileInput.type = "file"
-fileInput.accept = "image/png,image/jpg,image/jpeg,image/webp"
-fileInput.style.display = "none"
+const fileInput1 = document.createElement("input")
+fileInput1.type = "file"
+fileInput1.accept = "image/png,image/jpg,image/jpeg,image/webp"
+fileInput1.style.display = "none"
 
 
-imageDisplay.addEventListener("click", () => { 
-    fileInput.click(); 
+imageDisplay1.addEventListener("click", () => { 
+    fileInput1.click(); 
 })
 
 imageSelectorBtn.addEventListener("click", () => { 
-    fileInput.click(); 
+    fileInput1.click(); 
 })
 
-let croppedImage = null
+let croppedImage1 = null
 
-fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0]
+fileInput1.addEventListener("change", () => {
+    const file = fileInput1.files[0]
     if (!file){ 
         return
     }
@@ -229,7 +233,7 @@ fileInput.addEventListener("change", () => {
       img.src = e.target.result
 
       img.onload = () => {
-        const targetSize = 512
+        const targetSize = 1024
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
         canvas.width = targetSize
@@ -252,7 +256,7 @@ fileInput.addEventListener("change", () => {
 
         // Clear previous content
         
-        imageDisplay.innerHTML = ""
+        imageDisplay1.innerHTML = ""
 
         // Show preview
         const previewImg = document.createElement("img")
@@ -261,15 +265,298 @@ fileInput.addEventListener("change", () => {
         previewImg.style.maxHeight = "100%"
         previewImg.style.objectFit = "cover"
 
-        imageDisplay.appendChild(previewImg);
+        imageDisplay1.appendChild(previewImg);
 
         canvas.toBlob((blob) => {
-            croppedImage = blob 
+            croppedImage1 = blob 
             }, "image/webp")
       }
     }
 reader.readAsDataURL(file)
 })
+
+
+const fileInput2 = document.createElement("input")
+fileInput2.type = "file"
+fileInput2.accept = "image/png,image/jpg,image/jpeg,image/webp"
+fileInput2.style.display = "none"
+
+imageDisplay2.addEventListener("click", () => { 
+    fileInput2.click(); 
+})
+
+let croppedImage2 = null
+
+fileInput2.addEventListener("change", () => {
+    const file = fileInput2.files[0]
+    if (!file){ 
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.src = e.target.result
+
+      img.onload = () => {
+        const targetSize = 1024
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = targetSize
+        canvas.height = targetSize
+
+        // Crop to centered square
+        const minSide = Math.min(img.width, img.height)
+        const startX = (img.width - minSide) / 2
+        const startY = (img.height - minSide) / 2
+
+        // Draw cropped square scaled to 512x512
+        ctx.drawImage(
+          img,
+          startX, startY, minSide, minSide, // source crop
+          0, 0, targetSize, targetSize      // destination
+        );
+
+        // Convert to DataURL for preview
+        const dataURL = canvas.toDataURL("image/webp",0.9)
+
+        // Clear previous content
+        
+        imageDisplay2.innerHTML = ""
+
+        // Show preview
+        const previewImg = document.createElement("img")
+        previewImg.src = dataURL;
+        previewImg.style.maxWidth = "100%"
+        previewImg.style.maxHeight = "100%"
+        previewImg.style.objectFit = "cover"
+
+        imageDisplay2.appendChild(previewImg);
+
+        canvas.toBlob((blob) => {
+            croppedImage2 = blob 
+            }, "image/webp")
+      }
+    }
+reader.readAsDataURL(file)
+})
+
+const fileInput3 = document.createElement("input")
+fileInput3.type = "file"
+fileInput3.accept = "image/png,image/jpg,image/jpeg,image/webp"
+fileInput3.style.display = "none"
+
+imageDisplay3.addEventListener("click", () => { 
+    fileInput3.click(); 
+})
+
+let croppedImage3 = null
+
+fileInput3.addEventListener("change", () => {
+    const file = fileInput3.files[0]
+    if (!file){ 
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.src = e.target.result
+
+      img.onload = () => {
+        const targetSize = 1024
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = targetSize
+        canvas.height = targetSize
+
+        // Crop to centered square
+        const minSide = Math.min(img.width, img.height)
+        const startX = (img.width - minSide) / 2
+        const startY = (img.height - minSide) / 2
+
+        // Draw cropped square scaled to 512x512
+        ctx.drawImage(
+          img,
+          startX, startY, minSide, minSide, // source crop
+          0, 0, targetSize, targetSize      // destination
+        );
+
+        // Convert to DataURL for preview
+        const dataURL = canvas.toDataURL("image/webp",0.9)
+
+        // Clear previous content
+        
+        imageDisplay3.innerHTML = ""
+
+        // Show preview
+        const previewImg = document.createElement("img")
+        previewImg.src = dataURL;
+        previewImg.style.maxWidth = "100%"
+        previewImg.style.maxHeight = "100%"
+        previewImg.style.objectFit = "cover"
+
+        imageDisplay3.appendChild(previewImg);
+
+        canvas.toBlob((blob) => {
+            croppedImage3 = blob 
+            }, "image/webp")
+      }
+    }
+reader.readAsDataURL(file)
+})
+
+
+
+const fileInput4 = document.createElement("input")
+fileInput4.type = "file"
+fileInput4.accept = "image/png,image/jpg,image/jpeg,image/webp"
+fileInput4.style.display = "none"
+
+imageDisplay4.addEventListener("click", () => { 
+    fileInput4.click(); 
+})
+
+let croppedImage4 = null
+
+fileInput4.addEventListener("change", () => {
+    const file = fileInput4.files[0]
+    if (!file){ 
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.src = e.target.result
+
+      img.onload = () => {
+        const targetSize = 1024
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = targetSize
+        canvas.height = targetSize
+
+        // Crop to centered square
+        const minSide = Math.min(img.width, img.height)
+        const startX = (img.width - minSide) / 2
+        const startY = (img.height - minSide) / 2
+
+        // Draw cropped square scaled to 512x512
+        ctx.drawImage(
+          img,
+          startX, startY, minSide, minSide, // source crop
+          0, 0, targetSize, targetSize      // destination
+        );
+
+        // Convert to DataURL for preview
+        const dataURL = canvas.toDataURL("image/webp",0.9)
+
+        // Clear previous content
+        
+        imageDisplay4.innerHTML = ""
+
+        // Show preview
+        const previewImg = document.createElement("img")
+        previewImg.src = dataURL;
+        previewImg.style.maxWidth = "100%"
+        previewImg.style.maxHeight = "100%"
+        previewImg.style.objectFit = "cover"
+
+        imageDisplay4.appendChild(previewImg);
+
+        canvas.toBlob((blob) => {
+            croppedImage4 = blob 
+            }, "image/webp")
+      }
+    }
+reader.readAsDataURL(file)
+})
+
+const fileInput5 = document.createElement("input")
+fileInput5.type = "file"
+fileInput5.accept = "image/png,image/jpg,image/jpeg,image/webp"
+fileInput5.style.display = "none"
+
+imageDisplay5.addEventListener("click", () => { 
+    fileInput5.click(); 
+})
+
+let croppedImage5 = null
+
+fileInput5.addEventListener("change", () => {
+    const file = fileInput5.files[0]
+    if (!file){ 
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.src = e.target.result
+
+      img.onload = () => {
+        const targetSize = 1024
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = targetSize
+        canvas.height = targetSize
+
+        // Crop to centered square
+        const minSide = Math.min(img.width, img.height)
+        const startX = (img.width - minSide) / 2
+        const startY = (img.height - minSide) / 2
+
+        // Draw cropped square scaled to 512x512
+        ctx.drawImage(
+          img,
+          startX, startY, minSide, minSide, // source crop
+          0, 0, targetSize, targetSize      // destination
+        );
+
+        // Convert to DataURL for preview
+        const dataURL = canvas.toDataURL("image/webp",0.9)
+
+        // Clear previous content
+        
+        imageDisplay5.innerHTML = ""
+
+        // Show preview
+        const previewImg = document.createElement("img")
+        previewImg.src = dataURL;
+        previewImg.style.maxWidth = "100%"
+        previewImg.style.maxHeight = "100%"
+        previewImg.style.objectFit = "cover"
+
+        imageDisplay5.appendChild(previewImg);
+
+        canvas.toBlob((blob) => {
+            croppedImage5 = blob 
+            }, "image/webp")
+      }
+    }
+reader.readAsDataURL(file)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -303,17 +590,17 @@ imageUploaderBtn.addEventListener("click", async () => {
     }
   })
 
-imageDeletionBtn.addEventListener("click", async () => {
-  const id=localStorage.getItem("currentUserId")
-  const userObj={id:id}
-   try {
-  const res = await axios.post("/Profile/Delete_Profile_Image", userObj)
-  console.log("Server response:", res.data)
-  msgPara.textContent="Image Deleted Succesfully"
-  await getProfileDetails()
-  } catch (error) {
+// imageDeletionBtn.addEventListener("click", async () => {
+//   const id=localStorage.getItem("currentUserId")
+//   const userObj={id:id}
+//    try {
+//   const res = await axios.post("/Profile/Delete_Profile_Image", userObj)
+//   console.log("Server response:", res.data)
+//   msgPara.textContent="Image Deleted Succesfully"
+//   await getProfileDetails()
+//   } catch (error) {
     
-      console.error("Upload failed:", error)
-      msgPara.textContent="Error While Deleting Image"
-    }
-})
+//       console.error("Upload failed:", error)
+//       msgPara.textContent="Error While Deleting Image"
+//     }
+// })
