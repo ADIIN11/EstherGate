@@ -193,21 +193,40 @@
             <div class="list-product-detail">
                 <div class="text-input-row">
                     <p>Name :</p>
-                    <input type="text" placeholder="Enter Product Name" class="input-box" >
+                    <input type="text" placeholder="Enter Product Name" class="input-box" id="product-name-inpt" >
                 </div>
                 <div class="text-input-row">
                     <p>Price :</p>
-                    <input type="text" placeholder="Enter Product Price" class="input-box">
+                     <input type="text" placeholder="Enter Product Price" class="input-box" id="product-price-inpt">
+                    <select title="currency" class="currency" id="currency-inpt" name="currency"> 
+                        <option value="" disabled selected>Select Currency</option> 
+                        <option value="USD">&#36; (USD)</option> 
+                        <option value="INR">&#8377; (INR)</option> 
+                        <option value="GBP">&#163; (GBP)</option> 
+                        <option value="EUR">&#8364; (EUR)</option> 
+                        <option value="JPY">&#165; (JPY)</option> 
+                    </select>
+
+                   
                 </div>
                 
                 <div class="text-input-row">
                     <p>Category :</p>
-                    <input type="text" placeholder="Enter Product Category" class="input-box">
+                    <input type="text" placeholder="Enter Product Category" class="input-box" id="category-inpt" list="category-inpt-list">
+                    <datalist id="category-inpt-list"> 
+                        <option value="Electronics"> 
+                        <option value="Appliances"> 
+                        <option value="Kids">
+                        <option value="Fashion">
+                        <option value="Shoes"> 
+                    </datalist>
                 </div>
                
                 <div class="text-input-row">
                     <p>Type :</p>
-                    <input type="text" placeholder="Enter Product Type" class="input-box">
+                    <input type="text" placeholder="Enter Product Type" class="input-box" id="type-inpt" list="type-inpt-list">
+                    <datalist id="type-inpt-list">
+                    </datalist>
                 </div>
                 
             </div>

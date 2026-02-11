@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGO_DB_URL).then(()=>console.log("MongoDB Connect
 const authRoutes=require("./routes/authRoutes")
 const commonRoutes=require("./routes/commonRoutes")
 const profileRoutes=require("./routes/profileRoutes")
-
+const categoryRoutes=require("./routes/productRoutes")
 
 const app = express();
 
@@ -39,6 +39,8 @@ app.use("/Auth",authRoutes)
 app.use("",commonRoutes)
 
 app.use("/Profile",profileRoutes)
+
+app.use("/Product",categoryRoutes)
 
 app.use(express.static(path.join(__dirname, "public")))
 

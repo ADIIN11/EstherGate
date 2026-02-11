@@ -7,7 +7,7 @@ const {
 
 
 exports.userSingUp=async (req, res) => {
-  const userData = req.body; // axios sends JSON here
+  const userData = req.body // axios sends JSON here
   console.log(userData)
   const checkUser=await checkUserSignUp(userData)
   if (checkUser) {

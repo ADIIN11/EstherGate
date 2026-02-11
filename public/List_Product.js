@@ -7,18 +7,26 @@
   const profileImgHolder=document.getElementById("profile-img-holder")
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
+
   const imageDisplay1=document.getElementById("image-display-1") 
+  const imageSelectorBtn=document.getElementById("image-selector-btn")
   const imageDisplay2=document.getElementById("image-display-2") 
   const imageDisplay3=document.getElementById("image-display-3") 
   const imageDisplay4=document.getElementById("image-display-4") 
   const imageDisplay5=document.getElementById("image-display-5") 
 
-
+  const productNameInpt=document.getElementById("product-name-inpt")
+  const productPriceInpt=document.getElementById("product-price-inpt")
+  const currencyInpt=document.getElementById("currency-inpt")
+  const categoryInpt=document.getElementById("category-inpt")
+  const categoryInptList=document.getElementById("category-inpt-list")
+  const typeInpt=document.getElementById("type-inpt")
+  const typeInptList=document.getElementById("type-inpt-list")
 
   const listProductSidebarLi=document.getElementById("list-product-li")
   const listProduct=document.getElementById("list-product")
 
-  const imageSelectorBtn=document.getElementById("image-selector-btn")
+  
   const imageUploaderBtn=document.getElementById("image-uploader-btn")
   const msgPara=document.getElementById("msg-id")
  
@@ -30,7 +38,7 @@
 
 
   
- 
+  let categoryList=[]
   let uploadImgRoute=""
 
   async function checkToken(){
@@ -158,6 +166,7 @@ if(verification&&sellerVerification){
     <h4 class="profile-verification">"Seller Verified"</h1>
   </div>
   `
+  await getCategoryList()
 }
 else if(verification&&!sellerVerification){
   profileDetails.innerHTML=`
@@ -188,6 +197,7 @@ else{
   </div>
   `
   listProduct.classList.add("disappearForm")
+  
 }
 }
 
@@ -607,12 +617,48 @@ function deleteTag(tagNumber){
 
 
 
+categoryInpt.addEventListener("input",()=>{
+  typeDataList(categoryInpt.value)
+})
+
+async function typeDataList(category){
+  const categoryObj={category:category}
+  console.log(categoryObj)
+  const res = await axios.post("/Product/Get_Category_Types", categoryObj)
+  
+}
 
 
+async function getCategoryList(){
+    try{
+        const res = await axios.post("/Product/Get_Categories")
+        console.log(res.data)
+        categoryList=res.data.categories
+        updateCategoryList()
 
+  }catch(err){
+        console.error("Error While fetching category list", err)
+  }
+  
+}
 
+function updateCategoryList(){
+  for(let i=0;i<categoryList.length;i++){
+    categoryInptList.innerHTML+=`
+      <option value="${categoryList[i]}">
+    `
+  }
+}
 
+function createProduct(){
+  const productId=123567
 
+  // category model creation 
+  if(categoryList.includes(categoryInpt)){
+
+  }
+  // product model creation
+}
 
 
 

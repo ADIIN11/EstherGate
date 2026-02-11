@@ -376,6 +376,12 @@ div.super-li{
     cursor:pointer;
 }
 
+.currency{
+    height: 2rem;
+    border: 2px solid #ef720a;
+    margin: 0.5rem;
+}
+
 
 .first-row{
     display: flex;
