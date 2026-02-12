@@ -27,7 +27,7 @@
   const listProduct=document.getElementById("list-product")
 
   
-  const imageUploaderBtn=document.getElementById("image-uploader-btn")
+  const listProductBtn=document.getElementById("list-product-btn")
   const msgPara=document.getElementById("msg-id")
  
 
@@ -37,8 +37,9 @@
   const tagBox=document.getElementById("tag-box")
 
 
-  
+  let tags=[]
   let categoryList=[]
+  let typesList=[]
   let uploadImgRoute=""
 
   async function checkToken(){
@@ -552,7 +553,6 @@ reader.readAsDataURL(file)
 })
 
 
-let tags=[]
 
 
 createTagBtn.addEventListener("click", () => { 
@@ -618,14 +618,31 @@ function deleteTag(tagNumber){
 
 
 categoryInpt.addEventListener("input",()=>{
-  typeDataList(categoryInpt.value)
+  if (categoryList.includes(categoryInpt.value)) { 
+    getTypesList(categoryInpt.value)
+  } else { 
+  }
+  
 })
 
-async function typeDataList(category){
+async function getTypesList(category){
+  try{
   const categoryObj={category:category}
   console.log(categoryObj)
-  const res = await axios.post("/Product/Get_Category_Types", categoryObj)
-  
+  const res = await axios.post("/Product/Get_Category_Types", categoryObj) 
+  typesList=[]
+  typesList=res.data.types
+  console.log(typesList)
+ 
+  typeInptList.innerHTML=``
+  for(let i=0;i<typesList.length;i++){
+    typeInptList.innerHTML+=`
+      <option value="${typesList[i]}">
+    `
+  }
+}catch(err){
+  console.error("Error While fetching types", err)
+}
 }
 
 
@@ -641,7 +658,6 @@ async function getCategoryList(){
   }
   
 }
-
 function updateCategoryList(){
   for(let i=0;i<categoryList.length;i++){
     categoryInptList.innerHTML+=`
@@ -650,13 +666,46 @@ function updateCategoryList(){
   }
 }
 
-function createProduct(){
+
+listProductBtn.addEventListener("click",()=>{
+  createProduct()
+})
+
+
+
+async function createProduct(){
   const productId=123567
 
   // category model creation 
-  if(categoryList.includes(categoryInpt)){
-
+  try{
+    if(categoryList.includes(categoryInpt.value)&&typesList.includes(typeInpt.value)){
+      console.log("here")
+    const typeUpdateObj={ 
+      productId:productId,
+      category:categoryInpt.value,
+      type:typeInpt.value
+    }
+    const res = await axios.post("/Product/Update_Type", typeUpdateObj)
+  }else if(categoryList.includes(categoryInpt.value)&&!typesList.includes(typeInpt.value)){
+    const addTypeObj={ 
+      productId:productId,
+      category:categoryInpt.value,
+      type:typeInpt.value
+    }
+    const res = await axios.post("/Product/Add_Type", addTypeObj)
+  }else{
+    const createCategoryObj={
+      productId:productId,
+      category:categoryInpt.value,
+      type:typeInpt.value
+    }
+    console.log(createCategoryObj)
+     const res = await axios.post("/Product/Create_Category", createCategoryObj)
   }
+  }catch(err){
+    console.log("err while updating Category List:",err)
+  }
+  
   // product model creation
 }
 

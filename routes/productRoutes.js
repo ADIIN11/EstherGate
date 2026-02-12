@@ -1,7 +1,11 @@
 const express =require ("express")
 const router = express.Router()
 const {
-    getcategories
+    getcategories,
+    createCategory,
+    getCategoryTypes,
+    addType,
+    updateType
 }=require("../controllers/productController")
 
 router.post("/Get_Categories",getcategories)
@@ -9,11 +13,13 @@ router.post("/Get_Categories",getcategories)
 
 
 
-router.post("/Get_Category_Types", async(req,res)=>{
-    const categoryObj=req.body
-    console.log(categoryObj)
-})
+router.post("/Get_Category_Types", getCategoryTypes)
 
+router.post("/Create_Category", createCategory)
+
+router.post("/Add_Type", addType)
+
+router.post("/Update_Type", updateType)
 
 
 
