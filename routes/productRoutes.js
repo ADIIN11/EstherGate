@@ -1,3 +1,6 @@
+const path = require('path')
+const multer = require("multer")
+const upload = multer({ dest: 'uploads/' })
 const express =require ("express")
 const router = express.Router()
 const {
@@ -5,7 +8,9 @@ const {
     createCategory,
     getCategoryTypes,
     addType,
-    updateType
+    updateType,
+    createProduct,
+    uploadProductImage
 }=require("../controllers/productController")
 
 router.post("/Get_Categories",getcategories)
@@ -21,7 +26,9 @@ router.post("/Add_Type", addType)
 
 router.post("/Update_Type", updateType)
 
+router.post("/Create_Product", createProduct)
 
+router.post("/Upload_Product_Image",upload.single("image"), uploadProductImage)
 
 
 module.exports = router

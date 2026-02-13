@@ -43,6 +43,11 @@
   let categoryList=[]
   let typesList=[]
   let uploadImgRoute=""
+  let croppedImage1 = null
+  let croppedImage2 = null
+  let croppedImage3 = null
+  let croppedImage4 = null
+  let croppedImage5 = null
 
   async function checkToken(){
     const token = localStorage.getItem("token")
@@ -240,7 +245,7 @@ imageSelectorBtn.addEventListener("click", () => {
     fileInput1.click(); 
 })
 
-let croppedImage1 = null
+
 
 fileInput1.addEventListener("change", () => {
     const file = fileInput1.files[0]
@@ -305,7 +310,7 @@ imageDisplay2.addEventListener("click", () => {
     fileInput2.click(); 
 })
 
-let croppedImage2 = null
+
 
 fileInput2.addEventListener("change", () => {
     const file = fileInput2.files[0]
@@ -369,7 +374,7 @@ imageDisplay3.addEventListener("click", () => {
     fileInput3.click(); 
 })
 
-let croppedImage3 = null
+
 
 fileInput3.addEventListener("change", () => {
     const file = fileInput3.files[0]
@@ -435,7 +440,7 @@ imageDisplay4.addEventListener("click", () => {
     fileInput4.click(); 
 })
 
-let croppedImage4 = null
+
 
 fileInput4.addEventListener("change", () => {
     const file = fileInput4.files[0]
@@ -499,7 +504,7 @@ imageDisplay5.addEventListener("click", () => {
     fileInput5.click(); 
 })
 
-let croppedImage5 = null
+
 
 fileInput5.addEventListener("change", () => {
     const file = fileInput5.files[0]
@@ -630,7 +635,6 @@ categoryInpt.addEventListener("input",()=>{
 async function getTypesList(category){
   try{
   const categoryObj={category:category}
-  console.log(categoryObj)
   const res = await axios.post("/Product/Get_Category_Types", categoryObj) 
   typesList=[]
   typesList=res.data.types
@@ -661,6 +665,7 @@ async function getCategoryList(){
   
 }
 function updateCategoryList(){
+  categoryInptList.innerHTML=``
   for(let i=0;i<categoryList.length;i++){
     categoryInptList.innerHTML+=`
       <option value="${categoryList[i]}">
@@ -789,7 +794,34 @@ async function createProduct(){
   // product model creation
   try{
     loadingIcon.classList.add("appear")
-    const res = await axios.post("/Product/List_Product", typeUpdateObj)
+    uploaderMsgPara.classList.add("appear")
+    uploaderMsgPara.textContent="Listing New Product"
+    const res = await axios.post("/Product/Create_Product", productObj)
+    uploaderMsgPara.textContent=res.data.message
+    uploaderMsgPara.textContent="Uploading Product Images"
+    const croppedImages = [croppedImage1, croppedImage2, croppedImage3, croppedImage4, croppedImage5]
+    for(let i=0;i<5;i++){
+      if(croppedImages[i]){
+        const formData = new FormData();
+        formData.append("image", croppedImages[i], "croppedImage")
+        formData.append("productId",productId)
+        formData.append("imageNumber",i+1)
+        try {
+          const response = await axios.post("/Product/Upload_Product_Image", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+          })
+          console.log("Server response:", response.data)
+          } catch (error) {
+          console.error(`product image ${i+1} Upload failed:`, error)
+        }
+      }
+    }
+    loadingIcon.classList.remove("appear")
+    uploaderMsgPara.textContent="Product Listed Succesfully"
+    setTimeout(()=>{
+            uploaderMsgPara.textContent=""
+            uploaderMsgPara.classList.remove("appear")
+          },2500)
 
   }catch(err){
     console.log("err while Listing Product:",err)
