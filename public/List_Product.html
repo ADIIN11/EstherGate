@@ -193,11 +193,15 @@
             <div class="list-product-detail">
                 <div class="text-input-row">
                     <p>Name :</p>
-                    <input type="text" placeholder="Enter Product Name" class="input-box" id="product-name-inpt" >
+                    <input type="text" maxlength="30" placeholder="Enter Product's Name" class="input-box" id="product-name-inpt" >
+                </div>
+                <div class="text-input-row">
+                    <p>FullName :</p>
+                    <input type="text" maxlength="75" placeholder="Enter Product's full-Name" class="input-box" id="product-full-name-inpt" >
                 </div>
                 <div class="text-input-row">
                     <p>Price :</p>
-                     <input type="text" placeholder="Enter Product Price" class="input-box" id="product-price-inpt">
+                     <input type="number" min="0" step="1" placeholder="Enter Product Price" class="input-box" id="product-price-inpt">
                     <select title="currency" class="currency" id="currency-inpt" name="currency"> 
                         <option value="" disabled selected>Select Currency</option> 
                         <option value="USD">&#36; (USD)</option> 
@@ -228,13 +232,16 @@
             </div>
                 <div class="uploader-btns" id="image-uploader-btns" >
                     <button id="list-product-btn" class="uploader-btn">List New Product</button>
-                    <p id="msg-id" class="msg-para"></p>
+                    <div class="text-input-row">
+                         <img src="../assets/loding-icon.svg" alt="loding" height="22px" id="loading-icon" class="loading-icon">
+                    <p id="uploader-msg-id" class="msg-para"></p>
+                    </div>
                 </div>
            </div>
            <div class="second-row">
                  <div class="text-input-column">
                     <p>Product Description :</p>
-                    <textarea type="text" placeholder="Enter Product Description" class="input-box"></textarea>
+                    <textarea type="text" placeholder="Enter Product Description" class="input-box" id="product-description"></textarea>
                  </div>
                  <div class="product-tag">
                     <p>Tags :</p>

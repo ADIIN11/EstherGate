@@ -1,5 +1,5 @@
 const fs=require("fs")
-const categoryModel = require('../models/categoryModel')
+const categoryModel = require('../models/categoryModel.js')
 
 
 exports.getcategories=async(req,res)=>{
@@ -27,6 +27,8 @@ exports.createCategory=async(req,res)=>{
     try{
       const newCategory= new categoryModel(newCategoryObj)
       await newCategory.save().then(()=>console.log("New Category Saved")).catch(err=>console.log("Saving Error",err))
+       res.json({ message:"successfully created category"
+       })
       }catch(err){
       console.log("error while creating category:",err)
     }
@@ -52,6 +54,8 @@ exports.addType=async(req,res)=>{
     const productId=req.body.productId
     try{
       await categoryModel.updateOne({category:category},{$set:{[`types.${type}`]:[productId]}})
+      res.json({ message:"successfully added type"
+       })
     }catch(err){
       console.log("error while creating category:",err)
     }
@@ -64,6 +68,8 @@ exports.updateType=async(req,res)=>{
     const productId=req.body.productId
     try{
       await categoryModel.updateOne({category:category},{ $push: { [`types.${type}`]: productId } })
+      res.json({ message:"successfully updated type"
+       })
     }catch(err){
       console.log("error while creating category:",err)
     }

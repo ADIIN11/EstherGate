@@ -481,7 +481,7 @@ div.super-li{
 
 }
 .text-input-row p{
-    width: 4.5rem;
+    width: 4.8rem;
     margin: 1rem;
 }
 
@@ -520,9 +520,15 @@ div.super-li{
     padding: 0.2rem;
     outline-offset: -2px;
     margin: 0.3rem;
-    height:1.6rem;
+    min-height:1.6rem;
 }
 
+.loading-icon{
+    display: none;
+}
+.loading-icon.appear{
+    display:block;
+}
 
 
 

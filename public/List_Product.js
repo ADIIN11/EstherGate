@@ -16,6 +16,7 @@
   const imageDisplay5=document.getElementById("image-display-5") 
 
   const productNameInpt=document.getElementById("product-name-inpt")
+  const productFullNameInpt=document.getElementById("product-full-name-inpt")
   const productPriceInpt=document.getElementById("product-price-inpt")
   const currencyInpt=document.getElementById("currency-inpt")
   const categoryInpt=document.getElementById("category-inpt")
@@ -28,9 +29,10 @@
 
   
   const listProductBtn=document.getElementById("list-product-btn")
-  const msgPara=document.getElementById("msg-id")
+  const uploaderMsgPara=document.getElementById("uploader-msg-id")
+  const loadingIcon=document.getElementById("loading-icon")
  
-
+  const productDescription=document.getElementById("product-description")
   const createTagBtn=document.getElementById("create-tag-btn")
   const createTagInpt=document.getElementById("create-tag-inpt")
   const createTagMsg=document.getElementById("create-tag-msg")
@@ -566,7 +568,7 @@ function createTag(){
       setTimeout(()=>{
             createTagMsg.textContent=""
             createTagMsg.classList.remove("appear")
-          },2000)
+          },2500)
     }
     else{
       let i
@@ -578,7 +580,7 @@ function createTag(){
           setTimeout(()=>{
             createTagMsg.textContent=""
             createTagMsg.classList.remove("appear")
-          },2000)
+          },2500)
           return
         }
       }
@@ -588,7 +590,7 @@ function createTag(){
       setTimeout(()=>{
             createTagMsg.textContent=""
             createTagMsg.classList.remove("appear")
-          },2000)
+          },2500)
       console.log(tags)
       tagBox.innerHTML+=`
       <div class="tag" id="tag-${i+1}">
@@ -611,7 +613,7 @@ function deleteTag(tagNumber){
       setTimeout(()=>{
             createTagMsg.textContent=""
             createTagMsg.classList.remove("appear")
-          },2000)
+          },2500)
 
 }
 
@@ -668,18 +670,91 @@ function updateCategoryList(){
 
 
 listProductBtn.addEventListener("click",()=>{
+  if(!productNameInpt.value||!productFullNameInpt.value
+    ||!productPriceInpt.value||!categoryInpt.value
+    ||!typeInpt.value){
+    uploaderMsgPara.classList.add("appear")
+    uploaderMsgPara.textContent="Pls fill all the box" 
+
+      setTimeout(()=>{
+            uploaderMsgPara.textContent=""
+            uploaderMsgPara.classList.remove("appear")
+          },2500)
+  }else if(!currencyInpt.value){
+    uploaderMsgPara.classList.add("appear")
+    uploaderMsgPara.textContent="Pls Select the currency of price" 
+
+      setTimeout(()=>{
+            uploaderMsgPara.textContent=""
+            uploaderMsgPara.classList.remove("appear")
+          },2500)
+  }else if(!croppedImage1){
+    uploaderMsgPara.classList.add("appear")
+    uploaderMsgPara.textContent="Pls Select a image for the product" 
+
+      setTimeout(()=>{
+            uploaderMsgPara.textContent=""
+            uploaderMsgPara.classList.remove("appear")
+          },2500)
+  }else if(!productDescription.value){
+    uploaderMsgPara.classList.add("appear")
+    uploaderMsgPara.textContent="Pls Enter the product description" 
+
+      setTimeout(()=>{
+            uploaderMsgPara.textContent=""
+            uploaderMsgPara.classList.remove("appear")
+          },2500)
+  }else if(tags.length === 0){
+    uploaderMsgPara.classList.add("appear")
+    uploaderMsgPara.textContent="Pls create tags for the product" 
+
+      setTimeout(()=>{
+            uploaderMsgPara.textContent=""
+            uploaderMsgPara.classList.remove("appear")
+          },2500)
+  }else{
   createProduct()
+  }
 })
 
+function generateProductId() { 
+  return Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
+}
 
 
 async function createProduct(){
-  const productId=123567
-
+  const productId=generateProductId()
+  const id=localStorage.getItem("currentUserId")
+  const productObj={
+    productId: productId,
+    name: productNameInpt.value,
+    fullName:productFullNameInpt.value,
+    price: productPriceInpt.value,
+    currency:currencyInpt.value,
+    createdAt: new Date().toDateString(),
+    sellerId: id,
+    category: categoryInpt.value,
+    type: typeInpt.value,
+    description:productDescription.value,
+    tags:tags,
+    views:0,
+    addedToCart:0,
+    productBought:0,
+    productImg1:null,
+    productImg1PubId:null,
+    productImg2:null,
+    productImg2PubId:null,
+    productImg3:null,
+    productImg3PubId:null,
+    productImg4:null,
+    productImg4PubId:null,
+    productImg5:null,
+    productImg5PubId:null,
+  }
+  
   // category model creation 
   try{
     if(categoryList.includes(categoryInpt.value)&&typesList.includes(typeInpt.value)){
-      console.log("here")
     const typeUpdateObj={ 
       productId:productId,
       category:categoryInpt.value,
@@ -693,20 +768,32 @@ async function createProduct(){
       type:typeInpt.value
     }
     const res = await axios.post("/Product/Add_Type", addTypeObj)
+    getTypesList(categoryInpt.value)
   }else{
     const createCategoryObj={
       productId:productId,
       category:categoryInpt.value,
       type:typeInpt.value
     }
-    console.log(createCategoryObj)
+    
      const res = await axios.post("/Product/Create_Category", createCategoryObj)
+     console.log(createCategoryObj)
+     await getCategoryList()
+     getTypesList(categoryInpt.value)
   }
   }catch(err){
     console.log("err while updating Category List:",err)
+    return
   }
-  
+
   // product model creation
+  try{
+    loadingIcon.classList.add("appear")
+    const res = await axios.post("/Product/List_Product", typeUpdateObj)
+
+  }catch(err){
+    console.log("err while Listing Product:",err)
+  }
 }
 
 
@@ -721,35 +808,35 @@ async function createProduct(){
 
 
 
-imageUploaderBtn.addEventListener("click", async () => {
-    if (!croppedImage) {
-      msgPara.textContent="Pls Select An Image"
-      return
-    }
-    const id=localStorage.getItem("currentUserId")
+// imageUploaderBtn.addEventListener("click", async () => {
+//     if (!croppedImage) {
+//       msgPara.textContent="Pls Select An Image"
+//       return
+//     }
+//     const id=localStorage.getItem("currentUserId")
 
-    const formData = new FormData();
-    formData.append("image", croppedImage, "croppedImage")
-    formData.append("id",id)
+//     const formData = new FormData();
+//     formData.append("image", croppedImage, "croppedImage")
+//     formData.append("id",id)
 
-    try {
-      const response = await axios.post(uploadImgRoute, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      })
-      console.log("Server response:", response.data)
-      msgPara.textContent="Image Uploaded Succesfully"
-      croppedImage = null
-      imageDisplay.innerHTML =`
-        <img src="/assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
-        <h4 class="Upload-Img">Select Img</h4>
-      `
-      await getProfileDetails()
-    } catch (error) {
+//     try {
+//       const response = await axios.post(uploadImgRoute, formData, {
+//         headers: { "Content-Type": "multipart/form-data" }
+//       })
+//       console.log("Server response:", response.data)
+//       msgPara.textContent="Image Uploaded Succesfully"
+//       croppedImage = null
+//       imageDisplay.innerHTML =`
+//         <img src="/assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
+//         <h4 class="Upload-Img">Select Img</h4>
+//       `
+//       await getProfileDetails()
+//     } catch (error) {
     
-      console.error("Upload failed:", error)
-      msgPara.textContent="Error While Uploading Image"
-    }
-  })
+//       console.error("Upload failed:", error)
+//       msgPara.textContent="Error While Uploading Image"
+//     }
+//   })
 
 // imageDeletionBtn.addEventListener("click", async () => {
 //   const id=localStorage.getItem("currentUserId")

@@ -1,5 +1,5 @@
 const fs=require("fs")
-const userModel = require('../models/userModel')
+const userModel = require('../models/userModel.js')
 const{
   uploadProfileImage,
   deleteImage

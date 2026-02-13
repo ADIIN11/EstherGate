@@ -3,5 +3,5 @@
 --harvest-orange: #ef720a;  text 
 --amber-flame: #feb60b;    background highlight 
 --lemon-chiffon: #fef4bc;  background
-
+--contrasting pink: #FF156D
 rgb(254, 244, 188)
