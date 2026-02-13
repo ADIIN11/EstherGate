@@ -10,6 +10,7 @@ const productSchema=new mongoose.Schema({
     currency:String,
     createdAt: String,
     sellerId: String,
+    sellerName:String,
     category: String,
     type: String,
     description:String,

@@ -43,6 +43,7 @@
   let categoryList=[]
   let typesList=[]
   let uploadImgRoute=""
+  let username=""
   let croppedImage1 = null
   let croppedImage2 = null
   let croppedImage3 = null
@@ -108,7 +109,7 @@ async function getProfileDetails() {
   const userObj={id:id}
   const res = await axios.post("/Profile/Get_Profile_Details", userObj)
   console.log(res.data)
-  const username=res.data.username
+  username=res.data.username
   const email=res.data.email
   const profileImg=res.data.profileImg
   const verification=res.data.verification
@@ -738,6 +739,7 @@ async function createProduct(){
     currency:currencyInpt.value,
     createdAt: new Date().toDateString(),
     sellerId: id,
+    sellerName:username,
     category: categoryInpt.value,
     type: typeInpt.value,
     description:productDescription.value,
@@ -816,12 +818,37 @@ async function createProduct(){
         }
       }
     }
+    productNameInpt.value=""
+    productFullNameInpt.value=""
+    productPriceInpt.value=""
+    currencyInpt.value=""
+    categoryInpt.value=""
+    typeInpt.value=""
+    productDescription.value=""
+    tagBox.innerHTML=""
+    imageDisplay1.innerHTML=`
+    <img src="/assets/product-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
+    <h4 class="Upload-Img">Select Product Img</h4>
+    `
+    imageDisplay2.innerHTML=`
+      <img src="/assets/add-icon.svg" alt="upload-icon" class="sub-image-preview" id="image-preview">
+    `
+    imageDisplay3.innerHTML=`
+      <img src="/assets/add-icon.svg" alt="upload-icon" class="sub-image-preview" id="image-preview">
+    `
+    imageDisplay4.innerHTML=`
+      <img src="/assets/add-icon.svg" alt="upload-icon" class="sub-image-preview" id="image-preview">
+    `
+    imageDisplay5.innerHTML=`
+      <img src="/assets/add-icon.svg" alt="upload-icon" class="sub-image-preview" id="image-preview">
+    `
+
     loadingIcon.classList.remove("appear")
-    uploaderMsgPara.textContent="Product Listed Succesfully"
+    uploaderMsgPara.textContent="Product Listed Succesfully, Redirecting to My Listed Products"
     setTimeout(()=>{
             uploaderMsgPara.textContent=""
             uploaderMsgPara.classList.remove("appear")
-          },2500)
+          },3000)
 
   }catch(err){
     console.log("err while Listing Product:",err)
