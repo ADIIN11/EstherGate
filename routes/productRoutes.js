@@ -10,7 +10,8 @@ const {
     addType,
     updateType,
     createProduct,
-    uploadProductImage
+    uploadProductImage,
+    getTopSellingProducts
 }=require("../controllers/productController")
 
 router.post("/Get_Categories",getcategories)
@@ -29,6 +30,13 @@ router.post("/Update_Type", updateType)
 router.post("/Create_Product", createProduct)
 
 router.post("/Upload_Product_Image",upload.single("image"), uploadProductImage)
+
+router.post("/Get_Top_Selling_Products", getTopSellingProducts)
+
+router.get("/:productName/:productId", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/Sign_Up.html"))
+})
+
 
 
 module.exports = router

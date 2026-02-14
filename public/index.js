@@ -10,6 +10,8 @@
   const profileSubLi=document.getElementById("profile-sub-li")
   const profileImgDiv=document.getElementById("profile-icon")
   const listProductSidebarLi=document.getElementById("list-product-li")
+  
+  const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
  
   async function checkToken(){
     const token = localStorage.getItem("token")
@@ -136,3 +138,37 @@ async function signOut(){
   }
   
 }
+
+let topSellingProducts = []
+let topSellingProductsRow=""
+
+
+async function getTopSellingList(){
+  try{
+    const res = await axios.post("/Product/Get_Top_Selling_Products")
+    topSellingProducts=res.data.topSellingProducts
+    console.log(topSellingProducts)
+    for(let i=0;i<topSellingProducts.length;i++){
+    topSellingProductsRow +=` 
+        <div class="product-card" >
+          <a href="/Product/${topSellingProducts[i].name}/${topSellingProducts[i].productId}" >
+              <img src="${topSellingProducts[i].productImg1}" alt="Product image" class="product-image">
+                  <h3>${topSellingProducts[i].name}</h3>
+            
+                  
+                  <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</s></sup></p>
+                 
+                
+          </a>
+            <button onclick="addToCart(${topSellingProducts[i].productId})" >Add to Cart</button>
+        </div> `
+    }
+  topSellingProductsSlide.innerHTML=topSellingProductsRow
+  } catch (err) {
+          console.error(`failed to get Top Selling Product`, err)
+  }
+
+}
+
+
+getTopSellingList()

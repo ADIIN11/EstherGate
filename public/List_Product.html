@@ -202,13 +202,14 @@
                 <div class="text-input-row">
                     <p>Price :</p>
                      <input type="number" min="0" step="1" placeholder="Enter Product Price" class="input-box" id="product-price-inpt">
+                     
                     <select title="currency" class="currency" id="currency-inpt" name="currency"> 
                         <option value="" disabled selected>Select Currency</option> 
-                        <option value="USD">&#36; (USD)</option> 
-                        <option value="INR">&#8377; (INR)</option> 
-                        <option value="GBP">&#163; (GBP)</option> 
-                        <option value="EUR">&#8364; (EUR)</option> 
-                        <option value="JPY">&#165; (JPY)</option> 
+                        <option value="&#36;">&#36; (USD)</option> 
+                        <option value="&#8377;">&#8377; (INR)</option> 
+                        <option value="&#163;">&#163; (GBP)</option> 
+                        <option value="&#8364;">&#8364; (EUR)</option> 
+                        <option value="&#165;">&#165; (JPY)</option> 
                     </select>
 
                    
@@ -220,6 +221,7 @@
                     <datalist id="category-inpt-list"> 
                         
                     </datalist>
+                    
                 </div>
                
                 <div class="text-input-row">
@@ -228,9 +230,17 @@
                     <datalist id="type-inpt-list">
                     </datalist>
                 </div>
-                
+                <div class="text-input-row">
+                    <p>Inventory :</p>
+                     <input type="number" min="0" step="1" placeholder="Enter Number of Units" class="input-box" id="product-inventory-inpt">
+                </div>
+                <div class="text-input-row">
+                        <p>Discount(%):</p>
+                        <input type="number"  min="0" max="100" step="1" placeholder="Enter Discount" class="input-box" id="product-discount-inpt">
+                    </div>
             </div>
                 <div class="uploader-btns" id="image-uploader-btns" >
+                    
                     <button id="list-product-btn" class="uploader-btn">List New Product</button>
                     <div class="text-input-row">
                          <img src="../assets/loding-icon.svg" alt="loding" height="22px" id="loading-icon" class="loading-icon">

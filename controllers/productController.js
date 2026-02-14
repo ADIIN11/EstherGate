@@ -127,3 +127,20 @@ async function setProductImg(productId,imageNumber,productImg,productImgPubId){
     console.log("error while setting profile img:",err)
   }
 }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.getTopSellingProducts=async(req,res)=>{
+  try{
+    const topSellingProducts = await productModel.find({}, { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1,discount: 1, _id: 0 }).sort({ productBought: -1 }).limit(10)
+    res.json({ topSellingProducts:topSellingProducts
+       })
+
+  }catch(err){
+    console.log("error while fetching topSellingProducts:",err)
+  }
+
+}

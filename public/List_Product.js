@@ -23,6 +23,8 @@
   const categoryInptList=document.getElementById("category-inpt-list")
   const typeInpt=document.getElementById("type-inpt")
   const typeInptList=document.getElementById("type-inpt-list")
+  const productInventoryInpt=document.getElementById("product-inventory-inpt")
+  const productDiscountInpt=document.getElementById("product-discount-inpt")
 
   const listProductSidebarLi=document.getElementById("list-product-li")
   const listProduct=document.getElementById("list-product")
@@ -678,7 +680,7 @@ function updateCategoryList(){
 listProductBtn.addEventListener("click",()=>{
   if(!productNameInpt.value||!productFullNameInpt.value
     ||!productPriceInpt.value||!categoryInpt.value
-    ||!typeInpt.value){
+    ||!typeInpt.value||!productInventoryInpt.value||!productDiscountInpt.value){
     uploaderMsgPara.classList.add("appear")
     uploaderMsgPara.textContent="Pls fill all the box" 
 
@@ -735,7 +737,7 @@ async function createProduct(){
     productId: productId,
     name: productNameInpt.value,
     fullName:productFullNameInpt.value,
-    price: productPriceInpt.value,
+    price: Number(productPriceInpt.value),
     currency:currencyInpt.value,
     createdAt: new Date().toDateString(),
     sellerId: id,
@@ -744,6 +746,8 @@ async function createProduct(){
     type: typeInpt.value,
     description:productDescription.value,
     tags:tags,
+    inventory:Number(productInventoryInpt.value),
+    discount:Number(productDiscountInpt.value),
     views:0,
     addedToCart:0,
     productBought:0,
@@ -826,6 +830,8 @@ async function createProduct(){
     typeInpt.value=""
     productDescription.value=""
     tagBox.innerHTML=""
+    productInventoryInpt.value=""
+    productDiscountInpt.value=""
     imageDisplay1.innerHTML=`
     <img src="/assets/product-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
     <h4 class="Upload-Img">Select Product Img</h4>
