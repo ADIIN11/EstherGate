@@ -34,7 +34,7 @@ router.post("/Upload_Product_Image",upload.single("image"), uploadProductImage)
 router.post("/Get_Top_Selling_Products", getTopSellingProducts)
 
 router.get("/:productName/:productId", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/Sign_Up.html"))
+  res.sendFile(path.join(__dirname, "../public/Product_Page.html"))
 })
 
 

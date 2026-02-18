@@ -12,7 +12,6 @@ body{
 }
 
 
-
 /* Search bar */
 
 .search-bar{
@@ -291,6 +290,49 @@ div.super-li{
  /* overflow-y: auto; */
 }
 
+
+.product{
+    margin: 1rem 3rem;
+    border: 2px solid #ef720a;
+   
+    display: flex;
+    flex-direction: row;
+   padding: 1rem;
+    
+}
+
+
+.product-image-display{
+    border: 2px solid #ef720a ;
+    width: 14rem;
+    height: 14rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 .slide-holder{
       border: 2px solid #ef720a;
 }
@@ -310,6 +352,7 @@ div.super-li{
  overflow-y: hidden;
  scroll-snap-type: x mandatory;
 }
+
 .product-card {
     scroll-snap-align: start;
   border: 2px solid #ef720a;
