@@ -144,3 +144,53 @@ exports.getTopSellingProducts=async(req,res)=>{
   }
 
 }
+
+exports.getMostViewedProducts=async(req,res)=>{
+  try{
+    const mostViewedProducts = await productModel.find({}, { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1,discount: 1, _id: 0 }).sort({ views: -1 }).limit(10)
+    res.json({ mostViewedProducts:mostViewedProducts
+       })
+
+  }catch(err){
+    console.log("error while fetching mostViewedProducts:",err)
+  }
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+exports.getProduct=async(req,res)=>{
+  const productId=req.params.productId
+  incrementProductKey(productId, "views")
+  try{
+    const product = await productModel.findOne({ productId: productId },{ _id: 0 })
+    if (!product) { 
+      console.log("Product not found"); 
+      res.json({ 
+        product:product
+       })
+    }
+    res.json({ 
+        product:product
+       })
+  }catch(err){
+    console.log("error while fetching product:",err)
+  }
+
+}
+
+
+
+
+
+async function incrementProductKey(productId, key) {
+  try {
+    const result = await productModel.updateOne(
+      { productId: productId },          
+      { $inc: { [key]: 1 } }             
+    )
+
+    console.log("Update result:", result.acknowledged)
+  } catch (error) {
+    console.error("Error updating product key:", error)
+  }
+}

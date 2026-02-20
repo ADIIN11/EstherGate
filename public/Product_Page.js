@@ -12,6 +12,24 @@
   const listProductSidebarLi=document.getElementById("list-product-li")
   
   const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
+  const productHolder=document.getElementById("product-holder")
+
+  const imageDisplay1=document.getElementById("image-display-1") 
+  const imageDisplay2=document.getElementById("image-display-2") 
+  const imageDisplay3=document.getElementById("image-display-3") 
+  const imageDisplay4=document.getElementById("image-display-4") 
+  const imageDisplay5=document.getElementById("image-display-5") 
+  const imageDisplays=[imageDisplay1,imageDisplay2,imageDisplay3,imageDisplay4,imageDisplay5]
+  const productImageDisplay=document.getElementById("product-image-display")
+  const productDetails=document.getElementById("product-details")
+  const ratingsBox=document.getElementById("ratings-box")
+
+  const productDescription=document.getElementById("product-description")
+ 
+  let productObj
+  let imageSelected=1
+
+
  
   async function checkToken(){
     const token = localStorage.getItem("token")
@@ -139,36 +157,95 @@ async function signOut(){
   
 }
 
-let topSellingProducts = []
-let topSellingProductsRow=""
 
 
-async function getTopSellingList(){
-  try{
-    const res = await axios.post("/Product/Get_Top_Selling_Products")
-    topSellingProducts=res.data.topSellingProducts
-    console.log(topSellingProducts)
-    for(let i=0;i<topSellingProducts.length;i++){
-    topSellingProductsRow +=` 
-        <div class="product-card" >
-          <a href="/Product/${topSellingProducts[i].name}/${topSellingProducts[i].productId}" >
-              <img src="${topSellingProducts[i].productImg1}" alt="Product image" class="product-image">
-                  <h3>${topSellingProducts[i].name}</h3>
-            
-                  
-                  <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</s></sup></p>
-                 
-                
-          </a>
-            <button onclick="addToCart(${topSellingProducts[i].productId})" >Add to Cart</button>
-        </div> `
+
+document.querySelectorAll('.image-selector-display').forEach(el => {
+    el.addEventListener('click', () => {
+        // remove selection from all
+        document.querySelectorAll('.image-selector-display').forEach(e => e.classList.remove('selected'))
+        
+        // add selection to clicked one
+        el.classList.add('selected')
+
+        // get tabindex value
+        imageSelected = Number(el.getAttribute('tabindex'))
+        const imgKey = `productImg${imageSelected}`
+        if(productObj[imgKey])
+          productImageDisplay.innerHTML=`<img src="${productObj[imgKey]}" alt="product-icon" class="" >`
+        else
+          productImageDisplay.innerHTML=`
+            <img src="/assets/product-icon.svg" alt="product-icon" class="image-preview" id="image-preview">
+            <h4 class="Upload-Img">Product Img Not Found</h4>
+          `
+    });
+});
+
+const urlParts = window.location.pathname.split("/"); 
+const productId = urlParts[urlParts.length - 1]
+
+
+async function fetchProduct(productId) { 
+  try { 
+    const res = await axios.get(`/Product/${productId}`)
+    console.log("Product info:", res.data)
+    if(!res.data.product){
+      productHolder.innerHTML=`<h2>Product Does Not Exists</h2>`
     }
-  topSellingProductsSlide.innerHTML=topSellingProductsRow
-  } catch (err) {
-          console.error(`failed to get Top Selling Product`, err)
+    return res.data.product
+    } catch (err) { 
+      console.error("Error fetching product:", err)
+    } 
   }
+async function getProduct(){
+  productObj=await fetchProduct(productId)
+  if(!productObj)
+    return
+  for(let i=0;i<5;i++){
+    const imgKey = `productImg${i+1}`
+    if(productObj[imgKey])
+    imageDisplays[i].innerHTML=`<img src="${productObj[imgKey]}" alt="product-icon" class="image-selector-preview" >` 
+
+  }
+  const imgKey = `productImg${imageSelected}`
+  productImageDisplay.innerHTML=`<img src="${productObj[imgKey]}" alt="product-icon" class="" >`
+
+  productDetails.innerHTML=`
+  <h2 class="product-name">${productObj.name}</h2> 
+    <h3 class="product-full-name">${productObj.fullName}</h3>
+    <h4 class="Category">Category:${productObj.category}</h4>
+    <h4 class="Type">Type:${productObj.type}</h4>
+    <h4 class="seller-name">Seller Name: ${productObj.sellerName}</h4>
+    <h4 class="mrp">${productObj.discount}% OFF   <del>${productObj.currency}${productObj.price}</del></h4>
+    <h2 class="price">${productObj.currency} ${productObj.price-((productObj.price/100)*productObj.discount)}</h2>
+    
+  `
+
+
+
+  let ratingsText=`<h4 class="seller-name">Rating:</h4>`
+  const ratings=productObj.ratings
+  const decimalPart = (ratings % 1).toFixed(2)
+  const intPart=ratings-decimalPart 
+  let starAdded=0
+  for(let i=1;i<=intPart;i++){
+    ratingsText+=`<img src="/assets/full-star.svg" alt="product-icon" class="stars" id="stars">`
+    starAdded++
+  }
+  if(decimalPart>=0.45){
+    ratingsText+=`<img src="/assets/half-star.svg" alt="product-icon" class="stars" id="stars">`
+    starAdded++
+  }
+  while((5-starAdded)!=0){
+    ratingsText+=`<img src="/assets/empty-star.svg" alt="product-icon" class="stars" id="stars">`
+    starAdded++
+  }
+  if(productObj.noCustomersReviewed)
+  ratingsText+=`<h4 class="seller-name"> ${productObj.noCustomersReviewed}</h4>`
+    
+  ratingsBox.innerHTML=ratingsText
+
+  productDescription.innerHTML+=`<p> ${productObj.description}</p>`
 
 }
-
-
-getTopSellingList()
+getProduct()

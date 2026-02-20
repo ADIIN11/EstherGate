@@ -751,6 +751,9 @@ async function createProduct(){
     views:0,
     addedToCart:0,
     productBought:0,
+    ratings:0,
+    noCustomersReviewed:0,
+    customerReviews:null,
     productImg1:null,
     productImg1PubId:null,
     productImg2:null,
@@ -854,6 +857,7 @@ async function createProduct(){
     setTimeout(()=>{
             uploaderMsgPara.textContent=""
             uploaderMsgPara.classList.remove("appear")
+            window.location.href='/'
           },3000)
 
   }catch(err){

@@ -11,7 +11,9 @@ const {
     updateType,
     createProduct,
     uploadProductImage,
-    getTopSellingProducts
+    getTopSellingProducts,
+    getMostViewedProducts,
+    getProduct
 }=require("../controllers/productController")
 
 router.post("/Get_Categories",getcategories)
@@ -33,9 +35,12 @@ router.post("/Upload_Product_Image",upload.single("image"), uploadProductImage)
 
 router.post("/Get_Top_Selling_Products", getTopSellingProducts)
 
+router.post("/Get_Most_Viewed_Products", getMostViewedProducts)
+
 router.get("/:productName/:productId", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/Product_Page.html"))
 })
+router.get("/:productId", getProduct)
 
 
 
