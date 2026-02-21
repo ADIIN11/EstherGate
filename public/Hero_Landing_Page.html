@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esther Gate</title>
+    <style>
+        :root {
+            --spicy-paprika: #e35311;
+            --golden-orange: #f3a000;
+            --harvest-orange: #ef720a;
+            --amber-flame: #feb60b;
+            --lemon-chiffon: #fef4bc;
+            
+            --scroll: 0;
+            
+            /* --- TIMELINES --- */
+            --m1-prog: clamp(0, calc(var(--scroll) * 5), 1);
+            --m2-prog: clamp(0, calc((var(--scroll) - 0.10) * 3.33), 1);
+            --c-prog: clamp(0, calc((var(--scroll) - 0.40) / 0.60), 1);
+            --m3-prog: clamp(0, calc((var(--scroll) - 0.30) * 3.33), 1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--lemon-chiffon);
+            font-family: 'Arial Black', Impact, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body { height: 600vh; }
+
+        #scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--lemon-chiffon);
+        }
+
+        #logo-layer {
+            position: absolute;
+            top: 1%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            text-align: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        #logo-text {
+            white-space: nowrap;
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            color: var(--spicy-paprika);
+            margin: 0; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: calc(var(--scroll) * var(--scroll) * var(--scroll)); 
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { filter: drop-shadow(0 0 5px var(--golden-orange)); }
+            to { filter: drop-shadow(0 0 20px var(--golden-orange)); }
+        }
+
+        .landscape-layer {
+            position: absolute;
+            bottom: 22vh; 
+            left: -25vw; 
+            width: 150vw; 
+            height: 50vh;
+            transform-origin: bottom center;
+        }
+
+        #landscape-back {
+            z-index: 2;
+            transform: translateY(calc((1 - var(--m1-prog)) * 100%)) scale(calc(0.5 + 0.5 * var(--m1-prog)));
+            opacity: calc(var(--m1-prog) * 1.5);
+        }
+
+        #landscape-mid {
+            z-index: 3;
+            transform: translateY(calc((1 - var(--m2-prog)) * 100%)) scale(calc(0.6 + 0.4 * var(--m2-prog)));
+            opacity: calc(var(--m2-prog) * 1.5);
+        }
+
+        #landscape-front {
+            z-index: 4;
+            transform: translateY(calc((1 - var(--m3-prog)) * 100%)) scale(calc(0.7 + 0.3 * var(--m3-prog)));
+            opacity: calc(var(--m3-prog) * 1.5);
+        }
+
+        /* Castle Fix: Lowered by a few extra pixels */
+        #castle-layer {
+            position: absolute;
+            bottom: calc(22vh - 5px); 
+            left: 50%;
+            width: 100vw; 
+            height: 75vh; 
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            pointer-events: none;
+        }
+
+        #castle-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: bottom center;
+            transform: translateY(calc((1 - var(--c-prog)) * 100%)) scale(calc(0.05 + (0.95 * var(--c-prog))));
+            width: 100vw;
+        }
+
+        /* Castle Fix: Display block removes inline descent gap causing levitation */
+        #castle-group svg {
+            display: block; 
+        }
+
+        #ground-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 22vh; 
+            background-color: var(--harvest-orange);
+            z-index: 10;
+        }
+
+        #path {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 100%;
+            background-color: var(--amber-flame);
+            clip-path: polygon(45% 0%, 55% 0%, 90% 100%, 10% 100%);
+        }
+
+        #flora-layer {
+            position: absolute;
+            bottom: 22vh; 
+            width: 100vw;
+            height: 78vh;
+            z-index: 20;
+            pointer-events: none;
+            opacity: clamp(0, calc((0.95 - var(--scroll)) * 20), 1);
+        }
+
+        .flora-container {
+            position: absolute;
+            bottom: 0;
+            transform-origin: bottom center;
+            will-change: transform, left, opacity;
+        }
+
+        #path-leaves-layer {
+            position: absolute;
+            bottom: 22vh; 
+            width: 100vw;
+            height: 78vh;
+            z-index: 21;
+            pointer-events: none;
+            opacity: clamp(0, calc((0.95 - var(--scroll)) * 20), 1);
+        }
+
+        #ui-layer {
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            text-align: center;
+            z-index: 200;
+            opacity: calc((var(--c-prog) - 0.95) * 20);
+            /* Error Fix: Default pointer-events to none. Toggled via JS. */
+            pointer-events: none;
+        }
+
+        #signup-btn {
+            padding: 15px 45px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--lemon-chiffon);
+            background-color: var(--spicy-paprika);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            animation: btnGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes btnGlow {
+            from { box-shadow: 0 0 10px var(--golden-orange); }
+            to { box-shadow: 0 0 30px var(--golden-orange); }
+        }
+
+        #signup-btn:hover {
+            background-color: var(--harvest-orange);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        #leaves-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 300;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scene">
+        
+        <div id="logo-layer">
+            <h1 id="logo-text">ESTHER GATE</h1>
+        </div>
+
+        <div id="landscape-back" class="landscape-layer">
+            <svg viewBox="0 0 1500 250" preserveAspectRatio="none" width="100%" height="100%">
+                <path d="M 0 250 L 0 50 Q 250 0 350 100 T 750 60 T 1100 120 T 1500 40 L 1500 250 Z" fill="var(--harvest-orange)" opacity="0.6"/>
+            </svg>
+        </div>
+        <div id="landscape-mid" class="landscape-layer">
+            <svg viewBox="0 0 1500 250" preserveAspectRatio="none" width="100%" height="100%">
+                <path d="M 0 250 L 0 120 Q 300 50 500 150 T 1000 100 T 1500 140 L 1500 250 Z" fill="var(--golden-orange)" />
+            </svg>
+        </div>
+        <div id="landscape-front" class="landscape-layer">
+            <svg viewBox="0 0 1500 250" preserveAspectRatio="none" width="100%" height="100%">
+                <path d="M 0 250 L 0 180 Q 200 120 400 200 T 900 150 T 1500 190 L 1500 250 Z" fill="var(--amber-flame)" />
+            </svg>
+        </div>
+
+        <div id="castle-layer">
+            <div id="castle-group">
+                <svg viewBox="-661 0 2340 870" width="100%" height="100%" preserveAspectRatio="xMidYMax meet">
+                    <path d="M0,0 L5,1 L10,6 L21,18 L28,26 L40,40 L53,55 L62,65 L71,76 L84,91 L93,102 L102,112 L111,123 L124,138 L133,149 L142,160 L142,167 L139,170 L137,171 L108,171 L109,198 L109,257 L147,257 L149,261 L150,274 L150,294 L149,301 L199,301 L200,263 L203,258 L206,257 L244,257 L249,259 L250,262 L251,283 L251,347 L250,386 L290,386 L290,216 L279,217 L271,217 L262,215 L261,208 L276,181 L289,158 L303,133 L315,112 L321,104 L323,102 L329,102 L335,110 L349,135 L361,156 L373,177 L389,206 L389,214 L387,216 L361,218 L360,709 L476,709 L481,712 L483,714 L483,720 L479,726 L176,726 L173,726 L-362,726 L-480,725 L-483,722 L-484,717 L-482,712 L-477,709 L-356,709 L-356,216 L-358,217 L-381,217 L-386,214 L-387,208 L-372,181 L-358,156 L-346,135 L-331,109 L-325,102 L-319,102 L-314,107 L-304,124 L-291,147 L-279,168 L-264,195 L-257,208 L-257,213 L-260,216 L-270,217 L-287,217 L-287,237 L-286,239 L-287,251 L-286,255 L-286,384 L-287,386 L-246,385 L-246,284 L-245,261 L-243,258 L-240,257 L-202,257 L-198,259 L-196,263 L-196,301 L-146,301 L-146,261 L-141,257 L-104,257 L-105,247 L-104,171 L-134,171 L-139,167 L-140,164 L-137,157 L-125,143 L-116,132 L-104,118 L-95,107 L-85,96 L-76,85 L-63,70 L-51,56 L-38,41 L-27,28 L-17,17 L-8,6 L-3,1 Z" fill="var(--spicy-paprika)" transform="translate(510,153)"/>
+                    <path d="M0,0 L5,1 L10,6 L21,18 L28,26 L40,40 L53,55 L62,65 L71,76 L84,91 L93,102 L102,112 L111,123 L124,138 L133,149 L142,160 L142,167 L139,170 L137,171 L108,171 L109,198 L109,257 L147,257 L149,261 L150,274 L150,294 L149,301 L199,301 L200,263 L203,258 L206,257 L244,257 L249,259 L249,430 L247,433 L212,433 L212,366 L-209,366 L-209,432 L-210,433 L-243,433 L-244,432 L-244,357 L-246,356 L-246,284 L-245,261 L-243,258 L-240,257 L-202,257 L-198,259 L-196,263 L-196,301 L-146,301 L-146,261 L-141,257 L-104,257 L-105,247 L-104,171 L-134,171 L-139,167 L-140,164 L-137,157 L-125,143 L-116,132 L-104,118 L-95,107 L-85,96 L-76,85 L-63,70 L-51,56 L-38,41 L-27,28 L-17,17 L-8,6 L-3,1 Z" fill="var(--harvest-orange)" transform="translate(510,153)"/>
+                    <path d="M0,0 L5,1 L10,6 L21,18 L28,26 L40,40 L53,55 L62,65 L71,76 L84,91 L93,102 L102,112 L111,123 L124,138 L133,149 L142,160 L142,167 L139,170 L137,171 L108,171 L109,198 L109,258 L98,259 L97,260 L96,299 L95,301 L50,301 L49,300 L48,260 L46,258 L-44,258 L-45,259 L-46,301 L-92,301 L-93,300 L-94,261 L-96,259 L-103,258 L-103,171 L-134,171 L-139,167 L-140,164 L-137,157 L-125,143 L-116,132 L-104,118 L-95,107 L-85,96 L-76,85 L-63,70 L-51,56 L-38,41 L-27,28 L-17,17 L-8,6 L-3,1 Z" fill="var(--golden-orange)" transform="translate(510,153)"/>
+                    <path d="M0,0 L6,0 L12,8 L26,33 L38,54 L50,75 L66,104 L66,112 L64,114 L38,116 L37,607 L153,607 L153,608 L-32,608 L-32,129 L-31,113 L-61,113 L-62,106 L-47,79 L-34,56 L-20,31 L-8,10 L-2,2 Z" fill="var(--amber-flame)" transform="translate(833,255)"/>
+                    <path d="M0,0 L6,0 L11,5 L21,22 L34,45 L46,66 L61,93 L68,106 L68,111 L65,114 L55,115 L38,115 L38,135 L39,137 L38,149 L39,153 L39,282 L38,284 L37,608 L-30,608 L-30,113 L-58,113 L-60,111 L-60,105 L-55,93 L-43,72 L-29,47 L-15,23 L-4,4 Z" fill="var(--amber-flame)" transform="translate(185,255)"/>
+                    <path d="M0,0 L3,2 L3,9 L0,12 L-2,13 L-31,13 L-30,40 L-30,100 L-41,101 L-42,102 L-43,141 L-44,143 L-89,143 L-90,142 L-91,102 L-93,100 L-183,100 L-184,101 L-185,143 L-231,143 L-232,142 L-233,103 L-235,101 L-242,100 L-242,13 L-273,13 L-276,10 L-241,11 L-33,11 L1,10 L1,3 Z" fill="var(--amber-flame)" transform="translate(649,311)"/>
+                    <path d="M0,0 L50,0 L50,98 L0,98 Z" fill="var(--amber-flame)" transform="translate(393,765)"/>
+                    <path d="M0,0 L46,0 L46,98 L0,98 Z" fill="var(--amber-flame)" transform="translate(581,765)"/>
+                    <path d="M0,0 L43,0 L43,98 L0,98 Z" fill="var(--amber-flame)" transform="translate(521,765)"/>
+                    <path d="M0,0 L43,0 L43,98 L0,98 Z" fill="var(--amber-flame)" transform="translate(460,765)"/>
+                    <path d="M0,0 L9,0 L9,98 L-34,98 L-34,14 L-18,5 L-5,1 Z" fill="var(--amber-flame)" transform="translate(494,576)"/>
+                    <path d="M0,0 L7,0 L23,4 L37,11 L43,15 L43,98 L0,98 Z" fill="var(--amber-flame)" transform="translate(521,576)"/>
+                    <path d="M0,0 L40,0 L40,59 L-9,59 L-7,31 L-2,6 Z" fill="var(--amber-flame)" transform="translate(403,690)"/>
+                    <path d="M0,0 L43,0 L43,59 L0,59 Z" fill="var(--amber-flame)" transform="translate(521,690)"/>
+                    <path d="M0,0 L43,0 L43,59 L0,59 Z" fill="var(--amber-flame)" transform="translate(460,690)"/>
+                    <path d="M0,0 L38,0 L41,12 L44,32 L45,42 L45,59 L0,59 Z" fill="var(--amber-flame)" transform="translate(580,690)"/>
+                    <path d="M0,0 L2,0 L2,66 L-34,66 L-32,57 L-26,41 L-15,20 L-5,6 Z" fill="var(--amber-flame)" transform="translate(441,608)"/>
+                    <path d="M0,0 L5,5 L14,17 L26,40 L33,58 L34,65 L0,65 Z" fill="var(--amber-flame)" transform="translate(580,609)"/>
+                    <path d="M0,0 L117,0 L121,4 L121,10 L117,16 L-186,16 L-189,16 L-724,16 L-842,15 L-845,12 L-846,7 L-844,2 L-841,2 L-843,5 L-843,11 L-840,13 L115,13 L118,10 L117,3 L115,2 L0,1 Z" fill="var(--spicy-paprika)" transform="translate(872,863)"/>
+                    <path d="M0,0 L4,1 L1,1 L1,96 L41,96 L42,16 L43,16 L43,98 L0,98 Z" fill="var(--amber-flame)" transform="translate(521,576)"/>
+                    <path d="M0,0 L2,0 L2,66 L-34,66 L-34,64 L0,64 L-1,2 Z" fill="var(--amber-flame)" transform="translate(441,608)"/>
+                    <path d="M0,0 L2,1 L-9,15 L-18,30 L-27,49 L-31,59 L-32,56 L-24,37 L-18,25 L-8,10 L-4,5 L-3,2 L0,2 Z" fill="var(--spicy-paprika)" transform="translate(440,607)"/>
+                </svg>
+            </div>
+        </div>
+
+        <div id="ground-layer">
+            <div id="path"></div>
+        </div>
+
+        <div id="flora-layer"></div>
+        <div id="path-leaves-layer"></div>
+
+        <div id="ui-layer">
+            <button id="signup-btn" onclick="window.location.href='/Home'">Enter the Gate</button>
+        </div>
+
+        <canvas id="leaves-canvas"></canvas>
+    </div>
+
+    <script>
+        // Error Fix: Target the UI layer to handle pointer events safely via JS
+        const uiLayer = document.getElementById('ui-layer');
+        let currentScrollProgress = 0;
+
+        window.addEventListener('scroll', () => {
+            let maxScroll = document.body.scrollHeight - window.innerHeight;
+            currentScrollProgress = Math.min(window.scrollY / maxScroll, 1);
+            document.documentElement.style.setProperty('--scroll', currentScrollProgress);
+            updateFloraPerspective();
+
+            // Error Fix: Switch to 'auto' only when animation is done
+            uiLayer.style.pointerEvents = currentScrollProgress > 0.95 ? 'auto' : 'none';
+        });
+
+        // --- DYNAMIC FLORA GENERATION ---
+        const floraLayer = document.getElementById('flora-layer');
+        const pathLeavesLayer = document.getElementById('path-leaves-layer');
+        
+        const floraObjects = [];
+        const pathLeafObjects = [];
+        
+        const numPairs = 120; 
+        const numPathLeaves = 20;
+        const scrollDistanceMultiplier = 4.0; 
+        
+        const leafColors = ['#e35311', '#f3a000', '#ef720a', '#feb60b'];
+        const bushGrassColors = ['#e35311', '#f3a000', '#feb60b'];
+
+        const svgs = {
+            tree: (color) => `
+                <svg viewBox="0 0 200 300" width="250px" height="375px" preserveAspectRatio="xMidYMax meet">
+                    <path d="M 90 300 L 110 300 L 105 100 L 95 100 Z" fill="var(--spicy-paprika)" />
+                    <polyline points="100,200 60,110" stroke="var(--spicy-paprika)" stroke-width="8" stroke-linecap="round" fill="none"/>
+                    <polyline points="100,140 135,70" stroke="var(--spicy-paprika)" stroke-width="8" stroke-linecap="round" fill="none"/>
+                    <path d="M 50 180 C 15 170 10 110 40 90 C 30 40 80 10 110 25 C 140 -5 190 20 180 70 C 215 90 205 160 160 170 C 150 220 90 235 70 200 Z" fill="${color}" />
+                </svg>`,
+            bush: (color) => `
+                <svg viewBox="0 0 200 150" width="150px" height="112px" preserveAspectRatio="xMidYMax meet">
+                    <path d="M 20 140 C 0 140 0 90 40 70 C 30 20 80 0 110 20 C 140 -10 190 10 180 60 C 215 80 205 130 160 140 Z" fill="${color}" />
+                </svg>`,
+            grass: (color) => `
+                <svg viewBox="0 0 100 100" width="60px" height="60px" preserveAspectRatio="xMidYMax meet">
+                    <path d="M 50 100 Q 40 60 20 30 Q 45 70 50 100 M 50 100 Q 55 50 60 10 Q 65 60 50 100 M 50 100 Q 70 70 90 40 Q 65 80 50 100" fill="${color}" />
+                </svg>`,
+            grassClump: (color) => `
+                <svg viewBox="0 0 150 100" width="90px" height="60px" preserveAspectRatio="xMidYMax meet">
+                    <g transform="translate(0, 20) scale(0.8)">
+                        <path d="M 50 100 Q 40 60 20 30 Q 45 70 50 100 M 50 100 Q 55 50 60 10 Q 65 60 50 100 M 50 100 Q 70 70 90 40 Q 65 80 50 100" fill="${color}" />
+                    </g>
+                    <g transform="translate(25, 0) scale(1)">
+                        <path d="M 50 100 Q 40 60 20 30 Q 45 70 50 100 M 50 100 Q 55 50 60 10 Q 65 60 50 100 M 50 100 Q 70 70 90 40 Q 65 80 50 100" fill="${color}" />
+                    </g>
+                    <g transform="translate(65, 30) scale(0.7)">
+                        <path d="M 50 100 Q 40 60 20 30 Q 45 70 50 100 M 50 100 Q 55 50 60 10 Q 65 60 50 100 M 50 100 Q 70 70 90 40 Q 65 80 50 100" fill="${color}" />
+                    </g>
+                </svg>`,
+            pathLeaf: (color) => `
+                <svg viewBox="0 0 100 100" width="40px" height="40px" preserveAspectRatio="xMidYMax meet">
+                    <path d="M 50,5 C 80,30 95,60 50,95 C 5,60 20,30 50,5 Z" fill="${color}" />
+                </svg>`
+        };
+
+        for (let i = 0; i < numPairs; i++) {
+            let baseZ = 0.02 + (i * (scrollDistanceMultiplier / numPairs));
+            
+            ['left', 'right'].forEach(side => {
+                let rand = Math.random();
+                let type;
+                
+                if (rand < 0.25) type = 'tree';
+                else if (rand < 0.40) type = 'bush';
+                else if (rand < 0.80) type = 'grass';
+                else type = 'grassClump';
+                
+                let color = type === 'tree' 
+                    ? leafColors[Math.floor(Math.random() * leafColors.length)]
+                    : bushGrassColors[Math.floor(Math.random() * bushGrassColors.length)];
+                
+                let minOffset = type === 'tree' ? 8 : 4; 
+                let randomOffset = (Math.random() * 15); 
+
+                let el = document.createElement('div');
+                el.className = 'flora-container';
+                el.innerHTML = svgs[type](color);
+                floraLayer.appendChild(el);
+                
+                floraObjects.push({ 
+                    el: el, side: side, z: baseZ, offset: minOffset + randomOffset, type: type 
+                });
+            });
+        }
+
+        for (let i = 0; i < numPathLeaves; i++) {
+            let baseZ = 0.05 + (i * (scrollDistanceMultiplier / numPathLeaves));
+            let color = leafColors[Math.floor(Math.random() * leafColors.length)];
+            let xOffset = (Math.random() - 0.5) * 6; 
+            let hitGroundZ = 0.1 + Math.random() * 0.3; 
+            let baseRotation = Math.random() * 360;
+
+            let el = document.createElement('div');
+            el.className = 'flora-container';
+            el.innerHTML = svgs.pathLeaf(color);
+            pathLeavesLayer.appendChild(el);
+
+            pathLeafObjects.push({ 
+                el: el, z: baseZ, xOffset: xOffset, hitGroundZ: hitGroundZ, baseRotation: baseRotation 
+            });
+        }
+
+        function updateFloraPerspective() {
+            floraObjects.forEach(item => {
+                let currentZ = item.z - (currentScrollProgress * scrollDistanceMultiplier);
+                
+                if (currentZ < 1 && currentZ > -0.1) {
+                    let invZ = 1 - currentZ; 
+                    
+                    let baseScale = item.type === 'tree' ? 4.0 : (item.type === 'bush' ? 1.5 : (item.type === 'grassClump' ? 1.4 : 1.2));
+                    let scale = 0.05 + Math.pow(invZ, 2.5) * baseScale; 
+                    
+                    let xOffsetPercent = item.offset + Math.pow(invZ, 1.2) * 35; 
+                    let xPos = item.side === 'left' 
+                        ? `calc(50vw - ${xOffsetPercent}vw)` 
+                        : `calc(50vw + ${xOffsetPercent}vw)`;
+
+                    let yOffsetVH = Math.pow(invZ, 1.2) * 22; 
+
+                    let opacity = 1;
+                    if (invZ > 0.8) opacity = 1 - ((invZ - 0.8) * 5); 
+
+                    if (opacity <= 0) {
+                        item.el.style.display = 'none';
+                    } else {
+                        item.el.style.display = 'block';
+                        item.el.style.opacity = opacity;
+                        item.el.style.transform = `translateX(-50%) translateY(${yOffsetVH}vh) scale(${scale})`;
+                        item.el.style.left = xPos;
+                        item.el.style.zIndex = Math.floor(invZ * 100); 
+                    }
+                } else {
+                    item.el.style.display = 'none';
+                }
+            });
+
+            pathLeafObjects.forEach(item => {
+                let currentZ = item.z - (currentScrollProgress * scrollDistanceMultiplier);
+                if (currentZ < 1 && currentZ > -0.1) {
+                    let invZ = 1 - currentZ; 
+                    let scale = 0.05 + Math.pow(invZ, 2.5) * 0.8; 
+                    let xPos = `calc(50vw + ${item.xOffset * (1 + Math.pow(invZ, 1.5) * 10)}vw)`;
+
+                    let yOffsetVH = Math.pow(invZ, 1.2) * 22; 
+                    let fallOffsetVH = 0;
+                    let currentRotation = item.baseRotation;
+
+                    if (invZ < item.hitGroundZ) {
+                        let fallProgress = Math.max(0, invZ / item.hitGroundZ);
+                        fallOffsetVH = -40 * (1 - Math.pow(fallProgress, 2)); 
+                        currentRotation += (invZ * 1500);
+                    }
+
+                    let finalY = yOffsetVH + fallOffsetVH;
+
+                    let opacity = 1;
+                    if (invZ < 0.05) opacity = invZ * 20; 
+                    else if (invZ > 0.85) opacity = 1 - ((invZ - 0.85) * 6.6); 
+
+                    if (opacity <= 0) {
+                        item.el.style.display = 'none';
+                    } else {
+                        item.el.style.display = 'block';
+                        item.el.style.opacity = opacity;
+                        item.el.style.transform = `translateX(-50%) translateY(${finalY}vh) scale(${scale}) rotate(${currentRotation}deg)`;
+                        item.el.style.left = xPos;
+                        item.el.style.zIndex = Math.floor(invZ * 100); 
+                    }
+                } else {
+                    item.el.style.display = 'none';
+                }
+            });
+        }
+        updateFloraPerspective();
+
+        // --- 2D CANVAS LEAF PHYSICS ---
+        const canvas = document.getElementById('leaves-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let mouse = { x: -1000, y: -1000 };
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        class Leaf {
+            constructor() { this.reset(true); }
+
+            reset(initial = false) {
+                this.x = Math.random() * canvas.width;
+                this.y = initial ? Math.random() * canvas.height : -50;
+                this.size = Math.random() * 15 + 10;
+                this.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+                this.baseVy = Math.random() * 1.5 + 1.5; 
+                this.vy = this.baseVy; 
+                this.baseVx = (Math.random() - 0.5) * 1.5; 
+                this.vx = this.baseVx; 
+                this.angle = Math.random() * 360;
+                this.baseSpin = (Math.random() - 0.5) * 3;
+                this.spin = this.baseSpin;
+            }
+
+            update() {
+                this.y += this.vy;
+                this.x += this.vx;
+                this.angle += this.spin;
+                this.vx = this.vx * 0.985 + this.baseVx * 0.015; 
+                this.vy = this.vy * 0.95 + this.baseVy * 0.05; 
+                this.spin = this.spin * 0.98 + this.baseSpin * 0.02; 
+
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 180) {
+                    const force = (180 - distance) / 180;
+                    this.vx += (dx / distance) * force * 0.25; 
+                    this.vy -= force * 0.4; 
+                    this.spin += (dx / distance) * force * 2;
+                }
+
+                if (this.y > canvas.height + 50) this.reset(false);
+                if (this.x < -100) this.x = canvas.width + 50;
+                if (this.x > canvas.width + 100) this.x = -50;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.angle * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size / 2.5, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const leaves = [];
+        for (let i = 0; i < 45; i++) leaves.push(new Leaf());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            leaves.forEach(leaf => leaf.update());
+            leaves.forEach(leaf => leaf.draw());
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>

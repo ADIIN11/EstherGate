@@ -6,6 +6,16 @@ const {
     getProfileImage
 }=require("../controllers/commonController")
 
+const path = require('path')
+
+router.get("/",(req, res) => {
+  res.sendFile(path.join(__dirname, "../public/Hero_Landing_Page.html"))
+})
+
+router.get("/Home",(req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"))
+})
+
 
 router.post("/Token_Verification", tokenVerification)
 

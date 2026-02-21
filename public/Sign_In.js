@@ -38,7 +38,7 @@ else if(nameEmailInpt.value&&
 
 else{
 
-           let userData = {
+            let userData = {
             usernameEmail: nameEmailInpt.value,
             password: passwordInpt.value,
             }
@@ -51,7 +51,7 @@ else{
 
         const res = await axios.post("/Auth/Sign_In", userData)
 
-        if(!res.data.exists){                              // call to check user already exist in db
+        if(!res.data.exists){                             // call to check user already exist in db
             msgPara.textContent="Account Does Not Exists, Pls Sign-Up"
             console.log("Account already exists")
             return
@@ -69,7 +69,7 @@ else{
             console.log("Signed In Successfully")
             verifyToken()
             setTimeout(() => {
-                window.location.href='/'
+                window.location.href='/Home'
             },2000);
             
 
@@ -119,3 +119,89 @@ async function verifyToken(){
         }
 
 }
+
+// ==========================================
+// LEAF PHYSICS ANIMATION (Added)
+// ==========================================
+const canvas = document.getElementById('leaves-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let mouse = { x: -1000, y: -1000 };
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+// Hex colors matching your theme
+const leafColors = ['#e35311', '#f3a000', '#ef720a', '#feb60b'];
+
+class Leaf {
+    constructor() { this.reset(true); }
+
+    reset(initial = false) {
+        this.x = Math.random() * canvas.width;
+        this.y = initial ? Math.random() * canvas.height : -50;
+        this.size = Math.random() * 15 + 10;
+        this.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+        this.baseVy = Math.random() * 1.5 + 1.5; 
+        this.vy = this.baseVy; 
+        this.baseVx = (Math.random() - 0.5) * 1.5; 
+        this.vx = this.baseVx; 
+        this.angle = Math.random() * 360;
+        this.baseSpin = (Math.random() - 0.5) * 3;
+        this.spin = this.baseSpin;
+    }
+
+    update() {
+        this.y += this.vy;
+        this.x += this.vx;
+        this.angle += this.spin;
+        this.vx = this.vx * 0.985 + this.baseVx * 0.015; 
+        this.vy = this.vy * 0.95 + this.baseVy * 0.05; 
+        this.spin = this.spin * 0.98 + this.baseSpin * 0.02; 
+
+        // Mouse Wind Interaction
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 180) {
+            const force = (180 - distance) / 180;
+            this.vx += (dx / distance) * force * 0.25; 
+            this.vy -= force * 0.4; 
+            this.spin += (dx / distance) * force * 2;
+        }
+
+        if (this.y > canvas.height + 50) this.reset(false);
+        if (this.x < -100) this.x = canvas.width + 50;
+        if (this.x > canvas.width + 100) this.x = -50;
+    }
+
+    draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.angle * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.size, this.size / 2.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+const leaves = [];
+for (let i = 0; i < 45; i++) leaves.push(new Leaf());
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    leaves.forEach(leaf => leaf.update());
+    leaves.forEach(leaf => leaf.draw());
+    requestAnimationFrame(animate);
+}
+animate();
