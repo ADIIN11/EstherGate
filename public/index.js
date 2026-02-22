@@ -13,6 +13,20 @@
   
   const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
+
+
+
+topSellingProductsSlide.addEventListener('scroll', () => {
+  const isAtRightEnd = topSellingProductsSlide.scrollLeft + topSellingProductsSlide.clientWidth >= topSellingProductsSlide.scrollWidth - 5;
+
+  if (isAtRightEnd) {
+    console.log("Reached the right end of the div!");
+    
+  }
+})
+ 
+
+
  
   async function checkToken(){
     const token = localStorage.getItem("token")
