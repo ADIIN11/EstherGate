@@ -857,7 +857,7 @@ async function createProduct(){
     setTimeout(()=>{
             uploaderMsgPara.textContent=""
             uploaderMsgPara.classList.remove("appear")
-            window.location.href='/'
+            window.location.href='/Home'
           },3000)
 
   }catch(err){

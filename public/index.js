@@ -16,14 +16,7 @@
 
 
 
-topSellingProductsSlide.addEventListener('scroll', () => {
-  const isAtRightEnd = topSellingProductsSlide.scrollLeft + topSellingProductsSlide.clientWidth >= topSellingProductsSlide.scrollWidth - 5;
 
-  if (isAtRightEnd) {
-    console.log("Reached the right end of the div!");
-    
-  }
-})
  
 
 
@@ -156,13 +149,24 @@ async function signOut(){
 
 let topSellingProducts = []
 let topSellingProductsRow=""
-
+let currentTopSellingPage = 1
+let topSellingIsLoading = false
+let topSellingHasMoreProducts = true
 
 async function getTopSellingList(){
+  if (topSellingIsLoading|| !topSellingHasMoreProducts) 
+    return
+  topSellingIsLoading = true
+
   try{
-    const res = await axios.post("/Product/Get_Top_Selling_Products")
+    const res = await axios.post("/Product/Get_Top_Selling_Products",{page:currentTopSellingPage})
+    currentTopSellingPage++
     topSellingProducts=res.data.topSellingProducts
     console.log(topSellingProducts)
+    if(topSellingProducts.length===0){
+      topSellingHasMoreProducts = false
+      return
+    }
     for(let i=0;i<topSellingProducts.length;i++){
     topSellingProductsRow +=` 
         <div class="product-card" >
@@ -178,9 +182,12 @@ async function getTopSellingList(){
             <button onclick="addToCart(${topSellingProducts[i].productId})" >Add to Cart</button>
         </div> `
     }
-  topSellingProductsSlide.innerHTML=topSellingProductsRow
+  topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
+  topSellingProductsRow=""
   } catch (err) {
           console.error(`failed to get Top Selling Product`, err)
+  }finally {
+    topSellingIsLoading = false;
   }
 
 }
@@ -188,14 +195,47 @@ async function getTopSellingList(){
 
 getTopSellingList()
 
+topSellingProductsSlide.addEventListener('scroll', () => {
+  const isAtRightEnd = topSellingProductsSlide.scrollLeft + topSellingProductsSlide.clientWidth >= topSellingProductsSlide.scrollWidth - 5
+
+  if (isAtRightEnd) {
+    getTopSellingList()
+  }
+})
+// For bottom of the scroll
+// const productContainer = document.getElementById('topSellingProductsSlide');
+
+// productContainer.addEventListener('scroll', () => {
+//   const isAtBottom = productContainer.scrollTop + productContainer.clientHeight >= productContainer.scrollHeight - 5;
+
+//   if (isAtBottom) {
+//     console.log("Reached the bottom of the div!");
+//     // Call your fetch function here
+//     getTopSellingList();
+//   }
+// });
+
+
 let mostViewedProducts = []
 let mostViewedProductsRow=""
+let currentMostViewedPage = 1
+let mostViewedIsLoading = false
+let mostViewedHasMoreProducts = true
 
 async function getMostViewedList(){
+  if (mostViewedIsLoading|| !mostViewedHasMoreProducts) 
+    return
+  mostViewedIsLoading = true
+
   try{
-    const res = await axios.post("/Product/Get_Most_Viewed_Products")
+    const res = await axios.post("/Product/Get_Most_Viewed_Products",{page:currentMostViewedPage})
+    currentMostViewedPage++
     mostViewedProducts=res.data.mostViewedProducts
     console.log(mostViewedProducts)
+    if(mostViewedProducts.length===0){
+      mostViewedHasMoreProducts = false
+      return
+    }
     for(let i=0;i<mostViewedProducts.length;i++){
     mostViewedProductsRow +=` 
         <div class="product-card" >
@@ -211,11 +251,22 @@ async function getMostViewedList(){
             <button onclick="addToCart(${mostViewedProducts[i].productId})" >Add to Cart</button>
         </div> `
     }
-  mostViewedProductsSlide.innerHTML=mostViewedProductsRow
+  mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)
+  mostViewedProductsRow=""
   } catch (err) {
           console.error(`failed to get Top Selling Product`, err)
+  }finally {
+    mostViewedIsLoading = false;
   }
 
 }
 
 getMostViewedList()
+
+mostViewedProductsSlide.addEventListener('scroll', () => {
+  const isAtRightEnd = mostViewedProductsSlide.scrollLeft + mostViewedProductsSlide.clientWidth >= mostViewedProductsSlide.scrollWidth - 5
+
+  if (isAtRightEnd) {
+    getMostViewedList()
+  }
+})

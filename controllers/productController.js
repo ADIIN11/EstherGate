@@ -1,6 +1,7 @@
 const fs=require("fs")
 const categoryModel = require('../models/categoryModel.js')
 const productModel = require('../models/productModel.js')
+const userModel = require('../models/userModel.js')
 const{
   uploadProductImage,
 }=require("../services/cloudinaryService")
@@ -82,6 +83,16 @@ exports.updateType=async(req,res)=>{
 
 exports.createProduct=async(req,res)=>{
    console.log(req.body)
+   const productId=req.body.productId
+   const sellerId=req.body.sellerId
+
+    try{
+      await userModel.updateOne({ id: sellerId }, { $push: { productListed: productId } })
+    }catch(err){
+        console.log("error while updating productListed in user document:",err)
+        return
+    }
+
    try{
     const newProduct= new productModel(req.body)
     await newProduct.save().then(()=>console.log("New Product Saved")).catch(err=>console.log("Saving Error",err))
@@ -135,7 +146,10 @@ async function setProductImg(productId,imageNumber,productImg,productImgPubId){
 
 exports.getTopSellingProducts=async(req,res)=>{
   try{
-    const topSellingProducts = await productModel.find({}, { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1,discount: 1, _id: 0 }).sort({ productBought: -1 }).limit(10)
+    const limit = 10
+
+    const skipAmount = (req.body.page - 1) * limit
+    const topSellingProducts = await productModel.find({}, { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1,discount: 1, _id: 0 }).sort({ productBought: -1 }).skip(skipAmount).limit(limit)
     res.json({ topSellingProducts:topSellingProducts
        })
 
@@ -147,7 +161,9 @@ exports.getTopSellingProducts=async(req,res)=>{
 
 exports.getMostViewedProducts=async(req,res)=>{
   try{
-    const mostViewedProducts = await productModel.find({}, { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1,discount: 1, _id: 0 }).sort({ views: -1 }).limit(10)
+    const limit = 10
+    const skipAmount = (req.body.page - 1) * limit
+    const mostViewedProducts = await productModel.find({}, { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1,discount: 1, _id: 0 }).sort({ views: -1 }).skip(skipAmount).limit(10)
     res.json({ mostViewedProducts:mostViewedProducts
        })
 
