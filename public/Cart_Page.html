@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="/Profile.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="search-bar">
+        
+       
+    <div class="side-bar">
+        <img src="assets/logo-text.png" alt="logo"  class="logo-text" height="100px" >
+        <br>
+         <button class="tab-btn" id="tab-btn" type="button" aria-label="Toggle menu" > 
+            <svg  class="tab-icon"  id="tab-icon" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> 
+                 <rect width="100" height="100" fill="#fef4bc" /> 
+                <line class="bar" x1="20" y1="30" x2="80" y2="30" stroke="#ef720a" stroke-width="8" stroke-linecap="round" /> 
+                <line class="bar" x1="20" y1="50" x2="80" y2="50" stroke="#ef720a" stroke-width="8" stroke-linecap="round" /> 
+                <line class="bar" x1="20" y1="70" x2="80" y2="70" stroke="#ef720a" stroke-width="8" stroke-linecap="round" />
+            </svg>
+         </button>
+
+
+
+
+        <ul>
+            <li class="sidebar-li">
+
+                <div class="super-li">
+                <a href='/Home' class="sidebar-anchors icon" >
+                    <img src="assets/home-icon.svg" alt="home-icon"  class="sidebar-icon"  >
+                </a>
+                <a href='/Home'  class="sidebar-anchors">Home</a>
+                </div>
+               <div class="sub-li">
+                    <a href="Home/Best_Sellers.html" class="sidebar-anchors sub">Best Sellers</a>
+                    <a href="Home/Categories.html"  class="sidebar-anchors sub">Categories</a>
+               </div>
+            </li>
+
+
+            
+            <li class="sidebar-li">
+                <div class="super-li" id="profile-img">
+                 <a href="/Auth/Sign_In" class="sidebar-anchors icon" >
+                        <img src="assets/profile-icon.svg"  alt="profile-icon"  class="sidebar-icon"  >
+                 </a>
+                <a href="/Sign_In" class="sidebar-anchors" id="sidebar-profile-text">Profile</a>
+                </div>
+                <div class="sub-li" id="profile-sub-li"> 
+                    <a href="/Auth/Sign_Up" class="sidebar-anchors sub">Sign-Up</a>
+                    <a href="/Auth/Sign_In" class="sidebar-anchors sub">Sign-In</a>
+                </div>
+            
+            </li>
+
+            <li class="sidebar-li" id="list-product-li">
+                <div class="super-li">
+                    <a href="/Auth/Sign_In" class="sidebar-anchors icon">
+                        <img src="/assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
+                    </a>
+                  
+                <a href="/Auth/Sign_In"  class="sidebar-anchors">List Product</a>
+                </div>
+            </li>
+            
+            <li class="sidebar-li" >
+                <div class="super-li">
+                     <a href="Track_Order.html"  class="sidebar-anchors icon">
+                         <img src="assets/track-order-icon.svg" alt="track-order-icon"  class="sidebar-icon"  >
+                     </a>
+               
+                <a href="Track_Order.html"  class="sidebar-anchors">Track Order</a>
+                </div>
+            </li>
+            
+            <li class="sidebar-li">
+                 <div class="super-li">
+                     <a href="Help.html"  class="sidebar-anchors icon">
+                        <img src="assets/help-icon.svg" alt="help-icon"  class="sidebar-icon"  >
+                     </a>
+                
+                <a href="Help.html"  class="sidebar-anchors">Help</a>
+                </div>
+            </li>
+            
+            <li class="sidebar-li">
+                <div class="super-li">
+                      <a href="about.html"   class="sidebar-anchors icon">
+                        <img src="assets/about-icon.svg" alt="about-icon"  class="sidebar-icon"  >
+                      </a>
+                
+                <a href="about.html"  class="sidebar-anchors">about</a>
+                </div>
+            </li>
+        </ul>
+        
+
+    </div>
+
+        <input class="search-inpt" id="search-inpt" type="text" placeholder="Search">
+        <button class="search-btn" id="search-button" type="button" > 
+            <img src="assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
+        </button>
+        
+         <button class="cart-btn" id="cart-button" type="button" > 
+            <img src="assets/cart-icon.svg" alt="icon"  class="search-icon" height="22px" >
+        </button>
+
+         <div class="filter-bar">
+            
+        </div>
+    </div>
+
+     <div class="content">
+     <div class="profile">
+        <div class="profile-img-holder" id="profile-img-holder">
+            <img src="/assets/profile-icon.svg" alt="profile-icon" class="content-profile-img">
+        </div>
+
+
+        <div class="profile-datails" id="profile-datails">
+                <h2 class="profile-username">Username</h2>
+                <h3 class="profile-email">Email@email.com</h2>
+                <div class="verification-box">
+                    <img src="/assets/attention-icon.svg" alt="attention-icon" class="verification-icon">
+                    <h4 class="profile-verification">"Account Not Verified"</h1>
+                </div>
+                <div class="verification-box">
+                    <img src="/assets/attention-icon.svg" alt="attention-icon" class="verification-icon">
+                    <h4 class="profile-verification">"Seller Not Verified"</h1>
+                </div>
+                
+            
+        </div>
+     </div>
+
+        <div class="content-ul">
+
+        <div class="content-li verification" id="content-li verification" onclick="window.location.href='/Verify_Account';" >
+            <a href="/Verify_Account" class="content-anchors">Verify Account</a>
+        </div>
+
+        <div class="content-li" onclick="window.location.href='/Profile/Edit_Profile';">
+            <a href="/Profile/Edit_Profile" class="content-anchors">Edit Profile</a>
+        </div>
+         <div class="content-li">
+            <a href="" class="content-anchors">My Cart</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">My Orders</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">My Listed Products</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Change Password</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Delete Acccount</a>
+        </div>
+        <div class="content-li" onclick="signOut()">
+            <a href="#" onclick="event.preventDefault(); signOut();" class="content-anchors">Sign Out</a>
+        </div>
+
+        </div>
+        
+
+
+    </div>  
+
+    <script src="/Profile.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="/Profile.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="search-bar">
+        
+       
+    <div class="side-bar">
+        <img src="assets/logo-text.png" alt="logo"  class="logo-text" height="100px" >
+        <br>
+         <button class="tab-btn" id="tab-btn" type="button" aria-label="Toggle menu" > 
+            <svg  class="tab-icon"  id="tab-icon" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> 
+                 <rect width="100" height="100" fill="#fef4bc" /> 
+                <line class="bar" x1="20" y1="30" x2="80" y2="30" stroke="#ef720a" stroke-width="8" stroke-linecap="round" /> 
+                <line class="bar" x1="20" y1="50" x2="80" y2="50" stroke="#ef720a" stroke-width="8" stroke-linecap="round" /> 
+                <line class="bar" x1="20" y1="70" x2="80" y2="70" stroke="#ef720a" stroke-width="8" stroke-linecap="round" />
+            </svg>
+         </button>
+
+
+
+
+        <ul>
+            <li class="sidebar-li">
+
+                <div class="super-li">
+                <a href='/Home' class="sidebar-anchors icon" >
+                    <img src="assets/home-icon.svg" alt="home-icon"  class="sidebar-icon"  >
+                </a>
+                <a href='/Home'  class="sidebar-anchors">Home</a>
+                </div>
+               <div class="sub-li">
+                    <a href="Home/Best_Sellers.html" class="sidebar-anchors sub">Best Sellers</a>
+                    <a href="Home/Categories.html"  class="sidebar-anchors sub">Categories</a>
+               </div>
+            </li>
+
+
+            
+            <li class="sidebar-li">
+                <div class="super-li" id="profile-img">
+                 <a href="/Auth/Sign_In" class="sidebar-anchors icon" >
+                        <img src="assets/profile-icon.svg"  alt="profile-icon"  class="sidebar-icon"  >
+                 </a>
+                <a href="/Sign_In" class="sidebar-anchors" id="sidebar-profile-text">Profile</a>
+                </div>
+                <div class="sub-li" id="profile-sub-li"> 
+                    <a href="/Auth/Sign_Up" class="sidebar-anchors sub">Sign-Up</a>
+                    <a href="/Auth/Sign_In" class="sidebar-anchors sub">Sign-In</a>
+                </div>
+            
+            </li>
+
+            <li class="sidebar-li" id="list-product-li">
+                <div class="super-li">
+                    <a href="/Auth/Sign_In" class="sidebar-anchors icon">
+                        <img src="/assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
+                    </a>
+                  
+                <a href="/Auth/Sign_In"  class="sidebar-anchors">List Product</a>
+                </div>
+            </li>
+            
+            <li class="sidebar-li" >
+                <div class="super-li">
+                     <a href="Track_Order.html"  class="sidebar-anchors icon">
+                         <img src="assets/track-order-icon.svg" alt="track-order-icon"  class="sidebar-icon"  >
+                     </a>
+               
+                <a href="Track_Order.html"  class="sidebar-anchors">Track Order</a>
+                </div>
+            </li>
+            
+            <li class="sidebar-li">
+                 <div class="super-li">
+                     <a href="Help.html"  class="sidebar-anchors icon">
+                        <img src="assets/help-icon.svg" alt="help-icon"  class="sidebar-icon"  >
+                     </a>
+                
+                <a href="Help.html"  class="sidebar-anchors">Help</a>
+                </div>
+            </li>
+            
+            <li class="sidebar-li">
+                <div class="super-li">
+                      <a href="about.html"   class="sidebar-anchors icon">
+                        <img src="assets/about-icon.svg" alt="about-icon"  class="sidebar-icon"  >
+                      </a>
+                
+                <a href="about.html"  class="sidebar-anchors">about</a>
+                </div>
+            </li>
+        </ul>
+        
+
+    </div>
+
+        <input class="search-inpt" id="search-inpt" type="text" placeholder="Search">
+        <button class="search-btn" id="search-button" type="button" > 
+            <img src="assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
+        </button>
+        
+         <button class="cart-btn" id="cart-button" type="button" > 
+            <img src="assets/cart-icon.svg" alt="icon"  class="search-icon" height="22px" >
+        </button>
+
+         <div class="filter-bar">
+            
+        </div>
+    </div>
+
+     <div class="content">
+     <div class="profile">
+        <div class="profile-img-holder" id="profile-img-holder">
+            <img src="/assets/profile-icon.svg" alt="profile-icon" class="content-profile-img">
+        </div>
+
+
+        <div class="profile-datails" id="profile-datails">
+                <h2 class="profile-username">Username</h2>
+                <h3 class="profile-email">Email@email.com</h2>
+                <div class="verification-box">
+                    <img src="/assets/attention-icon.svg" alt="attention-icon" class="verification-icon">
+                    <h4 class="profile-verification">"Account Not Verified"</h1>
+                </div>
+                <div class="verification-box">
+                    <img src="/assets/attention-icon.svg" alt="attention-icon" class="verification-icon">
+                    <h4 class="profile-verification">"Seller Not Verified"</h1>
+                </div>
+                
+            
+        </div>
+     </div>
+
+        <div class="content-ul">
+
+        <div class="content-li verification" id="content-li verification" onclick="window.location.href='/Verify_Account';" >
+            <a href="/Verify_Account" class="content-anchors">Verify Account</a>
+        </div>
+
+        <div class="content-li" onclick="window.location.href='/Profile/Edit_Profile';">
+            <a href="/Profile/Edit_Profile" class="content-anchors">Edit Profile</a>
+        </div>
+         <div class="content-li">
+            <a href="" class="content-anchors">My Cart</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">My Orders</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">My Listed Products</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Change Password</a>
+        </div>
+        <div class="content-li">
+            <a href="" class="content-anchors">Delete Acccount</a>
+        </div>
+        <div class="content-li" onclick="signOut()">
+            <a href="#" onclick="event.preventDefault(); signOut();" class="content-anchors">Sign Out</a>
+        </div>
+
+        </div>
+        
+
+
+    </div>  
+
+    <script src="/Profile.js"></script>
+</body>
+</html>
