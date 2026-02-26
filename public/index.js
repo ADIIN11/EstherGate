@@ -14,7 +14,7 @@
   const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
 
-
+  let userHasSignedIn=false
 
 
  
@@ -47,7 +47,7 @@
             // localStorage.setItem("currentUserRole",role)
             localStorage.setItem("currentUserId",id)
             console.log("Token Verified")
-            await userSinedIn()
+            await userSignedIn()
 
         }
 
@@ -76,15 +76,25 @@ checkToken()
 
 
 
-async function userSinedIn(){
+
+async function userSignedIn(){
   // const userName = localStorage.getItem("currentUsername")
   // const role= localStorage.getItem("currentUserRole")
+  
   const id=localStorage.getItem("currentUserId")
   const userObj={id:id}
-  const res = await axios.post("/Get_Profile_Img", userObj)
+  let res
+  try{
+    res = await axios.post("/Get_Profile_Img", userObj)
+    
+  }catch(err){
+    console.log("error while signing in:",err)
+    return
+  }
   const profileImg=res.data.profileImg
   const username=res.data.username
-
+  
+  userHasSignedIn=true
 
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
@@ -175,17 +185,15 @@ async function getTopSellingList(){
                   <h3>${topSellingProducts[i].name}</h3>
             
                   
-                  <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</s></sup></p>
-                 
-                
+                  <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</sup></p>
           </a>
-            <button onclick="addToCart(${topSellingProducts[i].productId})" >Add to Cart</button>
+            <button onclick="addToCart('${topSellingProducts[i].productId}')" >Add to Cart</button>
         </div> `
     }
   topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
   topSellingProductsRow=""
   } catch (err) {
-          console.error(`failed to get Top Selling Product`, err)
+          console.log(`failed to get Top Selling Product`, err)
   }finally {
     topSellingIsLoading = false;
   }
@@ -244,17 +252,15 @@ async function getMostViewedList(){
                   <h3>${mostViewedProducts[i].name}</h3>
             
                   
-                  <p>Price: ${mostViewedProducts[i].currency} ${mostViewedProducts[i].price-((mostViewedProducts[i].price/100)*mostViewedProducts[i].discount)}<sup class="small-p">     ${mostViewedProducts[i].discount}% off</s></sup></p>
-                 
-                
+                  <p>Price: ${mostViewedProducts[i].currency} ${mostViewedProducts[i].price-((mostViewedProducts[i].price/100)*mostViewedProducts[i].discount)}<sup class="small-p">     ${mostViewedProducts[i].discount}% off</sup></p>
           </a>
-            <button onclick="addToCart(${mostViewedProducts[i].productId})" >Add to Cart</button>
+            <button onclick="addToCart('${mostViewedProducts[i].productId}')" >Add to Cart</button>
         </div> `
     }
   mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)
   mostViewedProductsRow=""
   } catch (err) {
-          console.error(`failed to get Top Selling Product`, err)
+          console.log(`failed to get Top Selling Product`, err)
   }finally {
     mostViewedIsLoading = false;
   }
@@ -270,3 +276,23 @@ mostViewedProductsSlide.addEventListener('scroll', () => {
     getMostViewedList()
   }
 })
+
+
+async function addToCart(productId){
+  if(userHasSignedIn){
+    const id=localStorage.getItem("currentUserId")
+    const cartObj={
+      userId:id,
+      productId:productId
+    }
+    try{
+       const res = await axios.post("/Add_To_Cart", cartObj)
+       await userSignedIn()
+    }catch(err){
+      console.log(":Error while adding to cart",err)
+    }
+    return
+  }
+  console.log(productId)
+  window.location.href="/Auth/Sign_In"
+}

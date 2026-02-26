@@ -84,3 +84,24 @@ async function getProfileUsername(userObj){
   profileUsername=profileUsername[0].username
   return profileUsername
 }
+
+
+exports.addProductToCart=async (req,res)=>{
+  const userId=req.body.userId
+  const productId=req.body.productId
+  try{
+    const result = await userModel.updateOne(
+  { id: userId, "myCart.productId": productId },
+  { $inc: { "myCart.$.quantity": 1 } }
+  )
+  if (result.matchedCount === 0) {
+    await userModel.updateOne(
+      { id: userId },
+      { $push: { myCart: { productId: productId, quantity: 1 } } }
+    )
+  }
+    res.json({ message:"product successfully added to cart"})
+  }catch(err){
+    console.log("error while adding product to user cart ")
+  }
+}

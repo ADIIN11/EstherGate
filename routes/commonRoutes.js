@@ -3,7 +3,8 @@ const router = express.Router()
 const {
     tokenVerification,
     userSignOut,
-    getProfileImage
+    getProfileImage,
+    addProductToCart
 }=require("../controllers/commonController")
 
 const path = require('path')
@@ -23,6 +24,7 @@ router.post("/Sign_Out",userSignOut )
 
 router.post("/Get_Profile_Img",getProfileImage )
 
+router.post("/Add_To_Cart",addProductToCart )
 
 
 module.exports = router
