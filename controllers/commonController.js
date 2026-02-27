@@ -43,8 +43,13 @@ exports.getProfileImage=async (req, res) => {
   try{
   const profileImg=await getProfileImg(req.body)
   const ProfileUsername=await getProfileUsername(req.body)
+  const myCart=await getProfileCart(req.body)
+  const myCartTotal = myCart.reduce((sum, currentItem) => {
+  return sum + currentItem.quantity;
+}, 0)
   res.json({ profileImg:profileImg,
-    username:ProfileUsername
+    username:ProfileUsername,
+    myCartItemNo:myCartTotal
   })
   }catch(err){
     console.log("error while sending profileimg:",err)
@@ -68,6 +73,21 @@ async function getProfileImg(userObj){
   return profileImg
 }
 
+async function getProfileCartDB(userObj){
+  try{
+      const myCart= await userModel.find({id:userObj.id}).select('-_id myCart')
+      return myCart
+      }catch(err){
+        console.log("did not find myCart :",err)
+      }
+    
+}
+
+async function getProfileCart(userObj){
+  let myCart=await getProfileCartDB(userObj)
+  myCart=myCart[0].myCart
+  return myCart
+}
 
 async function getProfileUsernameDB(userObj){
   try{

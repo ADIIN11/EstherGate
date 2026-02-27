@@ -13,6 +13,7 @@
   
   const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
+  const cartBadge=document.getElementById("cart-badge")
 
   let userHasSignedIn=false
 
@@ -93,7 +94,8 @@ async function userSignedIn(){
   }
   const profileImg=res.data.profileImg
   const username=res.data.username
-  
+  const myCartItemNo=res.data.myCartItemNo
+
   userHasSignedIn=true
 
   profileSubLi.innerHTML=`
@@ -137,6 +139,8 @@ async function userSignedIn(){
   
 
 sidebar.classList.toggle("userSignedIn")
+cartBadge.classList.add("appear")
+cartBadge.textContent=myCartItemNo
 }
 
 async function signOut(){
@@ -292,6 +296,14 @@ async function addToCart(productId){
       console.log(":Error while adding to cart",err)
     }
     return
+  }
+  console.log(productId)
+  window.location.href="/Auth/Sign_In"
+}
+
+async function cartPage(){
+  if(userHasSignedIn){
+    window.location.href="/Profile/Cart_Page"
   }
   console.log(productId)
   window.location.href="/Auth/Sign_In"
