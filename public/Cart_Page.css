@@ -343,19 +343,32 @@ div.super-li{
     flex-direction:row;
     scroll-snap-align: start;
   border: 2px solid #ef720a;
-  padding: 10px;
+  padding: 0.8rem;
   text-align: center;
- 
+  gap: 2rem;
 }
 
-.product-image{
-    border: 2px solid #ef720a;
-    height: 3rem;
-    width: 3rem;
-}
 .product-card:hover{
    outline: solid 2px #ef720a;
     outline-offset: -0.4rem;
+}
+.product-image{
+    border: 2px solid #ef720a;
+
+    height: 6rem;
+    width: 6rem;
+    margin: 0rem;
+}
+
+
+.product-card-column{
+    display:flex;
+    flex-direction:column;
+    
+  
+
+  text-align: center;
+ 
 }
 .product-card a {
     text-decoration: none;
@@ -372,6 +385,8 @@ div.super-li{
 
 
 
+
+
 .product-card a:hover p{
     color: #e35311;
 }
@@ -383,9 +398,6 @@ div.super-li{
 }
 
 
-.product-image{
-    width: 14rem;
-}
 .product-card h3{
     margin:0.3rem;
 }
