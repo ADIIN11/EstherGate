@@ -322,12 +322,13 @@ div.super-li{
  /* overflow-y: auto; */
 }
 
-.slide-holder{
-      border: 2px solid #ef720a;
+.my-cart-container{
+    margin: 1rem;
+    border: 2px solid  #ef720a;
 }
 
-.slide-name{
-    margin: 0px;
+.my-cart{
+    margin:1rem 1rem;
 }
 
 .products-slide {

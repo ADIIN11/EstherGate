@@ -7,7 +7,8 @@ const {
     getProfileDetails,
     setProfileImage,
     changeProfileImage,
-    deleteProfileImage
+    deleteProfileImage,
+    getMyCart
 }=require("../controllers/profileController")
 
 
@@ -41,7 +42,7 @@ router.get("/Cart_Page", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/Cart_Page.html"))
 })
 
-
+router.post("/Cart_page/Get_My_Cart",getMyCart)
 
 
 module.exports = router

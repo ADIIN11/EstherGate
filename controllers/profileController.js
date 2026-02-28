@@ -1,5 +1,6 @@
 const fs=require("fs")
 const userModel = require('../models/userModel.js')
+const productModel = require('../models/productModel.js')
 const{
   uploadProfileImage,
   deleteImage
@@ -181,7 +182,7 @@ exports.deleteProfileImage=async (req, res) => {
   const id = req.body.id
    const idObj={id:id}
   console.log("ID received:", id)
-  let profileImgPubId=await getProfileImgPubId(idObj)
+  const profileImgPubId=await getProfileImgPubId(idObj)
  
   try { 
     const response = await deleteImage(profileImgPubId)
@@ -220,4 +221,46 @@ async function setProfileImg(id,profileImg,profileImgPubId){
   }catch(err){
     console.log("error while setting profile img:",err)
   }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+exports.getMyCart=async (req,res)=>{
+  const id = req.body.id
+  const idObj={id:id}
+  const myCart= await getProfileCart(idObj)
+  const myCartTotal = myCart.reduce((sum, currentItem) => {
+  return sum + currentItem.quantity;
+}, 0)
+  const productIds = myCart.map(item => item.productId)
+  let productsObj=[]
+  for(i=0;i<=productIds.length;i++){
+    try{
+      let productDetails = await productModel.find( { productId: { $in: productIds } }, { name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, _id: 0 } )
+      productDetails=productDetails[0] 
+      productsObj.push(productDetails)
+
+    }catch(err){
+      console.log("failed to fetch product details:",err)
+    }
+  }
+  console.log(productsObj)
+
+
+}
+
+
+async function getProfileCartDB(userObj){
+  try{
+      const myCart= await userModel.find({id:userObj.id}).select('-_id myCart')
+      return myCart
+      }catch(err){
+        console.log("did not find myCart :",err)
+      }
+    
+}
+
+async function getProfileCart(userObj){
+  let myCart=await getProfileCartDB(userObj)
+  myCart=myCart[0].myCart
+  return myCart
 }
