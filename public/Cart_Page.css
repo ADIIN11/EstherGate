@@ -330,24 +330,28 @@ div.super-li{
 .my-cart{
     margin:1rem 1rem;
 }
-
-.products-slide {
-
-  
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
- overflow-x: auto;
- overflow-y: hidden;
- scroll-snap-type: x mandatory;
+.my-cart-products{
+    margin: 0rem 1rem  1rem 1rem;
+    border: 2px solid  #ef720a;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
+
 .product-card {
+    display:flex;
+    flex-direction:row;
     scroll-snap-align: start;
   border: 2px solid #ef720a;
   padding: 10px;
   text-align: center;
  
+}
+
+.product-image{
+    border: 2px solid #ef720a;
+    height: 3rem;
+    width: 3rem;
 }
 .product-card:hover{
    outline: solid 2px #ef720a;

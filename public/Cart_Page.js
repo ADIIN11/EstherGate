@@ -98,9 +98,9 @@ async function userSignedIn(){
   }catch(err){
     console.log("error while fetching my cart:",err)
   }
-  const profileImg=res.data.profileImg
-  const username=res.data.username
-  const myCartItemNo=res.data.myCartItemNo
+  const profileImg=res1.data.profileImg
+  const username=res1.data.username
+  const myCartItemNo=res1.data.myCartItemNo
 
   userHasSignedIn=true
 
@@ -147,6 +147,10 @@ async function userSignedIn(){
 sidebar.classList.toggle("userSignedIn")
 cartBadge.classList.add("appear")
 cartBadge.textContent=myCartItemNo
+
+
+
+
 }
 
 async function signOut(){
@@ -291,7 +295,7 @@ mostViewedProductsSlide.addEventListener('scroll', () => {
 
 async function cartPage(){
   if(userHasSignedIn){
-    window.location.href="/Profile/Cart_Page"
+    window.location.href="/Profile/My_Cart"
   }
   console.log(productId)
   window.location.href="/Auth/Sign_In"

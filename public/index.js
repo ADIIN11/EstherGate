@@ -303,8 +303,8 @@ async function addToCart(productId){
 
 async function cartPage(){
   if(userHasSignedIn){
-    window.location.href="/Profile/Cart_Page"
+    window.location.href="/Profile/My_Cart"
+    return
   }
-  console.log(productId)
   window.location.href="/Auth/Sign_In"
 }

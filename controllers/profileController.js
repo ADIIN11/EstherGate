@@ -230,7 +230,7 @@ exports.getMyCart=async (req,res)=>{
   const myCart= await getProfileCart(idObj)
   const myCartTotal = myCart.reduce((sum, currentItem) => {
   return sum + currentItem.quantity;
-}, 0)
+  }, 0)
   const productIds = myCart.map(item => item.productId)
   let productsObj=[]
   for(i=0;i<=productIds.length;i++){
@@ -238,13 +238,16 @@ exports.getMyCart=async (req,res)=>{
       let productDetails = await productModel.find( { productId: { $in: productIds } }, { name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, _id: 0 } )
       productDetails=productDetails[0] 
       productsObj.push(productDetails)
+      
 
     }catch(err){
       console.log("failed to fetch product details:",err)
     }
   }
-  console.log(productsObj)
-
+  res.json({
+    products:productsObj,
+    myCart:myCart
+   })
 
 }
 
