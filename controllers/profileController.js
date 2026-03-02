@@ -235,7 +235,7 @@ exports.getMyCart=async (req,res)=>{
   let productsObj=[]
   for(i=0;i<=productIds.length;i++){
     try{
-      let productDetails = await productModel.find( { productId: { $in: productIds } }, { name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, sellerName:1 ,_id: 0 } )
+      let productDetails = await productModel.find( { productId: { $in: productIds } }, { name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, sellerName:1 ,ratings: 1,_id: 0 } )
       productDetails=productDetails[0] 
       productsObj.push(productDetails)
       

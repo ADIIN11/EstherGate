@@ -364,12 +364,28 @@ div.super-li{
 .product-card-column{
     display:flex;
     flex-direction:column;
-    
-  
-
   text-align: center;
  
 }
+.product-card-row{
+    display:flex;
+    flex-direction:row;
+  text-align: center;
+ 
+}
+
+.ratings-box{
+    display: flex;
+    flex-direction: row;
+    margin: 0.1rem;
+}
+.ratings-box h4{
+    margin: 0rem;
+}
+.stars{
+    height:1rem;
+}
+
 .product-card a {
     text-decoration: none;
 }
