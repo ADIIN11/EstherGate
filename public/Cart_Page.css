@@ -373,6 +373,9 @@ div.super-li{
   text-align: center;
  
 }
+p.quantity-number{
+    padding: 0.3rem;
+}
 
 .ratings-box{
     display: flex;
@@ -386,6 +389,41 @@ div.super-li{
     height:1rem;
 }
 
+.quantity-btn{
+   
+    box-sizing: border-box; 
+    min-width: 1.5rem;
+    height: 1.6rem;
+    border: 2px solid #ef720a;
+    border-radius: 0%;
+    margin: 0.3rem;
+    background-color:#fef4bc;
+}
+
+.quantity-btn:hover{
+    background-color: #feb60b;
+    cursor:pointer;
+}
+
+.delete-btn{
+   
+    box-sizing: border-box; 
+    
+    
+    border: 2px solid #ef720a;
+    border-radius: 0%;
+    margin: 0.3rem;
+    background-color:#fef4bc;
+}
+
+.delete-btn:hover{
+    outline: solid 2px #ef720a;
+    outline-offset: 0.2rem;
+    cursor:pointer;
+}
+.delete-icon{
+    height: 2.5rem;
+}
 .product-card a {
     text-decoration: none;
 }

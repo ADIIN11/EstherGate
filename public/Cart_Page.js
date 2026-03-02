@@ -15,10 +15,12 @@
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
   const cartBadge=document.getElementById("cart-badge")
 
+  const myCartProducts=document.getElementById("my-cart-products")
+
   let userHasSignedIn=false
+  let id
 
-
- 
+  let userObj
 
 
  
@@ -54,6 +56,7 @@
 
         else{
             console.log("token expired pls login again")
+            window.location.href="/Auth/Sign_In"
         }
     }  
         catch(err){
@@ -82,25 +85,21 @@ async function userSignedIn(){
   // const userName = localStorage.getItem("currentUsername")
   // const role= localStorage.getItem("currentUserRole")
   
-  const id=localStorage.getItem("currentUserId")
-  const userObj={id:id}
-  let res1
-  let res2
+  id=localStorage.getItem("currentUserId")
+  userObj={id:id}
+  let res
+  
   try{
-    res1 = await axios.post("/Get_Profile_Img", userObj)
+    res = await axios.post("/Get_Profile_Img", userObj)
     
   }catch(err){
     console.log("error while signing in:",err)
     return
   }
-  try{
-    res2= await axios.post("/Profile/Cart_page/Get_My_Cart", userObj)
-  }catch(err){
-    console.log("error while fetching my cart:",err)
-  }
-  const profileImg=res1.data.profileImg
-  const username=res1.data.username
-  const myCartItemNo=res1.data.myCartItemNo
+  
+  const profileImg=res.data.profileImg
+  const username=res.data.username
+  const myCartItemNo=res.data.myCartItemNo
 
   userHasSignedIn=true
 
@@ -147,8 +146,7 @@ async function userSignedIn(){
 sidebar.classList.toggle("userSignedIn")
 cartBadge.classList.add("appear")
 cartBadge.textContent=myCartItemNo
-
-
+fetchMyCartProducts(userObj)
 
 
 }
@@ -171,125 +169,7 @@ async function signOut(){
   
 }
 
-let topSellingProducts = []
-let topSellingProductsRow=""
-let currentTopSellingPage = 1
-let topSellingIsLoading = false
-let topSellingHasMoreProducts = true
 
-async function getTopSellingList(){
-  if (topSellingIsLoading|| !topSellingHasMoreProducts) 
-    return
-  topSellingIsLoading = true
-
-  try{
-    const res = await axios.post("/Product/Get_Top_Selling_Products",{page:currentTopSellingPage})
-    currentTopSellingPage++
-    topSellingProducts=res.data.topSellingProducts
-    console.log(topSellingProducts)
-    if(topSellingProducts.length===0){
-      topSellingHasMoreProducts = false
-      return
-    }
-    for(let i=0;i<topSellingProducts.length;i++){
-    topSellingProductsRow +=` 
-        <div class="product-card" >
-          <a href="/Product/${topSellingProducts[i].name}/${topSellingProducts[i].productId}" >
-              <img src="${topSellingProducts[i].productImg1}" alt="Product image" class="product-image">
-                  <h3>${topSellingProducts[i].name}</h3>
-            
-                  
-                  <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</sup></p>
-          </a>
-            <button onclick="addToCart('${topSellingProducts[i].productId}')" >Add to Cart</button>
-        </div> `
-    }
-  topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
-  topSellingProductsRow=""
-  } catch (err) {
-          console.log(`failed to get Top Selling Product`, err)
-  }finally {
-    topSellingIsLoading = false;
-  }
-
-}
-
-
-getTopSellingList()
-
-topSellingProductsSlide.addEventListener('scroll', () => {
-  const isAtRightEnd = topSellingProductsSlide.scrollLeft + topSellingProductsSlide.clientWidth >= topSellingProductsSlide.scrollWidth - 5
-
-  if (isAtRightEnd) {
-    getTopSellingList()
-  }
-})
-// For bottom of the scroll
-// const productContainer = document.getElementById('topSellingProductsSlide');
-
-// productContainer.addEventListener('scroll', () => {
-//   const isAtBottom = productContainer.scrollTop + productContainer.clientHeight >= productContainer.scrollHeight - 5;
-
-//   if (isAtBottom) {
-//     console.log("Reached the bottom of the div!");
-//     // Call your fetch function here
-//     getTopSellingList();
-//   }
-// });
-
-
-let mostViewedProducts = []
-let mostViewedProductsRow=""
-let currentMostViewedPage = 1
-let mostViewedIsLoading = false
-let mostViewedHasMoreProducts = true
-
-async function getMostViewedList(){
-  if (mostViewedIsLoading|| !mostViewedHasMoreProducts) 
-    return
-  mostViewedIsLoading = true
-
-  try{
-    const res = await axios.post("/Product/Get_Most_Viewed_Products",{page:currentMostViewedPage})
-    currentMostViewedPage++
-    mostViewedProducts=res.data.mostViewedProducts
-    console.log(mostViewedProducts)
-    if(mostViewedProducts.length===0){
-      mostViewedHasMoreProducts = false
-      return
-    }
-    for(let i=0;i<mostViewedProducts.length;i++){
-    mostViewedProductsRow +=` 
-        <div class="product-card" >
-          <a href="/Product/${mostViewedProducts[i].name}/${mostViewedProducts[i].productId}" >
-              <img src="${mostViewedProducts[i].productImg1}" alt="Product image" class="product-image">
-                  <h3>${mostViewedProducts[i].name}</h3>
-            
-                  
-                  <p>Price: ${mostViewedProducts[i].currency} ${mostViewedProducts[i].price-((mostViewedProducts[i].price/100)*mostViewedProducts[i].discount)}<sup class="small-p">     ${mostViewedProducts[i].discount}% off</sup></p>
-          </a>
-            <button onclick="addToCart('${mostViewedProducts[i].productId}')" >Add to Cart</button>
-        </div> `
-    }
-  mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)
-  mostViewedProductsRow=""
-  } catch (err) {
-          console.log(`failed to get Top Selling Product`, err)
-  }finally {
-    mostViewedIsLoading = false;
-  }
-
-}
-
-getMostViewedList()
-
-mostViewedProductsSlide.addEventListener('scroll', () => {
-  const isAtRightEnd = mostViewedProductsSlide.scrollLeft + mostViewedProductsSlide.clientWidth >= mostViewedProductsSlide.scrollWidth - 5
-
-  if (isAtRightEnd) {
-    getMostViewedList()
-  }
-})
 
 
 
@@ -299,4 +179,86 @@ async function cartPage(){
   }
   console.log(productId)
   window.location.href="/Auth/Sign_In"
+}
+
+async function fetchMyCartProducts(idObj){
+  let res
+  try{
+    res= await axios.post("/Profile/Cart_page/Get_My_Cart", idObj)
+  }catch(err){
+    console.log("error while fetching my cart:",err)
+  }
+  console.log(res.data)
+  const myCart=res.data.myCart
+  const products=res.data.products
+  let myCartProductsText=``
+
+  for(i=0;i<myCart.length;i++){
+
+    let ratingsText=``
+  const ratings=products[i].ratings
+  const decimalPart = (ratings % 1).toFixed(2)
+  const intPart=ratings-decimalPart 
+  let starAdded=0
+  for(let i=1;i<=intPart;i++){
+    ratingsText+=`<img src="/assets/full-star.svg" alt="product-icon" class="stars" id="stars">`
+    starAdded++
+  }
+  if(decimalPart>=0.45){
+    ratingsText+=`<img src="/assets/half-star.svg" alt="product-icon" class="stars" id="stars">`
+    starAdded++
+  }
+  while((5-starAdded)!=0){
+    ratingsText+=`<img src="/assets/empty-star.svg" alt="product-icon" class="stars" id="stars">`
+    starAdded++
+  }
+  if(products[i].noCustomersReviewed)
+  ratingsText+=`<h4 class="reviewsNo"> ${products[i].noCustomersReviewed}</h4>`
+
+    
+    myCartProductsText +=`
+    <div class="product-card" onclick="window.location.href='/Product/${products[i].name}/${myCart[i].productId}'">
+                    <img src="${products[i].productImg1}" alt="Product image" class="product-image">
+                    <div class="product-card-column">
+                        <h3>${products[i].name}</h3>
+                        <p>${products[i].sellerName}</p>
+                    </div>
+                    <div class="ratings-box" id="ratings-box">
+                        <h4 class="seller-name">Rating:</h4>
+                        ${ratingsText}
+                        
+                    </div>
+                    <div class="product-card-column">
+                        <p>Category: ${products[i].category}</p>
+                        <p>Type: ${products[i].type}</p>
+                    </div>
+                    
+                    <div class="product-card-column">
+                        <div class="product-card-row">
+                            <p>Item Quantity:</p>
+                            
+                        </div>
+                        
+                        <div class="product-card-row">
+                            <button class="quantity-btn" id="quantity-decrement">-</button>
+                            <p class="quantity-number">${myCart[i].quantity}</p>
+                            <button class="quantity-btn" id="quantity-increment">+</button>  
+                        </div> 
+                           
+                    </div>
+                    
+                    <div class="product-card-column">
+                        <p>M.R.P: ${products[i].currency} ${products[i].price}</p>  
+                        <p>Price: ${products[i].currency} ${products[i].price-((products[i].price/100)*products[i].discount)}<sup class="small-p">     ${products[i].discount}% off</sup></p>   
+                    </div>
+                     <div class="product-card-column">
+                        <p>Remove From Cart:</p> 
+                        <button class="delete-btn" id="quantity-increment" onclick="removeFromMyCart(${id},${myCart[i].quantity})">
+                            <img src="/assets/dustbin-icon.svg" alt="Delete Item" class="delete-icon">
+                        </button>
+                     </div>
+                </div>
+    `
+  }
+  myCartProducts.innerHTML=myCartProductsText
 }

@@ -120,12 +120,12 @@
      <div class="content">
         <div class="my-cart-container">
             <h2 class="my-cart">My Cart</h2>
-            <div class="my-cart-products">
+            <div class="my-cart-products" id="my-cart-products">
                 <div class="product-card">
                     <img src="/assets/product-icon.svg" alt="Product image" class="product-image">
                     <div class="product-card-column">
                         <h3>Product Name</h3>
-                        <p>Seller Name:</p>
+                        <p>listed By: Seller Name</p>
                     </div>
                     <div class="ratings-box" id="ratings-box">
                         <h4 class="seller-name">Rating:</h4>
@@ -135,16 +135,21 @@
                         <img src="/assets/empty-star.svg" alt="product-icon" class="stars" id="stars">
                         <img src="/assets/empty-star.svg" alt="product-icon" class="stars" id="stars">
                     </div>
+                    <div class="product-card-column">
+                        <p>Category:</p>
+                        <p>Type:</p>
+                    </div>
                     
                     <div class="product-card-column">
                         <div class="product-card-row">
                             <p>Item Quantity:</p>
-                            <p class="quantity-number">4</p>
+                            
                         </div>
                         
                         <div class="product-card-row">
-                            <button>-</button>
-                            <button>+</button>  
+                            <button class="quantity-btn" id="quantity-decrement">-</button>
+                            <p class="quantity-number">4</p>
+                            <button class="quantity-btn" id="quantity-increment">+</button>  
                         </div> 
                            
                     </div>
@@ -152,6 +157,12 @@
                     <div class="product-card-column">
                         <p>₹ Price</p>   
                     </div>
+                     <div class="product-card-column">
+                        <p>Remove From Cart:</p> 
+                        <button class="delete-btn" id="quantity-increment">
+                            <img src="/assets/dustbin-icon.svg" alt="Delete Item" class="delete-icon">
+                        </button>
+                     </div>
                 </div>
 
             </div>

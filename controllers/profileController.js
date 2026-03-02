@@ -233,9 +233,9 @@ exports.getMyCart=async (req,res)=>{
   }, 0)
   const productIds = myCart.map(item => item.productId)
   let productsObj=[]
-  for(i=0;i<=productIds.length;i++){
+  for(i=0;i<productIds.length;i++){
     try{
-      let productDetails = await productModel.find( { productId: { $in: productIds } }, { name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, sellerName:1 ,ratings: 1,_id: 0 } )
+      let productDetails = await productModel.find( { productId: { $in: productIds[i] } }, { name: 1, category: 1,type: 1, productImg1: 1, currency: 1, price: 1, discount: 1, sellerName:1 ,ratings: 1,noCustomersReviewed:1,_id: 0 } )
       productDetails=productDetails[0] 
       productsObj.push(productDetails)
       
