@@ -56,10 +56,11 @@ body{
 }
 
 .cart-badge{
-
+    display: none;
 }
 
 .cart-badge.appear{
+    display: block;
     position: absolute;
     top: -8px; 
     left: -8px;

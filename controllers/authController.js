@@ -87,8 +87,10 @@ exports.userSingIn=async(req, res) => {
       console.log(token)
       
       res.json({ exists: true,passwordCorrect:true,token:token })}
-      else
-        res.json({ exists: true,passwordCorrect:false })
+      else{
+         res.json({ exists: true,passwordCorrect:false })
+      }
+       
   }
 }
 
@@ -111,30 +113,35 @@ async function checkUserSignIn(userObj){
 }
 
 
-async function checkPassword(userObj){
 
-    // function getPassword(){
-    //   for(let i=0;i<userList.length;i++)
-    //     if(userList[i].username===userObj.usernameEmail||userList[i].email===userObj.usernameEmail)
-    //       return userList[i].password
-      
-    // }
+
+
+
+
+async function checkPassword(userObj){
 
     async function getPasswordDB(){
       try{
-      const password= userModel.find({username:userObj.usernameEmail}).select('-_id password')
-      return password
+      const  password=await userModel.find({username:userObj.usernameEmail}).select('-_id password')
+      if (  !password || password.length === 0){
+        console.log("did not find username ")
+      }
+      else{
+        return password
+    }
+      
       }catch(err){
-        console.log("did not find username :",err)
+      console.log("did not find username :",err)
       }
       try{
-      const password= userModel.find({email:userObj.usernameEmail}).select('-_id password')
-      return password
+      const password=await userModel.find({email:userObj.usernameEmail}).select('-_id password')
+      
+        return password
       }catch(err){
-        console.log("did not find email :",err)
+     console.log("did not find email :",err) 
+      return null
       }
-
-
+      
     }
     const password= await getPasswordDB() 
     console.log(password)
@@ -143,12 +150,11 @@ async function checkPassword(userObj){
     
     try {
     const isMatch = await bcrypt.compare(userObj.password, accountPassword)
+    console.log(isMatch)
       return isMatch
     }catch (err){ 
     console.error("Error password matching:", err) 
     return false;
     }
 
-}
-
-
+} 

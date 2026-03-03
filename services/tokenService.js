@@ -17,8 +17,13 @@ exports.tokenGenerator=async function (userObj){
 
 async function getUserDataDB(){
       try{
-      const password= userModel.find({username:userObj.usernameEmail}).select('-_id username role id')
-      return password
+      const password=await userModel.find({username:userObj.usernameEmail}).select('-_id username role id')
+      if (  !password || password.length === 0){
+        console.log("did not find username ")
+      }
+      else{
+        return password
+    }
       }catch(err){
         console.log("did not find username :",err)
       }
