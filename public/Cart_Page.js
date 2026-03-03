@@ -20,7 +20,7 @@
   let userHasSignedIn=false
   let id
 
-  let userObj
+  let idObj
 
 
  
@@ -86,11 +86,11 @@ async function userSignedIn(){
   // const role= localStorage.getItem("currentUserRole")
   
   id=localStorage.getItem("currentUserId")
-  userObj={id:id}
+  idObj={id:id}
   let res
   
   try{
-    res = await axios.post("/Get_Profile_Img", userObj)
+    res = await axios.post("/Get_Profile_Img", idObj)
     
   }catch(err){
     console.log("error while signing in:",err)
@@ -146,7 +146,7 @@ async function userSignedIn(){
 sidebar.classList.toggle("userSignedIn")
 cartBadge.classList.add("appear")
 cartBadge.textContent=myCartItemNo
-fetchMyCartProducts(userObj)
+fetchMyCartProducts(idObj)
 
 
 }
@@ -163,6 +163,7 @@ async function signOut(){
         localStorage.removeItem("token")
         localStorage.removeItem("currentUserId")
         location.reload(true)
+        userHasSignedIn=false
   }catch(err){
         console.error("Sign Out Error:", err)
   }
@@ -182,6 +183,7 @@ async function cartPage(){
 }
 
 async function fetchMyCartProducts(idObj){
+
   let res
   try{
     res= await axios.post("/Profile/Cart_page/Get_My_Cart", idObj)

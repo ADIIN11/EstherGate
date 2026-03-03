@@ -8,13 +8,18 @@
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
   const listProductSidebarLi=document.getElementById("list-product-li") 
+
+   const cartBadge=document.getElementById("cart-badge")
+ 
+  let userHasSignedIn=false
+  
  
   async function checkToken(){
     const token = localStorage.getItem("token")
     
     if(!token){
         console.log("Token does not exis,Pls Login")
-        window.location.href='/'
+        window.location.href='/Home'
 
     }
     else {
@@ -41,7 +46,7 @@
 
         else{
             console.log("token expired pls login again")
-            window.location.href='/'
+            window.location.href='/Home'
         }
     }  
         catch(err){
@@ -73,6 +78,9 @@ async function getProfileDetails() {
   const profileImg=res.data.profileImg
   const verification=res.data.verification
   const sellerVerification=res.data.sellerVerification
+  const myCartItemNo=res.data.myCartItemNo
+
+  userHasSignedIn=true
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
@@ -158,6 +166,8 @@ else{
   `
 
 }
+cartBadge.classList.add("appear")
+cartBadge.textContent=myCartItemNo
 }
 
 
@@ -177,4 +187,12 @@ async function signOut(){
         console.error("Sign Out Error:", err)
   }
   
+}
+
+async function cartPage(){
+  if(userHasSignedIn){
+    window.location.href="/Profile/My_Cart"
+    return
+  }
+  window.location.href="/Auth/Sign_In"
 }

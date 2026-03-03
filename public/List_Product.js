@@ -40,7 +40,9 @@
   const createTagMsg=document.getElementById("create-tag-msg")
   const tagBox=document.getElementById("tag-box")
 
+  const cartBadge=document.getElementById("cart-badge")
 
+  let userHasSignedIn=false
   let tags=[]
   let categoryList=[]
   let typesList=[]
@@ -109,13 +111,24 @@ checkToken()
 async function getProfileDetails() {
   const id=localStorage.getItem("currentUserId")
   const userObj={id:id}
-  const res = await axios.post("/Profile/Get_Profile_Details", userObj)
+  let res
+  try{
+  res = await axios.post("/Profile/Get_Profile_Details", userObj)
+  }catch(err){
+    console.log("error while fetching profile details:",err)
+    return
+  }
   console.log(res.data)
   username=res.data.username
   const email=res.data.email
   const profileImg=res.data.profileImg
   const verification=res.data.verification
   const sellerVerification=res.data.sellerVerification
+  const myCartItemNo=res.data.myCartItemNo
+
+  userHasSignedIn=true
+
+
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
@@ -210,6 +223,9 @@ else{
   listProduct.classList.add("disappearForm")
   
 }
+
+cartBadge.classList.add("appear")
+cartBadge.textContent=myCartItemNo
 }
 
 
@@ -225,6 +241,7 @@ async function signOut(){
         localStorage.removeItem("token")
         localStorage.removeItem("currentUserId")
         location.reload(true)
+        userHasSignedIn=false
   }catch(err){
         console.error("Sign Out Error:", err)
   }
@@ -863,6 +880,14 @@ async function createProduct(){
   }catch(err){
     console.log("err while Listing Product:",err)
   }
+}
+
+async function cartPage(){
+  if(userHasSignedIn){
+    window.location.href="/Profile/My_Cart"
+  }
+  console.log(productId)
+  window.location.href="/Auth/Sign_In"
 }
 
 

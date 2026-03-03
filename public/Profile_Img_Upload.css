@@ -43,10 +43,44 @@ body{
 
 
 
-.cart-btn{
-    margin: 0.5rem;
+.cart-btn {
+    margin: 0.5rem 1.2rem;
+    position: relative; /* This keeps the badge constrained to the button */
+    cursor: pointer;
+    display: inline-flex;
+    
+}
+.cart-btn:hover{
+     outline: solid 2px #fef4bc;
+    outline-offset: 0.2rem;
 }
 
+.cart-badge{
+
+}
+
+.cart-badge.appear{
+    position: absolute;
+    top: -8px; 
+    left: -8px;
+    
+  
+    background-color: #e35311; 
+    color: #fef4bc;
+    font-size: 0.75rem; 
+    font-weight: bold;
+    
+    height: 18px;
+    min-width: 18px; 
+    border-radius: 50%;
+    
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px; 
+    box-sizing: border-box;
+}
 
 
 
@@ -424,15 +458,21 @@ div.super-li{
 }
 
 .msg-para{
+    display: none;
+}
+.msg-para.appear{
+    display: block;
     text-align: center;
     color: #e35311;
     background-color: #fef4bc;
     margin: 0rem 1.6rem;
     outline: 2px solid #ef720a;
+    padding: 0.2rem;
     outline-offset: -2px;
     margin: 0.3rem;
-    height:1.6rem;
+    min-height:1.6rem;
 }
+
 
 
 .image-uploader-btn.image-deletion-btn{

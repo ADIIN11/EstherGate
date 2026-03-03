@@ -14,7 +14,10 @@
   const imageUploaderBtn=document.getElementById("image-uploader-btn")
   const imageDeletionBtn=document.getElementById("image-deletion-btn") 
   const msgPara=document.getElementById("msg-id")
+
+  const cartBadge=document.getElementById("cart-badge")
  
+  let userHasSignedIn=false
   
  
   let uploadImgRoute=""
@@ -83,6 +86,10 @@ async function getProfileDetails() {
   const profileImg=res.data.profileImg
   const verification=res.data.verification
   const sellerVerification=res.data.sellerVerification
+  const myCartItemNo=res.data.myCartItemNo
+
+  userHasSignedIn=true
+
   profileSubLi.innerHTML=`
     <a href="/Profile/My_Cart" class="sidebar-anchors sub">My Cart</a>
     <a href="/Profile/My_Orders" class="sidebar-anchors sub">My Orders</a>
@@ -176,6 +183,8 @@ else{
   `
 
 }
+cartBadge.classList.add("appear")
+cartBadge.textContent=myCartItemNo
 }
 
 
@@ -273,7 +282,12 @@ reader.readAsDataURL(file)
 
 imageUploaderBtn.addEventListener("click", async () => {
     if (!croppedImage) {
+      msgPara.classList.add("appear")
       msgPara.textContent="Pls Select An Image"
+      setTimeout(()=>{
+            msgPara.textContent=""
+            msgPara.classList.remove("appear")
+          },2500)
       return
     }
     const id=localStorage.getItem("currentUserId")
@@ -287,7 +301,12 @@ imageUploaderBtn.addEventListener("click", async () => {
         headers: { "Content-Type": "multipart/form-data" }
       })
       console.log("Server response:", response.data)
+      msgPara.classList.add("appear")
       msgPara.textContent="Image Uploaded Succesfully"
+      setTimeout(()=>{
+            msgPara.textContent=""
+            msgPara.classList.remove("appear")
+          },2500)
       croppedImage = null
       imageDisplay.innerHTML =`
         <img src="/assets/upload-icon.svg" alt="upload-icon" class="image-preview" id="image-preview">
@@ -297,7 +316,12 @@ imageUploaderBtn.addEventListener("click", async () => {
     } catch (error) {
     
       console.error("Upload failed:", error)
+      msgPara.classList.add("appear")
       msgPara.textContent="Error While Uploading Image"
+      setTimeout(()=>{
+            msgPara.textContent=""
+            msgPara.classList.remove("appear")
+          },2500)
     }
   })
 
@@ -307,11 +331,30 @@ imageDeletionBtn.addEventListener("click", async () => {
    try {
   const res = await axios.post("/Profile/Delete_Profile_Image", userObj)
   console.log("Server response:", res.data)
+  msgPara.classList.add("appear")
   msgPara.textContent="Image Deleted Succesfully"
+    setTimeout(()=>{
+            msgPara.textContent=""
+            msgPara.classList.remove("appear")
+          },2500)
   await getProfileDetails()
   } catch (error) {
     
       console.error("Upload failed:", error)
+      msgPara.classList.add("appear")
       msgPara.textContent="Error While Deleting Image"
+      setTimeout(()=>{
+            msgPara.textContent=""
+            msgPara.classList.remove("appear")
+          },2500)
     }
 })
+
+
+async function cartPage(){
+  if(userHasSignedIn){
+    window.location.href="/Profile/My_Cart"
+    return
+  }
+  window.location.href="/Auth/Sign_In"
+}

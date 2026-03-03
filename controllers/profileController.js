@@ -14,11 +14,16 @@ exports.getProfileDetails=async (req, res) => {
   const profileEmail=await getProfileEmail(req.body)
   const profileVerification=await getProfileVerification(req.body)
   const sellerVerification=await getSellerVerification(req.body)
+  const myCart=await getProfileCart(req.body)
+  const myCartTotal = myCart.reduce((sum, currentItem) => {
+  return sum + currentItem.quantity;
+}, 0)
   res.json({ profileImg:profileImg,
     username:profileUsername,
     email:profileEmail,
     verification:profileVerification,
-    sellerVerification:sellerVerification
+    sellerVerification:sellerVerification,
+    myCartItemNo:myCartTotal
    })
   }catch(err){
     console.log("error while sending profileimg:",err)
@@ -107,6 +112,22 @@ async function getProfileUsername(userObj){
   let profileUsername=await getProfileUsernameDB(userObj)
   profileUsername=profileUsername[0].username
   return profileUsername
+}
+
+async function getProfileCart(userObj){
+  let myCart=await getProfileCartDB(userObj)
+  myCart=myCart[0].myCart
+  return myCart
+}
+
+async function getProfileUsernameDB(userObj){
+  try{
+      const profileUsername= await userModel.find({id:userObj.id}).select('-_id username')
+      return profileUsername
+      }catch(err){
+        console.log("did not find profile username :",err)
+      }
+    
 }
 
 

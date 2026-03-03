@@ -155,6 +155,7 @@ async function signOut(){
         localStorage.removeItem("token")
         localStorage.removeItem("currentUserId")
         location.reload(true)
+        userHasSignedIn=false
   }catch(err){
         console.error("Sign Out Error:", err)
   }

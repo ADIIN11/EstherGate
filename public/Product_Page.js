@@ -25,7 +25,12 @@
   const ratingsBox=document.getElementById("ratings-box")
 
   const productDescription=document.getElementById("product-description")
- 
+
+  const cartBadge=document.getElementById("cart-badge")
+
+
+  let userHasSignedIn=false
+  
   let productObj
   let imageSelected=1
 
@@ -90,10 +95,19 @@ async function userSinedIn(){
   // const userName = localStorage.getItem("currentUsername")
   // const role= localStorage.getItem("currentUserRole")
   const id=localStorage.getItem("currentUserId")
-  const userObj={id:id}
-  const res = await axios.post("/Get_Profile_Img", userObj)
+  const idObj={id:id}
+  let res
+  try{
+  res = await axios.post("/Get_Profile_Img", idObj)
+  }catch(err){
+    console.log("error while signing in:",err)
+    return
+  }
   const profileImg=res.data.profileImg
   const username=res.data.username
+  const myCartItemNo=res.data.myCartItemNo
+
+  userHasSignedIn=true
 
 
   profileSubLi.innerHTML=`
@@ -137,6 +151,8 @@ async function userSinedIn(){
   
 
 sidebar.classList.toggle("userSignedIn")
+cartBadge.classList.add("appear")
+cartBadge.textContent=myCartItemNo
 }
 
 async function signOut(){
@@ -151,6 +167,7 @@ async function signOut(){
         localStorage.removeItem("token")
         localStorage.removeItem("currentUserId")
         location.reload(true)
+        userHasSignedIn=false
   }catch(err){
         console.error("Sign Out Error:", err)
   }
@@ -248,4 +265,13 @@ async function getProduct(){
   productDescription.innerHTML+=`<p> ${productObj.description}</p>`
 
 }
+
 getProduct()
+
+async function cartPage(){
+  if(userHasSignedIn){
+    window.location.href="/Profile/My_Cart"
+    return
+  }
+  window.location.href="/Auth/Sign_In"
+}
