@@ -8,7 +8,10 @@ const {
     setProfileImage,
     changeProfileImage,
     deleteProfileImage,
-    getMyCart
+    getMyCart,
+    incrementQuantity,
+    decrementQuantity,
+    removeProduct
 }=require("../controllers/profileController")
 
 
@@ -43,6 +46,12 @@ router.get("/My_Cart", (req, res) => {
 })
 
 router.post("/Cart_page/Get_My_Cart",getMyCart)
+
+router.post("/Cart_page/Increament_Quantity",incrementQuantity)
+
+router.post("/Cart_page/Decreament_Quantity",decrementQuantity)
+
+router.post("/Cart_page/Remove_Product",removeProduct)
 
 
 module.exports = router

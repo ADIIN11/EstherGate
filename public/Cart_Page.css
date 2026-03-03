@@ -336,6 +336,7 @@ div.super-li{
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    text-align: center;
 }
 
 .product-card {
@@ -365,6 +366,7 @@ div.super-li{
     display:flex;
     flex-direction:column;
   text-align: center;
+  margin-left: auto;
  
 }
 .product-card-row{
@@ -414,6 +416,7 @@ p.quantity-number{
     border-radius: 0%;
     margin: 0.3rem;
     background-color:#fef4bc;
+    
 }
 
 .delete-btn:hover{
@@ -460,4 +463,29 @@ p.quantity-number{
 }
 .product-card .small-p{
     font-size: 0.8rem;
+}
+.total{
+    border: 2px solid #ef720a;
+    margin: 1rem;
+    padding: 1rem;
+}
+.total-text{
+    margin: 0rem;
+}
+.column-header{
+    margin: 0.2rem;
+}
+
+.table-row{
+    display:flex;
+    flex-direction: row;
+    text-align: center;
+    margin: 0.5rem 1rem;
+    gap: 2rem ;
+}
+.table-column{
+     
+    display:flex;
+    flex-direction: column;
+
 }

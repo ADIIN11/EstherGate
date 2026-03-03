@@ -192,7 +192,7 @@ async function getTopSellingList(){
                   
                   <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</sup></p>
           </a>
-            <button onclick="addToCart('${topSellingProducts[i].productId}')" >Add to Cart</button>
+            <button onclick="addToCart('${topSellingProducts[i].productId}')" class="add-to-cart-btn">Add to Cart</button>
         </div> `
     }
   topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
@@ -259,7 +259,7 @@ async function getMostViewedList(){
                   
                   <p>Price: ${mostViewedProducts[i].currency} ${mostViewedProducts[i].price-((mostViewedProducts[i].price/100)*mostViewedProducts[i].discount)}<sup class="small-p">     ${mostViewedProducts[i].discount}% off</sup></p>
           </a>
-            <button onclick="addToCart('${mostViewedProducts[i].productId}')" >Add to Cart</button>
+            <button onclick="addToCart('${mostViewedProducts[i].productId}')" class="add-to-cart-btn" >Add to Cart</button>
         </div> `
     }
   mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)

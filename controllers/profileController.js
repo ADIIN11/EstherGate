@@ -288,3 +288,59 @@ async function getProfileCart(userObj){
   myCart=myCart[0].myCart
   return myCart
 }
+
+
+exports.incrementQuantity=async (req,res)=>{
+  const userId=req.body.userId
+  const productId=req.body.productId
+  try{
+    const result = await userModel.updateOne(
+  { id: userId, "myCart.productId": productId },
+  { $inc: { "myCart.$.quantity": 1 } }
+  )
+    res.json({ message:"Product quantity increased sucessfully"})
+  }catch(err){
+    console.log("error while adding product to user cart ")
+     res.status(500).json({ message: "Failed to increment product" }) 
+  }
+}
+
+
+exports.decrementQuantity = async (req, res) => {
+  const userId = req.body.userId
+  const productId = req.body.productId
+
+  try {
+    await userModel.updateOne(
+      { id: userId, "myCart.productId": productId },
+      { $inc: { "myCart.$.quantity": -1 } }
+    )
+
+    await userModel.updateOne(
+      { id: userId },
+      { $pull: { myCart: { productId: productId, quantity: { $lte: 0 } } } }
+    )
+
+    res.json({ message: "Product quantity decremented successfully" })
+  } catch (err) {
+    console.error("Error while decrementing product in user cart: ", err)
+    res.status(500).json({ message: "Failed to decrement product" }) 
+  }
+}
+
+exports.removeProduct = async (req, res) => {
+  const userId = req.body.userId
+  const productId = req.body.productId
+
+  try {
+    await userModel.updateOne(
+      { id: userId },
+      { $pull: { myCart: { productId: productId } } }
+    );
+
+    res.json({ message: "Product successfully removed from cart" })
+  } catch (err) {
+    console.error("Error while removing product from user cart: ", err)
+    res.status(500).json({ message: "Failed to remove product" })
+  }
+}

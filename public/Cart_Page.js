@@ -146,9 +146,7 @@ async function userSignedIn(){
 sidebar.classList.toggle("userSignedIn")
 cartBadge.classList.add("appear")
 cartBadge.textContent=myCartItemNo
-fetchMyCartProducts(idObj)
-
-
+await fetchMyCartProducts(idObj)
 }
 
 async function signOut(){
@@ -192,6 +190,12 @@ async function fetchMyCartProducts(idObj){
   }
   console.log(res.data)
   const myCart=res.data.myCart
+  if(myCart.length===0){
+    myCartProducts.innerHTML=`
+    <h2>Cart Is Empty :( </h2>
+    `
+    return
+  }
   const products=res.data.products
   let myCartProductsText=``
 
@@ -202,6 +206,7 @@ async function fetchMyCartProducts(idObj){
   const decimalPart = (ratings % 1).toFixed(2)
   const intPart=ratings-decimalPart 
   let starAdded=0
+  let 
   for(let i=1;i<=intPart;i++){
     ratingsText+=`<img src="/assets/full-star.svg" alt="product-icon" class="stars" id="stars">`
     starAdded++
@@ -215,12 +220,13 @@ async function fetchMyCartProducts(idObj){
     starAdded++
   }
   if(products[i].noCustomersReviewed)
+
   ratingsText+=`<h4 class="reviewsNo"> ${products[i].noCustomersReviewed}</h4>`
 
     
     myCartProductsText +=`
-    <div class="product-card" onclick="window.location.href='/Product/${products[i].name}/${myCart[i].productId}'">
-                    <img src="${products[i].productImg1}" alt="Product image" class="product-image">
+    <div class="product-card" >
+                    <img src="${products[i].productImg1}" alt="Product image" class="product-image" onclick="window.location.href='/Product/${products[i].name}/${myCart[i].productId}'">
                     <div class="product-card-column">
                         <h3>${products[i].name}</h3>
                         <p>${products[i].sellerName}</p>
@@ -242,9 +248,9 @@ async function fetchMyCartProducts(idObj){
                         </div>
                         
                         <div class="product-card-row">
-                            <button class="quantity-btn" id="quantity-decrement">-</button>
+                            <button class="quantity-btn" id="quantity-decrement" onclick="decrementQuantity('${myCart[i].productId}')">-</button>
                             <p class="quantity-number">${myCart[i].quantity}</p>
-                            <button class="quantity-btn" id="quantity-increment">+</button>  
+                            <button class="quantity-btn" id="quantity-increment" onclick="incrementQuantity('${myCart[i].productId}')">+</button>  
                         </div> 
                            
                     </div>
@@ -255,12 +261,58 @@ async function fetchMyCartProducts(idObj){
                     </div>
                      <div class="product-card-column">
                         <p>Remove From Cart:</p> 
-                        <button class="delete-btn" id="quantity-increment" onclick="removeFromMyCart(${id},${myCart[i].quantity})">
+                        <button class="delete-btn" id="quantity-increment" onclick="removeProduct('${myCart[i].productId}')">
                             <img src="/assets/dustbin-icon.svg" alt="Delete Item" class="delete-icon">
                         </button>
                      </div>
                 </div>
     `
+
   }
   myCartProducts.innerHTML=myCartProductsText
+}
+
+
+
+
+async function incrementQuantity(productId){
+    const id=localStorage.getItem("currentUserId")
+    const cartObj={
+      userId:id,
+      productId:productId
+    }
+    try{
+       const res = await axios.post("/Profile/Cart_page/Increament_Quantity", cartObj)
+       await fetchMyCartProducts(idObj)
+    }catch(err){
+      console.log(":Error while incrementing quantity",err)
+    }
+}
+
+async function decrementQuantity(productId){
+    const id=localStorage.getItem("currentUserId")
+    const cartObj={
+      userId:id,
+      productId:productId
+    }
+    try{
+       const res = await axios.post("/Profile/Cart_page/Decreament_Quantity", cartObj)
+       await fetchMyCartProducts(idObj)
+    }catch(err){
+      console.log(":Error while decrementing quantity",err)
+    }
+}
+
+async function removeProduct(productId){
+    const id=localStorage.getItem("currentUserId")
+    const cartObj={
+      userId:id,
+      productId:productId
+    }
+    try{
+       const res = await axios.post("/Profile/Cart_page/Remove_Product", cartObj)
+       await fetchMyCartProducts(idObj)
+    }catch(err){
+      console.log(":Error while removing product",err)
+    }
 }
