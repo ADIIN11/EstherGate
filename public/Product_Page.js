@@ -28,6 +28,9 @@
 
   const cartBadge=document.getElementById("cart-badge")
 
+  const addToCartBtn=document.getElementById("add-to-cart-btn")
+  const buyProductBtn=document.getElementById("buy-product-btn")
+
 
   let userHasSignedIn=false
   
@@ -62,7 +65,7 @@
             // localStorage.setItem("currentUserRole",role)
             localStorage.setItem("currentUserId",id)
             console.log("Token Verified")
-            await userSinedIn()
+            await userSignedIn()
 
         }
 
@@ -91,7 +94,7 @@ checkToken()
 
 
 
-async function userSinedIn(){
+async function userSignedIn(){
   // const userName = localStorage.getItem("currentUsername")
   // const role= localStorage.getItem("currentUserRole")
   const id=localStorage.getItem("currentUserId")
@@ -275,3 +278,33 @@ async function cartPage(){
   }
   window.location.href="/Auth/Sign_In"
 }
+
+
+
+async function addToCart(productId){
+  if(userHasSignedIn){
+    const id=localStorage.getItem("currentUserId")
+    const cartObj={
+      userId:id,
+      productId:productId
+    }
+    try{
+       const res = await axios.post("/Add_To_Cart", cartObj)
+       await userSignedIn()
+    }catch(err){
+      console.log(":Error while adding to cart",err)
+    }
+    return
+  }
+  console.log(productId)
+  window.location.href="/Auth/Sign_In"
+}
+
+addToCartBtn.addEventListener("click",()=>{
+addToCart(productId)
+})
+
+buyProductBtn.addEventListener("click",()=>{
+addToCart(productId)
+window.location.href="/Profile/My_Cart"
+})

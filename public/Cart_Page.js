@@ -17,10 +17,27 @@
 
   const myCartProducts=document.getElementById("my-cart-products")
 
+  const total=document.querySelector(".total")
+  const totalProductsColumn=document.getElementById("total-products-column")
+  const totalSlnoColumn=document.getElementById("total-slno-column")
+  const totalMrpColumn=document.getElementById("total-mrp-column")
+  const totalConvertedColumn=document.getElementById("total-converted-column")
+  const totalCurrencyInpt=document.getElementById("total-currency-inpt")
+
   let userHasSignedIn=false
   let id
 
   let idObj
+  let targetCurrency="USD"
+
+  
+const symbolToIsoMap = {
+  "&#36;": "USD",
+  "&#8377;": "INR", 
+  "&#163;": "GBP",
+  "&#8364;": "EUR",
+  "&#165;": "JPY"
+}
 
 
  
@@ -191,23 +208,29 @@ async function fetchMyCartProducts(idObj){
   console.log(res.data)
   const myCart=res.data.myCart
   if(myCart.length===0){
+    total.classList.add("disappear")
     myCartProducts.innerHTML=`
     <h2>Cart Is Empty :( </h2>
     `
     return
   }
   const products=res.data.products
+  const newPrices = await getConvertedPrices(products, targetCurrency)
   let myCartProductsText=``
 
-  for(i=0;i<myCart.length;i++){
+  totalSlnoColumn.innerHTML=`<h3 class="column-header" >Sl.no</h3>`
+  totalProductsColumn.innerHTML=`<h3 class="column-header" >Products</h3>`
+  totalMrpColumn.innerHTML=`<h3 class="column-header" >M.R.P</h3>`
+  totalConvertedColumn.innerHTML=``
+
+  for(let i=0;i<myCart.length;i++){
 
     let ratingsText=``
   const ratings=products[i].ratings
   const decimalPart = (ratings % 1).toFixed(2)
   const intPart=ratings-decimalPart 
   let starAdded=0
-  let 
-  for(let i=1;i<=intPart;i++){
+  for(let j=1;j<=intPart;j++){
     ratingsText+=`<img src="/assets/full-star.svg" alt="product-icon" class="stars" id="stars">`
     starAdded++
   }
@@ -225,8 +248,8 @@ async function fetchMyCartProducts(idObj){
 
     
     myCartProductsText +=`
-    <div class="product-card" >
-                    <img src="${products[i].productImg1}" alt="Product image" class="product-image" onclick="window.location.href='/Product/${products[i].name}/${myCart[i].productId}'">
+    <div class="product-card" onclick="window.location.href='/Product/${products[i].name}/${myCart[i].productId}'">
+                    <img src="${products[i].productImg1}" alt="Product image" class="product-image" >
                     <div class="product-card-column">
                         <h3>${products[i].name}</h3>
                         <p>${products[i].sellerName}</p>
@@ -248,9 +271,9 @@ async function fetchMyCartProducts(idObj){
                         </div>
                         
                         <div class="product-card-row">
-                            <button class="quantity-btn" id="quantity-decrement" onclick="decrementQuantity('${myCart[i].productId}')">-</button>
+                            <button class="quantity-btn" id="quantity-decrement" onclick="event.stopPropagation();decrementQuantity('${myCart[i].productId}');">-</button>
                             <p class="quantity-number">${myCart[i].quantity}</p>
-                            <button class="quantity-btn" id="quantity-increment" onclick="incrementQuantity('${myCart[i].productId}')">+</button>  
+                            <button class="quantity-btn" id="quantity-increment" onclick="event.stopPropagation();incrementQuantity('${myCart[i].productId}');">+</button>  
                         </div> 
                            
                     </div>
@@ -261,13 +284,16 @@ async function fetchMyCartProducts(idObj){
                     </div>
                      <div class="product-card-column">
                         <p>Remove From Cart:</p> 
-                        <button class="delete-btn" id="quantity-increment" onclick="removeProduct('${myCart[i].productId}')">
+                        <button class="delete-btn" id="quantity-increment" onclick="event.stopPropagation();removeProduct('${myCart[i].productId}');">
                             <img src="/assets/dustbin-icon.svg" alt="Delete Item" class="delete-icon">
                         </button>
                      </div>
                 </div>
     `
-
+  totalSlnoColumn.innerHTML+=`<p>${i+1}</p>`
+  totalProductsColumn.innerHTML+=`<p>${products[i].name}</p>`
+  totalMrpColumn.innerHTML+=`<p>${products[i].currency} ${products[i].price}</p>`
+  totalConvertedColumn.innerHTML+=`<p>${getSymbolString(targetCurrency)} ${newPrices[i]}</p>`
   }
   myCartProducts.innerHTML=myCartProductsText
 }
@@ -283,6 +309,7 @@ async function incrementQuantity(productId){
     }
     try{
        const res = await axios.post("/Profile/Cart_page/Increament_Quantity", cartObj)
+       await userSignedIn()
        await fetchMyCartProducts(idObj)
     }catch(err){
       console.log(":Error while incrementing quantity",err)
@@ -297,6 +324,7 @@ async function decrementQuantity(productId){
     }
     try{
        const res = await axios.post("/Profile/Cart_page/Decreament_Quantity", cartObj)
+       await userSignedIn()
        await fetchMyCartProducts(idObj)
     }catch(err){
       console.log(":Error while decrementing quantity",err)
@@ -311,8 +339,70 @@ async function removeProduct(productId){
     }
     try{
        const res = await axios.post("/Profile/Cart_page/Remove_Product", cartObj)
+       await userSignedIn()
        await fetchMyCartProducts(idObj)
     }catch(err){
       console.log(":Error while removing product",err)
     }
+}
+
+
+totalCurrencyInpt.addEventListener('change', async (event) => {
+   targetCurrency = event.target.value
+   await fetchMyCartProducts(idObj)
+})
+
+
+
+
+
+async function getConvertedPrices(productsObj, targetCurrencyIso) {
+  try {
+    const response = await fetch(`https://api.frankfurter.app/latest?from=${targetCurrencyIso}`)
+    
+    if (!response.ok) throw new Error("Network response was not ok")
+    
+    const data = await response.json()
+    const rates = data.rates
+
+   
+    const convertedPricesArray = productsObj.map(product => {
+      const productCurrencyIso = symbolToIsoMap[product.currency.trim()]
+
+      if (!productCurrencyIso) {
+        console.warn(`Unknown currency symbol: ${product.currency}`);
+        return product.price
+      }
+
+      if (productCurrencyIso === targetCurrencyIso) {
+        return product.price
+      }
+
+      const exchangeRate = rates[productCurrencyIso]
+      if (exchangeRate) {
+        const newPrice = product.price / exchangeRate
+        
+        return Number(newPrice.toFixed(2))
+      } else {
+        console.warn(`Rate not found for ${productCurrencyIso}`)
+        return product.price
+      }
+    })
+
+    return convertedPricesArray
+
+  } catch (error) {
+    console.error("Failed to fetch exchange rates:", error)
+    return productsObj.map(product => product.price)
+  }
+}
+
+
+const isoToSymbolMap = Object.fromEntries(
+  Object.entries(symbolToIsoMap).map(([key, value]) => [value, key])
+)
+
+
+const getSymbolString = (isoValue) => {
+  return isoToSymbolMap[isoValue]
 }

@@ -167,25 +167,52 @@
 
             </div>
         
-            <div class="total">
+            <div class="total" >
                 <h2 class="total-text">Total :</h2>
                 <div class="table-row">
-                    <div class="table-coloumn">
-                        <h3 class="column-header">Sl.no</h2>
+                    <div class="table-column" id="total-slno-column">
+                        <h3 class="column-header" >Sl.no</h3>
 
                     </div>
-                     <div class="table-coloumn">
-                        <h3 class="column-header">Products</h2>
+                     <div class="table-column" id="total-products-column">
+                        <h3 class="column-header" >Products</h3>
 
                     </div>
-                    <div class="table-coloumn">
-                        <h3 class="column-header">Quantity</h2>
+                    
+                    <div class="table-column" id="total-mrp-column">
+                        <h3 class="column-header" >M.R.P</h3>
+                    </div>
+                    
+                    <div class="table-column" >
+                        <div class="table-column-row">
+                            <h3 class="column-header">Converted to</h3>
+                            <select title="currency" class="currency" id="total-currency-inpt" name="currency"> 
+                                <option value="USD" >&#36; (USD)</option> 
+                                <option value="INR">&#8377; (INR)</option> 
+                                <option value="GBP">&#163; (GBP)</option> 
+                                <option value="EUR">&#8364; (EUR)</option> 
+                                <option value="JPY">&#165; (JPY)</option> 
+                            </select>
+                        </div>
+                        <div class="table-column" id="total-converted-column">
+
+                        </div>
+                    
+                    </div>
+                    <div class="table-column">
+                        <h3 class="column-header">Discount</h3>
+                    </div>
+                    <div class="table-column">
+                        <h3 class="column-header">Discounted Price</h3>
+                    </div>
+                    <div class="table-column">
+                        <h3 class="column-header">Quantity</h3>
 
                     </div>
-                    <div class="table-coloumn">
-                        <h3 class="column-header">M.R.P</h2>
-                    </div>
+                    <div class="table-column">
+                        <h3 class="column-header">Total</h3>
 
+                    </div>
                 </div>
             </div>
         </div>
