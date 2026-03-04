@@ -510,3 +510,10 @@ p.quantity-number{
     border: 2px solid #ef720a;
     
 }
+
+.end{
+    margin-left: auto;
+    margin-right: 14rem;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}

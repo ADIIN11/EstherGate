@@ -39,7 +39,6 @@ exports.userSignOut=(req, res) => {
 }
 
 exports.getProfileImage=async (req, res) => {
-  console.log(req.body)
   try{
   const profileImg=await getProfileImg(req.body)
   const ProfileUsername=await getProfileUsername(req.body)

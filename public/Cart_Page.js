@@ -23,6 +23,14 @@
   const totalMrpColumn=document.getElementById("total-mrp-column")
   const totalConvertedColumn=document.getElementById("total-converted-column")
   const totalCurrencyInpt=document.getElementById("total-currency-inpt")
+  const totalDiscountColumn=document.getElementById("total-discount-column")
+  const totalDiscountedColumn=document.getElementById("total-discounted-column")
+  const totalQuantityColumn=document.getElementById("total-quantity-column")
+  const totalTotalColumn=document.getElementById("total-total-column")
+
+  const totalServiceRow=document.getElementById("total-service-row")
+  const totalTotalRow=document.getElementById("total-total-row")
+  const totalGrandRow=document.getElementById("total-grand-row")
 
   let userHasSignedIn=false
   let id
@@ -222,6 +230,17 @@ async function fetchMyCartProducts(idObj){
   totalProductsColumn.innerHTML=`<h3 class="column-header" >Products</h3>`
   totalMrpColumn.innerHTML=`<h3 class="column-header" >M.R.P</h3>`
   totalConvertedColumn.innerHTML=``
+  totalDiscountColumn.innerHTML=`<h3 class="column-header">Discount</h3>`
+  totalDiscountedColumn.innerHTML=`<h3 class="column-header">Discounted Price</h3>`
+  totalQuantityColumn.innerHTML=`<h3 class="column-header">Quantity</h3>`
+  totalTotalColumn.innerHTML=`<h3 class="column-header">Total</h3>`
+
+  totalTotalRow.innerHTML=`<h3 class="column-header">Total: </h3>`
+  totalServiceRow.innerHTML=`<h3 class="column-header">Service Charge(0.5%):</h3>`
+  totalGrandRow.innerHTML=`<h2 class="column-header">Grand Total:</h2>`
+
+
+  let grandTotal=0
 
   for(let i=0;i<myCart.length;i++){
 
@@ -280,7 +299,7 @@ async function fetchMyCartProducts(idObj){
                     
                     <div class="product-card-column">
                         <p>M.R.P: ${products[i].currency} ${products[i].price}</p>  
-                        <p>Price: ${products[i].currency} ${products[i].price-((products[i].price/100)*products[i].discount)}<sup class="small-p">     ${products[i].discount}% off</sup></p>   
+                        <p>Price: ${getSymbolString(targetCurrency)} ${(newPrices[i]-((newPrices[i]/100)*products[i].discount)).toFixed(2)}<sup class="small-p">     ${products[i].discount}% off</sup></p>  
                     </div>
                      <div class="product-card-column">
                         <p>Remove From Cart:</p> 
@@ -294,7 +313,16 @@ async function fetchMyCartProducts(idObj){
   totalProductsColumn.innerHTML+=`<p>${products[i].name}</p>`
   totalMrpColumn.innerHTML+=`<p>${products[i].currency} ${products[i].price}</p>`
   totalConvertedColumn.innerHTML+=`<p>${getSymbolString(targetCurrency)} ${newPrices[i]}</p>`
+  totalDiscountColumn.innerHTML+=`<p>${products[i].discount}% OFF</p>`
+  totalDiscountedColumn.innerHTML+=`<p>${getSymbolString(targetCurrency)} ${(newPrices[i]-((newPrices[i]/100)*products[i].discount)).toFixed(2)}</p>`
+  totalQuantityColumn.innerHTML+=`<p>${myCart[i].quantity}</p>`
+  totalTotalColumn.innerHTML+=`<p>${getSymbolString(targetCurrency)} ${((newPrices[i]-((newPrices[i]/100)*products[i].discount))*myCart[i].quantity).toFixed(2)}</p>`
+
+  grandTotal+=Number((((newPrices[i]-((newPrices[i]/100)*products[i].discount))*myCart[i].quantity).toFixed(2)))
   }
+  totalServiceRow.innerHTML+=`<h3 class="end">${getSymbolString(targetCurrency)} ${(((grandTotal.toFixed(2))/100)*0.5).toFixed(2)}</h3>`
+  totalTotalRow.innerHTML+=`<h3 class="end">${getSymbolString(targetCurrency)} ${grandTotal.toFixed(2)}</h3>`
+  totalGrandRow.innerHTML+=`<h2 class="end">${getSymbolString(targetCurrency)} ${(Number(grandTotal.toFixed(2))+Number((((grandTotal.toFixed(2))/100)*0.5).toFixed(2))).toFixed(2)} </h2>`
   myCartProducts.innerHTML=myCartProductsText
 }
 
