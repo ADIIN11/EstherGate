@@ -26,6 +26,7 @@ const authRoutes=require("./routes/authRoutes")
 const commonRoutes=require("./routes/commonRoutes")
 const profileRoutes=require("./routes/profileRoutes")
 const categoryRoutes=require("./routes/productRoutes")
+const storeRoutes=require("./routes/storeRoutes")
 
 const app = express();
 
@@ -41,6 +42,8 @@ app.use("",commonRoutes)
 app.use("/Profile",profileRoutes)
 
 app.use("/Product",categoryRoutes)
+
+app.use("/Store",storeRoutes)
 
 app.use(express.static(path.join(__dirname, "public")))
 
