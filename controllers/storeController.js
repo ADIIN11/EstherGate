@@ -1,3 +1,4 @@
+const productModel = require('../models/productModel.js')
 
 exports.getTopSellingProducts=async(req,res)=>{
   try{
