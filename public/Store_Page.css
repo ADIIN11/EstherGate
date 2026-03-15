@@ -410,3 +410,19 @@ div.super-li{
     background-color: #feb60b;
     cursor:pointer;
 }
+
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+ overflow-y: auto;
+}
+.product-card {
+  border: 1px solid #ef720a;
+  padding: 10px;
+  text-align: center;
+}
+.product-image{
+    width: 300px;
+}
