@@ -322,25 +322,7 @@ div.super-li{
  /* overflow-y: auto; */
 }
 
-.slide-holder{
-      border: 2px solid #ef720a;
-}
 
-.slide-name{
-    margin: 0px;
-}
-
-.products-slide {
-
-  
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
- overflow-x: auto;
- overflow-y: hidden;
- scroll-snap-type: x mandatory;
-}
 .product-card {
     scroll-snap-align: start;
   border: 2px solid #ef720a;
