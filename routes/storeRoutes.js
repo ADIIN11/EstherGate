@@ -7,6 +7,6 @@ const {
 }=require("../controllers/storeController")
 module.exports = router
 
-router.get("/", (req, res) => {
+router.get("/:page", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/Store_Page.html"))
 })

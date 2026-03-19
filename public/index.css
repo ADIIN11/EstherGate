@@ -282,6 +282,8 @@ div.super-li{
 
 
 
+
+
 /* filter bar logic */
 
 
@@ -329,6 +331,13 @@ div.super-li{
 .slide-name{
     margin: 0px;
 }
+
+
+.slide-name:hover{
+    color: #e35311;
+    cursor:pointer;
+}
+
 
 .products-slide {
 
