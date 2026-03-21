@@ -12,7 +12,9 @@
   const listProductSidebarLi=document.getElementById("list-product-li")
   
   const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
+  const topSellingSlideHolder=document.getElementById("top-selling-slide-holder")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
+  const mostViewedSlideHolder=document.getElementById("most-viewed-slide-holder")
   const cartBadge=document.getElementById("cart-badge")
 
   let userHasSignedIn=false
@@ -171,38 +173,41 @@ let topSellingHasMoreProducts = true
 async function getTopSellingList(){
   if (topSellingIsLoading|| !topSellingHasMoreProducts) 
     return
-  topSellingIsLoading = true
-
-  try{
-    const res = await axios.post("/Product/Get_Top_Selling_Products",{page:currentTopSellingPage})
-    currentTopSellingPage++
-    topSellingProducts=res.data.topSellingProducts
-    console.log(topSellingProducts)
-    if(topSellingProducts.length===0){
-      topSellingHasMoreProducts = false
-      return
+  
+  if(currentTopSellingPage<=5){
+    topSellingIsLoading = true
+    try{
+      const res = await axios.post("/Product/Get_Top_Selling_Products",{page:currentTopSellingPage})
+      currentTopSellingPage++
+      topSellingProducts=res.data.topSellingProducts
+      console.log(topSellingProducts)
+      if(topSellingProducts.length===0){
+        topSellingHasMoreProducts = false
+        return
+      }
+      for(let i=0;i<topSellingProducts.length;i++){
+      topSellingProductsRow +=` 
+          <div class="product-card" >
+            <a href="/Product/${topSellingProducts[i].name}/${topSellingProducts[i].productId}" >
+                <img src="${topSellingProducts[i].productImg1}" alt="Product image" class="product-image">
+                    <h3>${topSellingProducts[i].name}</h3>
+              
+                    
+                    <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</sup></p>
+            </a>
+              <button onclick="addToCart('${topSellingProducts[i].productId}')" class="add-to-cart-btn">Add to Cart</button>
+          </div> `
+      }
+    topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
+    topSellingProductsRow=""
+    } catch (err) {
+            console.log(`failed to get Top Selling Product`, err)
+    }finally {
+      topSellingIsLoading = false;
     }
-    for(let i=0;i<topSellingProducts.length;i++){
-    topSellingProductsRow +=` 
-        <div class="product-card" >
-          <a href="/Product/${topSellingProducts[i].name}/${topSellingProducts[i].productId}" >
-              <img src="${topSellingProducts[i].productImg1}" alt="Product image" class="product-image">
-                  <h3>${topSellingProducts[i].name}</h3>
-            
-                  
-                  <p>Price: ${topSellingProducts[i].currency} ${topSellingProducts[i].price-((topSellingProducts[i].price/100)*topSellingProducts[i].discount)}<sup class="small-p">     ${topSellingProducts[i].discount}% off</sup></p>
-          </a>
-            <button onclick="addToCart('${topSellingProducts[i].productId}')" class="add-to-cart-btn">Add to Cart</button>
-        </div> `
-    }
-  topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
-  topSellingProductsRow=""
-  } catch (err) {
-          console.log(`failed to get Top Selling Product`, err)
-  }finally {
-    topSellingIsLoading = false;
+  }else{
+    return
   }
-
 }
 
 
@@ -213,6 +218,9 @@ topSellingProductsSlide.addEventListener('scroll', () => {
 
   if (isAtRightEnd) {
     getTopSellingList()
+    topSellingSlideHolder.classList.add('no-fade');
+  } else {
+    topSellingSlideHolder.classList.remove('no-fade');
   }
 })
 // For bottom of the scroll
@@ -238,38 +246,41 @@ let mostViewedHasMoreProducts = true
 async function getMostViewedList(){
   if (mostViewedIsLoading|| !mostViewedHasMoreProducts) 
     return
-  mostViewedIsLoading = true
-
-  try{
-    const res = await axios.post("/Product/Get_Most_Viewed_Products",{page:currentMostViewedPage})
-    currentMostViewedPage++
-    mostViewedProducts=res.data.mostViewedProducts
-    console.log(mostViewedProducts)
-    if(mostViewedProducts.length===0){
-      mostViewedHasMoreProducts = false
-      return
+  
+  if(currentMostViewedPage<=5){
+    mostViewedIsLoading = true
+    try{
+      const res = await axios.post("/Product/Get_Most_Viewed_Products",{page:currentMostViewedPage})
+      currentMostViewedPage++
+      mostViewedProducts=res.data.mostViewedProducts
+      console.log(mostViewedProducts)
+      if(mostViewedProducts.length===0){
+        mostViewedHasMoreProducts = false
+        return
+      }
+      for(let i=0;i<mostViewedProducts.length;i++){
+      mostViewedProductsRow +=` 
+          <div class="product-card" >
+            <a href="/Product/${mostViewedProducts[i].name}/${mostViewedProducts[i].productId}" >
+                <img src="${mostViewedProducts[i].productImg1}" alt="Product image" class="product-image">
+                    <h3>${mostViewedProducts[i].name}</h3>
+              
+                    
+                    <p>Price: ${mostViewedProducts[i].currency} ${mostViewedProducts[i].price-((mostViewedProducts[i].price/100)*mostViewedProducts[i].discount)}<sup class="small-p">     ${mostViewedProducts[i].discount}% off</sup></p>
+            </a>
+              <button onclick="addToCart('${mostViewedProducts[i].productId}')" class="add-to-cart-btn" >Add to Cart</button>
+          </div> `
+      }
+    mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)
+    mostViewedProductsRow=""
+    } catch (err) {
+            console.log(`failed to get Top Selling Product`, err)
+    }finally {
+      mostViewedIsLoading = false;
     }
-    for(let i=0;i<mostViewedProducts.length;i++){
-    mostViewedProductsRow +=` 
-        <div class="product-card" >
-          <a href="/Product/${mostViewedProducts[i].name}/${mostViewedProducts[i].productId}" >
-              <img src="${mostViewedProducts[i].productImg1}" alt="Product image" class="product-image">
-                  <h3>${mostViewedProducts[i].name}</h3>
-            
-                  
-                  <p>Price: ${mostViewedProducts[i].currency} ${mostViewedProducts[i].price-((mostViewedProducts[i].price/100)*mostViewedProducts[i].discount)}<sup class="small-p">     ${mostViewedProducts[i].discount}% off</sup></p>
-          </a>
-            <button onclick="addToCart('${mostViewedProducts[i].productId}')" class="add-to-cart-btn" >Add to Cart</button>
-        </div> `
-    }
-  mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)
-  mostViewedProductsRow=""
-  } catch (err) {
-          console.log(`failed to get Top Selling Product`, err)
-  }finally {
-    mostViewedIsLoading = false;
+  }else{
+    return
   }
-
 }
 
 getMostViewedList()
@@ -279,6 +290,9 @@ mostViewedProductsSlide.addEventListener('scroll', () => {
 
   if (isAtRightEnd) {
     getMostViewedList()
+    mostViewedSlideHolder.classList.add('no-fade');
+  } else {
+    mostViewedSlideHolder.classList.remove('no-fade');
   }
 })
 

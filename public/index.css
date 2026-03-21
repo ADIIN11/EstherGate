@@ -326,10 +326,22 @@ div.super-li{
 
 .slide-holder{
       border: 2px solid #ef720a;
+      width: 100%;
+  overflow: hidden; /* Keeps the mask contained */
+  
+  /* The Mask: Fades out the first 5% and the last 5% of the container */
+-webkit-mask-image: linear-gradient(to left, transparent, black 80px);
+  mask-image: linear-gradient(to left, transparent, black 80px);
+}
+
+/* JavaScript will add this class when the user hits the right edge */
+.slide-holder.no-fade {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .slide-name{
-    margin: 0px;
+    margin: 0.5rem 1rem;
 }
 
 
@@ -349,7 +361,18 @@ div.super-li{
  overflow-x: auto;
  overflow-y: hidden;
  scroll-snap-type: x mandatory;
+ margin: 0rem 1rem;
+ padding-bottom: 0.5rem;
+
+  scrollbar-color: #ef720a #fef4bc; 
+  scrollbar-width: auto;
 }
+
+
+.products-slide::-webkit-scrollbar-thumb:hover {
+  background: #e35311; 
+}
+
 .product-card {
     scroll-snap-align: start;
   border: 2px solid #ef720a;

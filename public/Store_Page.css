@@ -361,7 +361,7 @@ div.super-li{
 
 
 .product-image{
-    width: 14rem;
+    width: 16rem;
 }
 .product-card h3{
     margin:0.3rem;
@@ -399,12 +399,9 @@ div.super-li{
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
  overflow-y: auto;
+ margin: 0rem 1rem;
 }
-.product-card {
-  border: 1px solid #ef720a;
-  padding: 10px;
-  text-align: center;
-}
-.product-image{
-    width: 300px;
+
+.page-heading{
+    margin: 0.5rem 1rem;
 }

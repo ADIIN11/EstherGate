@@ -15,6 +15,9 @@
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
   const cartBadge=document.getElementById("cart-badge")
 
+
+  const pageHeading=document.getElementById("page-heading")
+
   let userHasSignedIn=false
 
 
@@ -165,10 +168,6 @@ async function signOut(){
 const urlParts = window.location.pathname.split("/"); 
 const pageRequest = urlParts[urlParts.length - 1]
 
-if(pageRequest==="Top_Selling"){
-getTopSellingList()
-
-}
 
 
 
@@ -216,26 +215,25 @@ async function getTopSellingList(){
 }
 
 
-
-mainProductGrid.addEventListener('scroll', () => {
-  const isAtRightEnd = mainProductGrid.scrollLeft + mainProductGrid.clientWidth >= mainProductGrid.scrollWidth - 5
-
-  if (isAtRightEnd) {
-    getTopSellingList()
-  }
-})
 // For bottom of the scroll
-// const productContainer = document.getElementById('topSellingProductsSlide');
 
-// productContainer.addEventListener('scroll', () => {
-//   const isAtBottom = productContainer.scrollTop + productContainer.clientHeight >= productContainer.scrollHeight - 5;
+window.addEventListener('scroll', () => {
+  // window.innerHeight = The height of the user's visible screen/browser window
+  // window.scrollY = How many pixels the user has scrolled down from the top
+  // document.documentElement.scrollHeight = The total height of your entire webpage
 
-//   if (isAtBottom) {
-//     console.log("Reached the bottom of the div!");
-//     // Call your fetch function here
-//     getTopSellingList();
-//   }
-// });
+  // We use a 100px buffer so it triggers just before they hit the absolute bottom
+  const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
+
+  if (isAtBottom) {
+    console.log("Reached the bottom of the page!");
+    // Call your fetch function here
+    getProductList();
+  }
+});
+
+
+
 
 
 let mostViewedProducts = []
@@ -250,7 +248,7 @@ async function getMostViewedList(){
   mostViewedIsLoading = true
 
   try{
-    const res = await axios.post("/Product/Get_Most_Viewed_Products",{page:currentMostViewedPage})
+    const res = await axios.post("/Store/Get_Most_Viewed_Products",{page:currentMostViewedPage})
     currentMostViewedPage++
     mostViewedProducts=res.data.mostViewedProducts
     console.log(mostViewedProducts)
@@ -271,7 +269,7 @@ async function getMostViewedList(){
             <button onclick="addToCart('${mostViewedProducts[i].productId}')" class="add-to-cart-btn" >Add to Cart</button>
         </div> `
     }
-  mostViewedProductsSlide.insertAdjacentHTML('beforeend', mostViewedProductsRow)
+  mainProductGrid.insertAdjacentHTML('beforeend', mostViewedProductsRow)
   mostViewedProductsRow=""
   } catch (err) {
           console.log(`failed to get Top Selling Product`, err)
@@ -281,15 +279,19 @@ async function getMostViewedList(){
 
 }
 
-getMostViewedList()
 
-mostViewedProductsSlide.addEventListener('scroll', () => {
-  const isAtRightEnd = mostViewedProductsSlide.scrollLeft + mostViewedProductsSlide.clientWidth >= mostViewedProductsSlide.scrollWidth - 5
-
-  if (isAtRightEnd) {
+function getProductList(){
+  if(pageRequest==="Top_Selling"){
+    pageHeading.textContent="Top Selling"
+    getTopSellingList()
+  }else if(pageRequest==="Most_Viewed"){
+    pageHeading.textContent="Most Viewed"
     getMostViewedList()
   }
-})
+}
+
+getProductList()
+
 
 
 async function addToCart(productId){
