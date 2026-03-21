@@ -11,7 +11,7 @@
   const profileImgDiv=document.getElementById("profile-icon")
   const listProductSidebarLi=document.getElementById("list-product-li")
   
-  const topSellingProductsSlide=document.getElementById("top-selling-products-slide")
+  const mainProductGrid=document.getElementById("main-product-grid")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
   const cartBadge=document.getElementById("cart-badge")
 
@@ -165,7 +165,10 @@ async function signOut(){
 const urlParts = window.location.pathname.split("/"); 
 const pageRequest = urlParts[urlParts.length - 1]
 
+if(pageRequest==="Top_Selling"){
+getTopSellingList()
 
+}
 
 
 
@@ -181,7 +184,7 @@ async function getTopSellingList(){
   topSellingIsLoading = true
 
   try{
-    const res = await axios.post("/Product/Get_Top_Selling_Products",{page:currentTopSellingPage})
+    const res = await axios.post("/Store/Get_Top_Selling_Products",{page:currentTopSellingPage})
     currentTopSellingPage++
     topSellingProducts=res.data.topSellingProducts
     console.log(topSellingProducts)
@@ -202,7 +205,7 @@ async function getTopSellingList(){
             <button onclick="addToCart('${topSellingProducts[i].productId}')" class="add-to-cart-btn">Add to Cart</button>
         </div> `
     }
-  topSellingProductsSlide.insertAdjacentHTML('beforeend', topSellingProductsRow)
+  mainProductGrid.insertAdjacentHTML('beforeend', topSellingProductsRow)
   topSellingProductsRow=""
   } catch (err) {
           console.log(`failed to get Top Selling Product`, err)
@@ -213,10 +216,9 @@ async function getTopSellingList(){
 }
 
 
-getTopSellingList()
 
-topSellingProductsSlide.addEventListener('scroll', () => {
-  const isAtRightEnd = topSellingProductsSlide.scrollLeft + topSellingProductsSlide.clientWidth >= topSellingProductsSlide.scrollWidth - 5
+mainProductGrid.addEventListener('scroll', () => {
+  const isAtRightEnd = mainProductGrid.scrollLeft + mainProductGrid.clientWidth >= mainProductGrid.scrollWidth - 5
 
   if (isAtRightEnd) {
     getTopSellingList()
