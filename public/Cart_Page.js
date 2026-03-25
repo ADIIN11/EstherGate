@@ -161,7 +161,7 @@ async function userSignedIn(){
   else{
      profileImgDiv.innerHTML=`
   <a href="/Profile" class="sidebar-anchors icon" >
-  <img src="assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
+  <img src="/assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
   </a>
   <a href="/Profile" class="sidebar-anchors" >${username}</a>
   `
