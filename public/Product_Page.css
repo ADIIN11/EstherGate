@@ -486,6 +486,23 @@ div.super-li{
 }
 
 
+.third-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+textarea.input-box {
+    width: 32rem;
+    height: 3.5rem;
+    font-size: 16px;
+    padding: 8px;
+    resize: vertical; 
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    margin: 0rem 2rem;
+}
 
 
 
