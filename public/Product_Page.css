@@ -504,6 +504,18 @@ textarea.input-box {
     margin: 0rem 2rem;
 }
 
+.review-ratings-box{
+    display: flex;
+    flex-direction: row;
+    margin: 0.1rem;
+}
+
+.review-stars{
+    height:2rem;
+}
+.review-ratings-box h3{
+    margin: 0rem;
+}
 
 
 
