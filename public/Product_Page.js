@@ -31,11 +31,14 @@
   const addToCartBtn=document.getElementById("add-to-cart-btn")
   const buyProductBtn=document.getElementById("buy-product-btn")
 
+  const reviewRatingsBox=document.getElementById("review-ratings-box")
+
 
   let userHasSignedIn=false
   
   let productObj
   let imageSelected=1
+  let starSelected=0
 
 
  
@@ -146,7 +149,7 @@ async function userSignedIn(){
   else{
      profileImgDiv.innerHTML=`
   <a href="/Profile" class="sidebar-anchors icon" >
-  <img src="assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
+  <img src="/assets/profile-icon.svg"  alt="logo"  class="sidebar-icon"  >
   </a>
   <a href="/Profile" class="sidebar-anchors" >${username}</a>
   `
@@ -308,3 +311,42 @@ buyProductBtn.addEventListener("click",()=>{
 addToCart(productId)
 window.location.href="/Profile/My_Cart"
 })
+
+
+
+// Listen for clicks on the container
+reviewRatingsBox.addEventListener('click', (e) => {
+    // Only proceed if the clicked element is a star
+    if (e.target.classList.contains('review-stars')) {
+        
+        // e.target refers to the specific image clicked, not the container
+        let starSelected = Number(e.target.getAttribute('tabindex'));
+        console.log("Selected Rating:", starSelected);
+
+        let reviewRatingsText = `<h3 class="seller-name">Give Rating:</h3>`;
+        const decimalPart = Number((starSelected % 1).toFixed(2));
+        const intPart = Math.floor(starSelected);
+        let starAdded = 0;
+
+        // Add full stars (Notice we are adding tabindex back in)
+        for(let i = 1; i <= intPart; i++){
+            reviewRatingsText += `<img src="/assets/full-star.svg" alt="product-icon" class="review-stars" tabindex="${starAdded + 1}">`;
+            starAdded++;
+        }
+        
+        // Add half star
+        if(decimalPart >= 0.45){
+            reviewRatingsText += `<img src="/assets/half-star.svg" alt="product-icon" class="review-stars" tabindex="${starAdded + 1}">`;
+            starAdded++;
+        }
+        
+        // Add empty stars
+        while((5 - starAdded) > 0){
+            reviewRatingsText += `<img src="/assets/empty-star.svg" alt="product-icon" class="review-stars" tabindex="${starAdded + 1}">`;
+            starAdded++;
+        }
+
+        // Update the DOM
+        reviewRatingsBox.innerHTML = reviewRatingsText;
+    }
+});
