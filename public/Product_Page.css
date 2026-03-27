@@ -492,6 +492,13 @@ div.super-li{
     flex-wrap: wrap;
 }
 
+.third-row-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
 
 textarea.input-box {
     width: 32rem;

@@ -32,6 +32,7 @@
   const buyProductBtn=document.getElementById("buy-product-btn")
 
   const reviewRatingsBox=document.getElementById("review-ratings-box")
+  const reviewSubmitBtn=document.getElementById("review-submit-btn")
 
 
   let userHasSignedIn=false
@@ -350,3 +351,10 @@ reviewRatingsBox.addEventListener('click', (e) => {
         reviewRatingsBox.innerHTML = reviewRatingsText;
     }
 });
+
+
+reviewSubmitBtn.addEventListener("click",()=>{
+  if(starSelected===0){
+    
+  }
+})
