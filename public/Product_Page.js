@@ -42,6 +42,7 @@
   let productObj
   let imageSelected=1
   let starSelected=0
+  let username=""
 
 
  
@@ -113,7 +114,7 @@ async function userSignedIn(){
     return
   }
   const profileImg=res.data.profileImg
-  const username=res.data.username
+  username=res.data.username
   const myCartItemNo=res.data.myCartItemNo
 
   userHasSignedIn=true
@@ -354,8 +355,13 @@ reviewRatingsBox.addEventListener('click', (e) => {
     }
 });
 
+function generateReviewId() {
+  return 'rev_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
 
-reviewSubmitBtn.addEventListener("click",()=>{
+
+
+ reviewSubmitBtn.addEventListener("click",async ()=>{
   console.log(Number(starSelected))
   if(userHasSignedIn===false){
     window.location.href='/Auth/Sign_In'
@@ -375,5 +381,55 @@ reviewSubmitBtn.addEventListener("click",()=>{
             reviewSubmitMsg.classList.remove("appear")            
           },3000)
 
+  }else{
+    const id=localStorage.getItem("currentUserId")
+    const reviewObj={
+      reviewId:generateReviewId(),
+      userId:id,
+      username:username,
+      productId:productId,
+      rating:Number(starSelected),
+      review:productReviewTextbox.value,
+      reviewLiked:0
+    }
+    try{
+      const res = await axios.post("/Product/Submit_Product_Review", reviewObj)
+      reviewSubmitMsg.classList.add("appear")
+    reviewSubmitMsg.textContent="Review Submitted Successfully"
+    setTimeout(()=>{
+            reviewSubmitMsg.textContent=""
+            reviewSubmitMsg.classList.remove("appear")            
+          },3000)
+      
+    }catch(err){
+      console.log("error while submitting review:",err)
+      reviewSubmitMsg.classList.add("appear")
+    reviewSubmitMsg.textContent="Error While Submitting Review"
+    setTimeout(()=>{
+            reviewSubmitMsg.textContent=""
+            reviewSubmitMsg.classList.remove("appear")            
+          },3000)
+    }
+    starSelected =0
+    let reviewRatingsText = `<h3 class="seller-name">Give Rating:</h3>`;
+        const decimalPart = Number((starSelected % 1).toFixed(2));
+        const intPart = Math.floor(starSelected);
+        let starAdded = 0;
+
+        for(let i = 1; i <= intPart; i++){
+            reviewRatingsText += `<img src="/assets/full-star.svg" alt="product-icon" class="review-stars" tabindex="${starAdded + 1}">`;
+            starAdded++;
+        }
+        if(decimalPart >= 0.45){
+            reviewRatingsText += `<img src="/assets/half-star.svg" alt="product-icon" class="review-stars" tabindex="${starAdded + 1}">`;
+            starAdded++;
+        }
+        while((5 - starAdded) > 0){
+            reviewRatingsText += `<img src="/assets/empty-star.svg" alt="product-icon" class="review-stars" tabindex="${starAdded + 1}">`;
+            starAdded++;
+        }
+        reviewRatingsBox.innerHTML = reviewRatingsText;
+        productReviewTextbox.value=""
+  
   }
 })

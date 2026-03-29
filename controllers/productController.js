@@ -2,6 +2,7 @@ const fs=require("fs")
 const categoryModel = require('../models/categoryModel.js')
 const productModel = require('../models/productModel.js')
 const userModel = require('../models/userModel.js')
+const reviewModel = require('../models/reviewModel.js')
 const{
   uploadProductImage,
 }=require("../services/cloudinaryService")
@@ -209,4 +210,85 @@ async function incrementProductKey(productId, key) {
   } catch (error) {
     console.error("Error updating product key:", error)
   }
+}
+
+
+exports.submitReview=async(req,res)=>{
+  const reviewObj=req.body
+  console.log(reviewObj)
+  const reviewId=reviewObj.reviewId
+  const productId=reviewObj.productId
+  const rating=reviewObj.rating
+  const userId=reviewObj.userId
+
+  const productReviewObj={
+    reviewId:reviewId,
+    rating:rating
+  }
+  const productObj={
+    productId:productId
+  }
+  try{
+    const newReview= new reviewModel(reviewObj)
+    await newReview.save().then(()=>console.log("New review Saved")).catch(err=>console.log("Saving Error",err))
+  }catch(err){
+    console.log("Error while creating review",err)
+    return
+  }
+  try{
+    await productModel.updateOne({ productId: productId }, { $push: { customerReviews: productReviewObj } })
+  }catch(err){
+  console.log("Error while linking review to product",err)
+  return
+  }
+  try{
+    await userModel.updateOne({ id: userId }, { $push: { reviewsWritten: productId } })
+  }catch(err){
+  console.log("Error while linking review to user",err)
+  return
+  }
+  try{
+    const customerReviews=await getProductReviews(productObj)
+    const noCustomersReviewed=customerReviews.length
+    const ratings=getAverageRating(customerReviews)
+    await productModel.updateOne({ productId: productId }, { $set: { noCustomersReviewed: noCustomersReviewed,ratings:ratings } })
+  }catch(err){
+  console.log("Error while updating product rating",err)
+  return
+  }
+
+  res.json({ 
+    message:"successfully created new product review"
+       })
+
+
+}
+
+function getAverageRating(reviews) {
+  if (!Array.isArray(reviews) || reviews.length === 0) {
+    console.warn("getAverageRating was passed invalid data:", reviews);
+    return 0; 
+  }
+
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0)
+  const average = totalRating / reviews.length
+  return Number(average.toFixed(1))
+}
+
+
+
+async function getProductReviewsDB(productObj){
+  try{
+      const customerReviews= await productModel.find({productId:productObj.productId}).select('-_id customerReviews')
+      return customerReviews
+      }catch(err){
+        console.log("did not find customerReviews :",err)
+      }
+    
+}
+
+async function getProductReviews(productObj){
+  let customerReviews=await getProductReviewsDB(productObj)
+  customerReviews=customerReviews[0].customerReviews
+  return customerReviews
 }

@@ -13,6 +13,7 @@ const userSchema=new mongoose.Schema({
     myCart: Array,
     myOrders: Array,
     address: Object,
+    reviewsWritten:Array,
     sellerVerification: Boolean,
     productListed:Array,
     role: String,
