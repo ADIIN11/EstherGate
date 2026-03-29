@@ -524,6 +524,22 @@ textarea.input-box {
     margin: 0rem;
 }
 
+.msg-para{
+    display: none;
+}
+.msg-para.appear{
+    display: block;
+    text-align: center;
+    color: #e35311;
+    background-color: #fef4bc;
+    margin: 0rem 1.6rem;
+    outline: 2px solid #ef720a;
+    padding: 0.2rem;
+    outline-offset: -2px;
+    margin: 0.3rem;
+    min-height:1.6rem;
+}
+
 
 
 

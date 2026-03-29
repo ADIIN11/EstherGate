@@ -33,6 +33,8 @@
 
   const reviewRatingsBox=document.getElementById("review-ratings-box")
   const reviewSubmitBtn=document.getElementById("review-submit-btn")
+  const reviewSubmitMsg=document.getElementById("review-submit-msg")
+  const productReviewTextbox=document.getElementById("product-review-textbox")
 
 
   let userHasSignedIn=false
@@ -321,7 +323,7 @@ reviewRatingsBox.addEventListener('click', (e) => {
     if (e.target.classList.contains('review-stars')) {
         
         // e.target refers to the specific image clicked, not the container
-        let starSelected = Number(e.target.getAttribute('tabindex'));
+        starSelected = Number(e.target.getAttribute('tabindex'));
         console.log("Selected Rating:", starSelected);
 
         let reviewRatingsText = `<h3 class="seller-name">Give Rating:</h3>`;
@@ -354,7 +356,24 @@ reviewRatingsBox.addEventListener('click', (e) => {
 
 
 reviewSubmitBtn.addEventListener("click",()=>{
-  if(starSelected===0){
-    
+  console.log(Number(starSelected))
+  if(userHasSignedIn===false){
+    window.location.href='/Auth/Sign_In'
+  }else if(Number(starSelected)===0){
+    reviewSubmitMsg.classList.add("appear")
+    reviewSubmitMsg.textContent="Please select a star rating"
+    setTimeout(()=>{
+            reviewSubmitMsg.textContent=""
+            reviewSubmitMsg.classList.remove("appear")            
+          },3000)
+
+  }else if(!productReviewTextbox.value){
+    reviewSubmitMsg.classList.add("appear")
+    reviewSubmitMsg.textContent="Please Write Product Review"
+    setTimeout(()=>{
+            reviewSubmitMsg.textContent=""
+            reviewSubmitMsg.classList.remove("appear")            
+          },3000)
+
   }
 })
