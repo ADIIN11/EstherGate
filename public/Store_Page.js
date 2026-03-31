@@ -223,14 +223,14 @@ window.addEventListener('scroll', () => {
   // document.documentElement.scrollHeight = The total height of your entire webpage
 
   // We use a 100px buffer so it triggers just before they hit the absolute bottom
-  const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
+  const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100
 
   if (isAtBottom) {
-    console.log("Reached the bottom of the page!");
+    console.log("Reached the bottom of the page!")
     // Call your fetch function here
-    getProductList();
+    getProductList()
   }
-});
+})
 
 
 
@@ -276,7 +276,6 @@ async function getMostViewedList(){
   }finally {
     mostViewedIsLoading = false;
   }
-
 }
 
 

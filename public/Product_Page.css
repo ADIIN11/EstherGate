@@ -338,6 +338,22 @@ div.super-li{
    padding: 1rem;
     
 }
+
+.outer-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.inner-column{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+
+
+
 .first-row{
     display: flex;
     flex-direction: row;
@@ -541,7 +557,16 @@ textarea.input-box {
 }
 
 
-
+.reviews{
+    display:flex ;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 2px solid #ef720a;
+}
+.review-slide{
+    border: 2px solid #ef720a;
+    margin: 1rem;
+}
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 .slide-holder{
@@ -612,4 +637,6 @@ textarea.input-box {
 }
 .product-card .small-p{
     font-size: 0.8rem;
+    height: 3rem;
+    width: 10rem;
 }
