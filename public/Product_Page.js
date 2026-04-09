@@ -430,6 +430,7 @@ function generateReviewId() {
         }
         reviewRatingsBox.innerHTML = reviewRatingsText;
         productReviewTextbox.value=""
+        window.location.reload()
   
   }
 })

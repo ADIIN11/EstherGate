@@ -186,18 +186,24 @@ exports.getProduct=async(req,res)=>{
         product:product
        })
     }
-    let productReviews
+    let productReviews=[]
     const customerReviews=product.customerReviews
-
-    for(let i=1;i<=customerReviews.length;i++){
+   
+    if(customerReviews){
+      for(let i=0;i<customerReviews.length;i++){
       try{
-     productReviews += await reviewModel.findOne({ reviewId: customerReviews[i-1].reviewId },{ _id: 0 })
+     const productReview = await reviewModel.findOne({ reviewId: customerReviews[i].reviewId },{ _id: 0 }) 
+
+        productReviews.push(productReview)
+     
           }catch(err){
           console.log("error while fetching product reviews:",err)
         }
     
       }
+    }
     
+    console.log(productReviews)
     
     res.json({ 
         product:product,

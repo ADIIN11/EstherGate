@@ -770,7 +770,7 @@ async function createProduct(){
     productBought:0,
     ratings:0,
     noCustomersReviewed:0,
-    customerReviews:null,
+    customerReviews:[],
     productImg1:null,
     productImg1PubId:null,
     productImg2:null,
