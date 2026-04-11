@@ -35,6 +35,7 @@
   const reviewSubmitBtn=document.getElementById("review-submit-btn")
   const reviewSubmitMsg=document.getElementById("review-submit-msg")
   const productReviewTextbox=document.getElementById("product-review-textbox")
+  const reviewSlide=document.getElementById("review-slide")
 
 
   let userHasSignedIn=false

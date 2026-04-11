@@ -203,8 +203,6 @@ exports.getProduct=async(req,res)=>{
       }
     }
     
-    console.log(productReviews)
-    
     res.json({ 
         product:product,
         productReviews:productReviews
