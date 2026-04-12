@@ -41,6 +41,7 @@
   let userHasSignedIn=false
   
   let productObj
+  let reviewsObj
   let imageSelected=1
   let starSelected=0
   let username=""
@@ -220,6 +221,7 @@ async function fetchProduct(productId) {
     if(!res.data.product){
       productHolder.innerHTML=`<h2>Product Does Not Exists</h2>`
     }
+    reviewsObj=res.data.productReviews
     return res.data.product
     } catch (err) { 
       console.error("Error fetching product:", err)
