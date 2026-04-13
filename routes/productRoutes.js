@@ -14,7 +14,8 @@ const {
     getTopSellingProducts,
     getMostViewedProducts,
     getProduct,
-    submitReview
+    submitReview,
+    getReviews
 }=require("../controllers/productController")
 
 router.post("/Get_Categories",getcategories)
@@ -45,6 +46,8 @@ router.get("/:productId", getProduct)
 
 
 router.post("/Submit_Product_Review",submitReview)
+
+router.post("/Get_Reviews",getReviews)
 
 
 module.exports = router

@@ -41,7 +41,7 @@
   let userHasSignedIn=false
   
   let productObj
-  let reviewsObj
+  let reviewsObj=[]
   let imageSelected=1
   let starSelected=0
   let username=""
@@ -277,6 +277,14 @@ async function getProduct(){
 
   productDescription.innerHTML+=`<p> ${productObj.description}</p>`
 
+}
+
+async function getReviews(){
+  const reviewSlideTxt=""
+  for(let i=0;i<reviewsObj;i++){
+
+  }
+  reviewSlide.innerHTML+=
 }
 
 getProduct()
