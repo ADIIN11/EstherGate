@@ -282,7 +282,9 @@ async function getProduct(){
 async function getReviews(){
   let reviewSlideTxt=""
   for(let i=0;i<reviewsObj;i++){
-
+    reviewSlideTxt+=`
+    
+    `
   }
   reviewSlide.innerHTML+=
 }
