@@ -562,10 +562,18 @@ textarea.input-box {
     flex-direction: column;
     flex-wrap: wrap;
     border: 2px solid #ef720a;
+    max-width: 25rem;
 }
 .review-slide{
     border: 2px solid #ef720a;
     margin: 1rem;
+}
+.review-slide h3{
+    margin:0rem;
+}
+
+.review-slide h4{
+    margin:0rem;
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
