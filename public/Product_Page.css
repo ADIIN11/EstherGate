@@ -567,6 +567,7 @@ textarea.input-box {
 .review-slide{
     border: 2px solid #ef720a;
     margin: 1rem;
+    padding: 0.2rem;
 }
 .review-slide h3{
     margin:0rem;
@@ -574,6 +575,21 @@ textarea.input-box {
 
 .review-slide h4{
     margin:0rem;
+    
+}
+
+.review-slide .review-txt{
+    margin: 0.8rem 0rem;
+}
+
+.like-box{
+    display: flex;
+    flex-direction: row;
+}
+
+.like-btn{
+     border: 2px solid #ef720a;
+     height: 1.5rem;
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */

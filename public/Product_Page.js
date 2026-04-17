@@ -286,7 +286,7 @@ async function getReviews(){
     
     `
   }
-  reviewSlide.innerHTML+=
+  reviewSlide.innerHTML+=reviewSlideTxt
 }
 
 getProduct()
