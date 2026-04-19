@@ -573,8 +573,8 @@ textarea.input-box {
     margin:0rem;
 }
 
-.review-slide h4{
-    margin:0rem;
+.review-likes{
+    margin:0.2rem;
     
 }
 
@@ -585,10 +585,20 @@ textarea.input-box {
 .like-box{
     display: flex;
     flex-direction: row;
+    margin: 0.2rem;
+}
+
+.like-number{
+    margin: 0.6rem;
 }
 
 .like-btn{
      border: 2px solid #ef720a;
+     height: 1.5rem;
+     margin: 0.2rem;
+}
+.like-btn:hover{
+     border: 4px solid #ef720a;
      height: 1.5rem;
 }
 
