@@ -190,11 +190,19 @@ exports.getProduct=async(req,res)=>{
     const customerReviews=product.customerReviews
     const limit = 10
     const reviewPageNo=1
+
+    const numberOfIter=()=>{
+      if(customerReviews<limit)
+        return customerReviews
+      else{
+        return limit
+      }
+    }
     
 
    
     if(customerReviews){
-      for(let i=0;i<reviewPageNo*limit;i++){
+      for(let i=0;i<numberOfIter;i++){
       try{
      const productReview = await reviewModel.findOne({ reviewId: customerReviews[i].reviewId },{ _id: 0 }) 
 
