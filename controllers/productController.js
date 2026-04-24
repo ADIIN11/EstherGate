@@ -191,14 +191,15 @@ exports.getProduct=async(req,res)=>{
     const limit = 10
     const reviewPageNo=1
 
-    const numberOfIter=()=>{
-      if(customerReviews<limit)
-        return customerReviews
+   
+    function numberOfIterFunc(){
+      if(customerReviews.length<limit)
+        return customerReviews.length
       else{
         return limit
       }
-    }
-    
+    } 
+    const numberOfIter=numberOfIterFunc()
 
    
     if(customerReviews){

@@ -41,10 +41,12 @@
   let userHasSignedIn=false
   
   let productObj
-  let reviewsObj=[]
+
+ 
   let imageSelected=1
   let starSelected=0
   let username=""
+
 
 
  
@@ -221,7 +223,7 @@ async function fetchProduct(productId) {
     if(!res.data.product){
       productHolder.innerHTML=`<h2>Product Does Not Exists</h2>`
     }
-    reviewsObj=res.data.productReviews
+    reviewsObjArr=res.data.productReviews
     return res.data.product
     } catch (err) { 
       console.error("Error fetching product:", err)
@@ -448,3 +450,24 @@ function generateReviewId() {
   
   }
 })
+
+  let reviewsObjArr=[]
+  let reviewsColumn=""
+  let reviewsPage = 1
+  let reviewsIsLoading = false
+  let reviewsHasMoreReviews = true
+
+function renderReviews(){
+  for(let i=0;i<reviewsObjArr.length;i++){
+    reviewsColumn=`
+    <div class="review-card" id="review-card">
+                                    <h3 class="seller-name">Reviewer Name:</h3>
+                                     <div class="ratings-box" id="ratings-box">
+                                    <h4 class="seller-name">Rating:</h4>
+                                    
+
+  `
+  const productStars=reviewsObjArr[i].rating
+  }
+    
+}
