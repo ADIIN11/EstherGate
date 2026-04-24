@@ -403,7 +403,8 @@ function generateReviewId() {
       productId:productId,
       rating:Number(starSelected),
       review:productReviewTextbox.value,
-      reviewLiked:0
+      reviewLiked:0,
+      createdAt: new Date().toDateString()
     }
     try{
       const res = await axios.post("/Product/Submit_Product_Review", reviewObj)

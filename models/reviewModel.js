@@ -9,7 +9,8 @@ const reviewSchema=new mongoose.Schema({
       productId:String,
       rating:Number,
       review:String,
-      reviewLiked:Number
+      reviewLiked:Number,
+      createdAt: String
   },{ versionKey: false })
   
  module.exports = mongoose.models.Review ||mongoose.model("Review",reviewSchema,"reviews")
