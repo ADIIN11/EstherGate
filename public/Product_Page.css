@@ -557,14 +557,14 @@ textarea.input-box {
 }
 
 
-.reviews{
+.review-slide{
     display:flex ;
     flex-direction: column;
     flex-wrap: wrap;
     border: 2px solid #ef720a;
     max-width: 25rem;
 }
-.review-slide{
+.review-card{
     border: 2px solid #ef720a;
     margin: 1rem;
     padding: 0.2rem;
@@ -576,6 +576,10 @@ textarea.input-box {
 .review-likes{
     margin:0.2rem;
     
+}
+
+.created-on{
+    margin: 0rem;
 }
 
 .review-slide .review-txt{
