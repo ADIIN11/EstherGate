@@ -279,6 +279,8 @@ async function getProduct(){
 
   productDescription.innerHTML+=`<p> ${productObj.description}</p>`
 
+  renderReviews()
+
 }
 
 async function getReviews(){
@@ -459,15 +461,39 @@ function generateReviewId() {
 
 function renderReviews(){
   for(let i=0;i<reviewsObjArr.length;i++){
-    reviewsColumn=`
+    reviewsColumn+=`
     <div class="review-card" id="review-card">
-                                    <h3 class="seller-name">Reviewer Name:</h3>
+                                    <h3 class="seller-name">Reviewer Name: ${reviewsObjArr[i].username}</h3>
                                      <div class="ratings-box" id="ratings-box">
                                     <h4 class="seller-name">Rating:</h4>
                                     
 
   `
-  const productStars=reviewsObjArr[i].rating
+  for(let j=1;j<=reviewsObjArr[i].rating;j++){
+    reviewsColumn+=`
+                                  <img src="/assets/full-star.svg" alt="product-icon" class="stars" id="stars">
+    `
   }
-    
+  for(let j=reviewsObjArr[i].rating;j<5;j++){
+    reviewsColumn+=`
+                                  <img src="/assets/empty-star.svg" alt="product-icon" class="stars" id="stars">
+    `
+  }
+  reviewsColumn+=`
+    </div>
+                                <h4 class="created-on">Created On: ${reviewsObjArr[i].createdAt}</h4>
+                                 <h4 class="review-txt">Review: ${reviewsObjArr[i].review}</h4>
+                                
+                            
+                                <div class="like-box" id="like-box">
+                                    <h4 class="review-likes">Review Likes:</h4>
+                                    <img src="/assets/like-icon.svg" alt="like btn" class="like-btn"   onclick="reviewLiked(${reviewsObjArr[i].reviewId})">
+                                    <h4 class="like-number">${reviewsObjArr[i].reviewLiked}</h4>
+                                    <img src="/assets/dislike-icon.svg" alt="like btn" class="like-btn"   onclick="reviewDisliked(${reviewsObjArr[i].reviewId})">
+                                </div>
+                                </div>
+  `
+  }
+    reviewSlide.innerHTML+=reviewsColumn
 }
+

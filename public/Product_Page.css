@@ -556,18 +556,23 @@ textarea.input-box {
     min-height:1.6rem;
 }
 
-
+.product-reviews-txt{
+    margin: 0.4rem 1rem;
+}
 .review-slide{
     display:flex ;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     border: 2px solid #ef720a;
     max-width: 25rem;
+    overflow-y: auto;
+    max-height: 33rem;
 }
 .review-card{
     border: 2px solid #ef720a;
     margin: 1rem;
     padding: 0.2rem;
+    min-width: 21.3rem;
 }
 .review-slide h3{
     margin:0rem;
