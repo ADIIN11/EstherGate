@@ -462,6 +462,7 @@ function generateReviewId() {
 function renderReviews(){
    if (reviewsIsLoading|| !reviewsHasMoreReviews) 
     return
+reviewsPage = 1
   for(let i=0;i<reviewsObjArr.length;i++){
     reviewsColumn+=`
     <div class="review-card" id="review-card">
