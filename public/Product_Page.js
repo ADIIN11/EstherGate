@@ -463,6 +463,7 @@ function renderReviews(){
    if (reviewsIsLoading|| !reviewsHasMoreReviews) 
     return
 reviewsPage = 1
+ reviewsIsLoading = true 
   for(let i=0;i<reviewsObjArr.length;i++){
     reviewsColumn+=`
     <div class="review-card" id="review-card">
