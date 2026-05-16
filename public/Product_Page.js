@@ -463,6 +463,7 @@ function renderReviews(){
    if (reviewsIsLoading|| !reviewsHasMoreReviews) 
     return
  reviewsIsLoading = true 
+ if(reviewsObjArr=![]){
   for(let i=0;i<reviewsObjArr.length;i++){
     reviewsColumn+=`
     <div class="review-card" id="review-card">
@@ -498,5 +499,6 @@ function renderReviews(){
   `
   }
     reviewSlide.innerHTML+=reviewsColumn
+}
 }
 
