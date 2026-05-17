@@ -174,6 +174,30 @@ exports.getMostViewedProducts=async(req,res)=>{
 
 }
 
+exports.getOnSaleProducts = async (req, res) => {
+  try {
+    const limit = 10
+    const skipAmount = (req.body.page - 1) * limit
+    
+    const onSaleProducts = await productModel.find(
+      {}, 
+      { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, _id: 0 }
+    )
+    .sort({ discount: -1 }) 
+    .skip(skipAmount)
+    .limit(limit)
+
+    res.json({ 
+        onSaleProducts: onSaleProducts 
+    })
+
+  } catch (err) {
+    console.log("error while fetching onSaleProducts:", err)
+    res.status(500).json({ error: "Failed to fetch on sale products" })
+  }
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getProduct=async(req,res)=>{
   const productId=req.params.productId
@@ -223,25 +247,57 @@ exports.getProduct=async(req,res)=>{
   }catch(err){
     console.log("error while fetching product:",err)
   }
-
 }
 
 
-exports.getReviews=async(req,res)=>{
-  const customerReviews=req.customerReviews
-  const limit = 10
-  const reviewPageNo=1
-  try{
+exports.getReviews = async (req, res) => {
+  try {
+    const { productId, page } = req.body
+    const limit = 10
+    
+    // 1. Fetch the product to get the array of customer reviews
+    const product = await productModel.findOne({ productId: productId }, { customerReviews: 1, _id: 0 })
+    
+    if (!product || !product.customerReviews) {
+      return res.json({ productReviews: [] })
+    }
+    
+    const customerReviews = product.customerReviews
+    
+    // 2. Calculate the start and end points for the current page slice
+    const startIndex = (page - 1) * limit
+    const endIndex = page * limit
+    
+    // Grab only the 10 review IDs needed for this specific page
+    const reviewIdsForPage = customerReviews.slice(startIndex, endIndex)
+    
+    if (reviewIdsForPage.length === 0) {
+      return res.json({ productReviews: [] })
+    }
+    
+    let productReviews = []
+    
+    // 3. Fetch the full review documents for this specific slice
+    for (let i = 0; i < reviewIdsForPage.length; i++) {
+      try {
+        const productReview = await reviewModel.findOne({ reviewId: reviewIdsForPage[i].reviewId }, { _id: 0 })
+        if (productReview) {
+          productReviews.push(productReview)
+        }
+      } catch (err) {
+        console.log("error while fetching individual review:", err)
+      }
+    }
 
-  res.json({ 
-        productReviews:productReviews
-       })
-  }catch(err){
-    console.log("error while fetching product:",err)
+    res.json({ 
+        productReviews: productReviews
+    })
+    
+  } catch (err) {
+    console.log("error while fetching getReviews pagination:", err)
+    res.status(500).json({ error: "Failed to fetch reviews" })
   }
-
 }
-
 
 
 

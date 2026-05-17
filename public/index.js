@@ -15,6 +15,8 @@
   const topSellingSlideHolder=document.getElementById("top-selling-slide-holder")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
   const mostViewedSlideHolder=document.getElementById("most-viewed-slide-holder")
+  const onSaleProductsSlide=document.getElementById("on-sale-product-slide")
+  const onSaleSlideHolder=document.getElementById("on-sale-slide-holder")
   const cartBadge=document.getElementById("cart-badge")
 
   let userHasSignedIn=false
@@ -293,6 +295,70 @@ mostViewedProductsSlide.addEventListener('scroll', () => {
     mostViewedSlideHolder.classList.add('no-fade');
   } else {
     mostViewedSlideHolder.classList.remove('no-fade');
+  }
+})
+
+
+let onSaleProducts = []
+let onSaleProductsRow = ""
+let currentOnSalePage = 1
+let onSaleIsLoading = false
+let onSaleHasMoreProducts = true
+
+async function getOnSaleList() {
+  if (onSaleIsLoading || !onSaleHasMoreProducts) {
+    return
+  }
+  
+  if (currentOnSalePage <= 5) {
+    onSaleIsLoading = true
+    try {
+      const res = await axios.post("/Product/Get_On_Sale_Products", { page: currentOnSalePage })
+      currentOnSalePage++
+      
+      onSaleProducts = res.data.onSaleProducts
+      
+      if (onSaleProducts.length === 0) {
+        onSaleHasMoreProducts = false
+        return
+      }
+      
+      for (let i = 0; i < onSaleProducts.length; i++) {
+        onSaleProductsRow += ` 
+          <div class="product-card" >
+            <a href="/Product/${onSaleProducts[i].name}/${onSaleProducts[i].productId}" >
+                <img src="${onSaleProducts[i].productImg1}" alt="Product image" class="product-image">
+                    <h3>${onSaleProducts[i].name}</h3>
+                    
+                    <p>Price: ${onSaleProducts[i].currency} ${onSaleProducts[i].price - ((onSaleProducts[i].price / 100) * onSaleProducts[i].discount)}<sup class="small-p">     ${onSaleProducts[i].discount}% off</sup></p>
+            </a>
+              <button onclick="addToCart('${onSaleProducts[i].productId}')" class="add-to-cart-btn" >Add to Cart</button>
+          </div> `
+      }
+      
+      onSaleProductsSlide.insertAdjacentHTML('beforeend', onSaleProductsRow)
+      onSaleProductsRow = ""
+      
+    } catch (err) {
+      console.log(`failed to get On Sale Products`, err)
+    } finally {
+      onSaleIsLoading = false
+    }
+  } else {
+    return
+  }
+}
+
+getOnSaleList()
+
+onSaleProductsSlide.addEventListener('scroll', () => {
+  const isAtRightEnd = onSaleProductsSlide.scrollLeft + onSaleProductsSlide.clientWidth >= onSaleProductsSlide.scrollWidth - 5
+
+  if (isAtRightEnd) {
+    getOnSaleList()
+    onSaleSlideHolder.classList.add('no-fade')
+  } else {
+    onSaleSlideHolder.classList.remove('no-fade')
   }
 })
 

@@ -279,7 +279,7 @@ async function getProduct(){
 
   productDescription.innerHTML+=`<p> ${productObj.description}</p>`
 
-  renderReviews()
+ renderNewReviews(reviewsObjArr)
 
 }
 
@@ -453,52 +453,92 @@ function generateReviewId() {
   }
 })
 
-  let reviewsObjArr=[]
-  let reviewsColumn=""
-  let reviewsPage = 1
-  let reviewsIsLoading = false
-  let reviewsHasMoreReviews = true
 
-function renderReviews(){
-   if (reviewsIsLoading|| !reviewsHasMoreReviews) 
+
+let reviewsObjArr = []
+let reviewsPage = 1
+let reviewsIsLoading = false
+let reviewsHasMoreReviews = true
+
+// Assuming you have the productId stored somewhere on the page
+const currentProductId = productId
+
+async function fetchMoreReviews(productId) {
+  if (reviewsIsLoading || !reviewsHasMoreReviews) {
     return
- reviewsIsLoading = true 
- if(reviewsObjArr=![]){
-  for(let i=0;i<reviewsObjArr.length;i++){
-    reviewsColumn+=`
-    <div class="review-card" id="review-card">
-                                    <h3 class="seller-name">Reviewer Name: ${reviewsObjArr[i].username}</h3>
-                                     <div class="ratings-box" id="ratings-box">
-                                    <h4 class="seller-name">Rating:</h4>
-                                    
+  }
+  
+  reviewsIsLoading = true
+  reviewsPage++ 
+  
+  try {
+    const res = await axios.post("/Product/Get_Reviews", { 
+      productId: productId, 
+      page: reviewsPage 
+    })
+    
+    const newReviews = res.data.productReviews
+    
+    if (newReviews.length === 0) {
+      reviewsHasMoreReviews = false
+      return
+    }
+    
+    // Add new batch to the main array for your records
+    reviewsObjArr = reviewsObjArr.concat(newReviews)
+    
+    // Render ONLY the new batch to the screen
+    renderNewReviews(newReviews)
+    
+  } catch (err) {
+    console.log("Failed to fetch more reviews", err)
+  } finally {
+    reviewsIsLoading = false
+  }
+}
 
-  `
-  for(let j=1;j<=reviewsObjArr[i].rating;j++){
-    reviewsColumn+=`
-                                  <img src="/assets/full-star.svg" alt="product-icon" class="stars" id="stars">
+function renderNewReviews(reviewsBatch) {
+  let reviewsColumn = ""
+  
+  for (let i = 0; i < reviewsBatch.length; i++) {
+    reviewsColumn += `
+    <div class="review-card" id="review-card-${reviewsBatch[i].reviewId}">
+        <h3 class="seller-name">Reviewer Name: ${reviewsBatch[i].username}</h3>
+        <div class="ratings-box" id="ratings-box">
+            <h4 class="seller-name">Rating:</h4>
     `
-  }
-  for(let j=reviewsObjArr[i].rating;j<5;j++){
-    reviewsColumn+=`
-                                  <img src="/assets/empty-star.svg" alt="product-icon" class="stars" id="stars">
-    `
-  }
-  reviewsColumn+=`
+    for (let j = 1; j <= reviewsBatch[i].rating; j++) {
+      reviewsColumn += `<img src="/assets/full-star.svg" alt="product-icon" class="stars">`
+    }
+    for (let j = reviewsBatch[i].rating; j < 5; j++) {
+      reviewsColumn += `<img src="/assets/empty-star.svg" alt="product-icon" class="stars">`
+    }
+    
+    reviewsColumn += `
+        </div>
+        <h4 class="created-on">Created On: ${reviewsBatch[i].createdAt}</h4>
+        <h4 class="review-txt">Review: ${reviewsBatch[i].review}</h4>
+        
+        <div class="like-box" id="like-box">
+            <h4 class="review-likes">Review Likes:</h4>
+            <img src="/assets/like-icon.svg" alt="like btn" class="like-btn" onclick="reviewLiked('${reviewsBatch[i].reviewId}')">
+            <h4 class="like-number">${reviewsBatch[i].reviewLiked}</h4>
+            <img src="/assets/dislike-icon.svg" alt="dislike btn" class="like-btn" onclick="reviewDisliked('${reviewsBatch[i].reviewId}')">
+        </div>
     </div>
-                                <h4 class="created-on">Created On: ${reviewsObjArr[i].createdAt}</h4>
-                                 <h4 class="review-txt">Review: ${reviewsObjArr[i].review}</h4>
-                                
-                            
-                                <div class="like-box" id="like-box">
-                                    <h4 class="review-likes">Review Likes:</h4>
-                                    <img src="/assets/like-icon.svg" alt="like btn" class="like-btn"   onclick="reviewLiked(${reviewsObjArr[i].reviewId})">
-                                    <h4 class="like-number">${reviewsObjArr[i].reviewLiked}</h4>
-                                    <img src="/assets/dislike-icon.svg" alt="like btn" class="like-btn"   onclick="reviewDisliked(${reviewsObjArr[i].reviewId})">
-                                </div>
-                                </div>
-  `
+    `
   }
-    reviewSlide.innerHTML+=reviewsColumn
-}
+  
+  reviewSlide.insertAdjacentHTML('beforeend', reviewsColumn)
 }
 
+// Scroll event listener for the vertical reviews slider
+reviewSlide.addEventListener('scroll', () => {
+  // Check if user scrolled to the bottom (vertical scroll)
+  const isAtBottom = reviewSlide.scrollTop + reviewSlide.clientHeight >= reviewSlide.scrollHeight - 5
+
+  if (isAtBottom) {
+    // Call the function using your page's current product ID
+    fetchMoreReviews(currentProductId) 
+  }
+})

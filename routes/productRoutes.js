@@ -13,6 +13,7 @@ const {
     uploadProductImage,
     getTopSellingProducts,
     getMostViewedProducts,
+    getOnSaleProducts,
     getProduct,
     submitReview,
     getReviews
@@ -38,6 +39,8 @@ router.post("/Upload_Product_Image",upload.single("image"), uploadProductImage)
 router.post("/Get_Top_Selling_Products", getTopSellingProducts)
 
 router.post("/Get_Most_Viewed_Products", getMostViewedProducts)
+
+router.post("/Get_On_Sale_Products", getOnSaleProducts)
 
 router.get("/:productName/:productId", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/Product_Page.html"))
