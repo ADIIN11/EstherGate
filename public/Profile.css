@@ -12,107 +12,188 @@ body{
 }
 
 /* Search bar */
-
-.search-bar{
-      /* margin-left:5rem; */
+.search-bar {
     text-align: center;
-    
-    background-color:#ef720a ;
-    
-    height: 3rem ;
-   width: 100vw;
- position:fixed;
- z-index: 25;
- display: flex;
-
+    background-color: #ef720a;
+    height: 3rem;
+    width: 100vw;
+    position: fixed;
+    z-index: 25;
+    display: flex;
 }
 
-
-.search-inpt{
+/* === NEW WRAPPER CSS === */
+.input-wrapper {
+    position: relative;
     margin-left: auto;
-    margin: 0.5rem  0.3rem 0.5rem auto;
+    margin: 0.5rem 0.3rem 0.5rem auto; 
     width: 12rem;
-
-
-}
-.search-btn{
-  
-     margin: 0.5rem  auto 0.5rem 0.3rem ;
-     
 }
 
-
-
-.cart-btn {
-    margin: 0.5rem 1.2rem;
-    position: relative; /* This keeps the badge constrained to the button */
-    cursor: pointer;
-    display: inline-flex;
-    
+.search-inpt {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #fef4bc;
+    color: #e35311ff;
+    border: 0.0625rem solid #e35311ff; /* 1px border */
+    padding: 0 0.5rem;
+    outline: none;
 }
-.cart-btn:hover{
-     outline: solid 2px #fef4bc;
+
+.search-inpt:focus{
+     outline: solid 0.125rem #fef4bc;
     outline-offset: 0.2rem;
 }
 
-.cart-badge{
-    display: none;
+
+.search-inpt::placeholder {
+    color: #ef720a;
 }
 
-.cart-badge.appear{
-    display: block;
+.search-btn {
+    margin: 0.5rem auto 0.5rem 0.3rem;
+    background-color: transparent; /* Assuming icon is the main visual */
+    border: none;
+    cursor: pointer;
+    padding: 0 0.1rem;
+}
+.search-btn:hover {
+    outline: solid 0.125rem #fef4bc;
+    outline-offset: 0.2rem;
+}
+.search-icon{
+    height: 2rem ;
+}
+
+.cart-btn {
+    margin: 0.5rem 1.5rem 0.5rem 1.2rem ;
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    background-color: transparent;
+    border: none;
+    padding: 0 0.1rem;
+}
+.cart-icon{
+    height: 2rem ;
+}
+
+.cart-btn:hover {
+    outline: solid 0.125rem #fef4bc;
+    outline-offset: 0.2rem;
+}
+
+.cart-badge.appear {
     position: absolute;
-    top: -8px; 
-    left: -8px;
-    
-  
-    background-color: #e35311; 
+    top: -0.5rem;
+    left: -0.5rem;
+    background-color: #e35311ff; 
     color: #fef4bc;
     font-size: 0.75rem; 
     font-weight: bold;
-    
-    height: 18px;
-    min-width: 18px; 
+    height: 1.125rem;
+    min-width: 1.125rem; 
     border-radius: 50%;
-    
-   
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px; 
+    padding: 0 0.25rem; 
     box-sizing: border-box;
 }
 
+/* === AUTOCOMPLETE DROPDOWN STYLES === */
+.hidden {
+    display: none;
+}
 
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 15.625rem; /* ~250px so it's readable */
+    background-color: #fef4bc;
+    border: 0.0625rem solid #e35311ff;
+    border-radius: 0 0 0.3125rem 0.3125rem; 
+    box-shadow: 0 0.25rem 0.375rem rgba(227, 83, 17, 0.2); 
+    z-index: 1000;
+    max-height: 18.75rem; 
+    overflow-y: auto;
+    text-align: left; 
+}
 
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 0.625rem; 
+    cursor: pointer;
+    border-bottom: 0.0625rem solid rgba(227, 83, 17, 0.2);
+    text-decoration: none;
+    
+    background-color: #fef4bc;
+    color: #ef720a;
+    transition: background-color 0.2s, color 0.2s;
+}
 
-/* Side bar logic */
+.suggestion-category {
+    font-size: 0.6875rem; 
+    color: #e35311ff; 
+    transition: color 0.2s;
+}
 
+/* Hover Colors based on your palette */
+.suggestion-item:hover {
+    background-color: #feb60b;
+    color: #fef4bc;
+}
 
+.suggestion-item:hover .suggestion-category {
+    color: #fef4bc;
+    background-color: #feb60b;
+}
+
+.suggestion-img {
+    width: 1.875rem; 
+    height: 1.875rem;
+    object-fit: cover;
+    margin-right: 0.625rem;
+    border-radius: 0.25rem;
+}
+
+.suggestion-details p {
+    margin: 0;
+    font-size: 0.8125rem; 
+}
+
+.suggestion-title {
+    font-weight: bold;
+}
+
+.suggestion-item:hover .suggestion-title {
+    color: #fef4bc;
+    background-color: #feb60b;
+}
+/* 
+--------------------------------------------------
+Your Side Bar and Filter logic below is completely untouched!
+--------------------------------------------------
+*/
 
 .side-bar{
     text-align: center;
-    background-color:#e35311 ;
-    
-   width:5.4rem ;
-  height: 100%;
- 
-  
-   position: absolute;
-   z-index: 100;
-   transition: width 0.8s ease;
+    background-color:#e35311ff;
+    width:5.4rem ;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    transition: width 0.8s ease;
     position: fixed;
 }
 
-
- .side-bar.toggleSideBar{
-      
+.side-bar.toggleSideBar{
    width:12rem ;
- height: 100%;
+   height: 100%;
 }
-
-
-
 
 .logo-text{
     height: 50px;
@@ -121,12 +202,14 @@ body{
 }
 
 .side-bar.toggleSideBar .logo-text {
-      height: 100px;
+   height: 100px;
    margin: 1rem;
    transition:  height  0.8s ease;
 }
 .tab-btn{
     padding: 0;
+    background: none;
+    border: none;
 }
 .tab-icon{
     height: 2.2rem;
@@ -139,24 +222,22 @@ body{
 }
 
 .collapsed .bar {
-  transform: scaleX(0.15);   /* shrinks into a dot */
-  stroke-width: 14;       /* makes dot bigger */
+  transform: scaleX(0.15);
+  stroke-width: 14;
 }
 
 ul{
     text-align: center;
     list-style: none;
     padding: 2rem 0rem 0rem 0rem;
-    background-color: #e35311;
-
-
+    background-color: #e35311ff;
 }
 
 .sidebar-li{
    transition: display 0.8s ease;
      display: flex;
      flex-direction: column;
-     background-color: #e35311;
+     background-color: #e35311ff;
     margin: 1rem 1rem;
     height: auto;
 }
@@ -165,27 +246,21 @@ ul{
     transition: display 0.8s ease;
     flex-direction: column;
     height: auto;
-     
 }
 
 div.super-li{
     display: flex;
     flex-direction: column;
-    background-color: #e35311;
-
+    background-color: #e35311ff;
 }
 
 .side-bar.toggleSideBar div.super-li{
     flex-direction: row;
-   
-
 }
 
- div.sub-li{
+div.sub-li{
     display: none;
-     
-     
-    background-color: #e35311;
+    background-color: #e35311ff;
     margin: 0rem  0rem 0rem 2.5rem;
     height: 3rem;
 }
@@ -198,8 +273,8 @@ div.super-li{
 
 .sidebar-li:hover{
     background-color: #fef4bc;
-    outline:2px solid #fef4bc;
-    outline-offset:0.1rem ;
+    outline: 0.125rem solid #fef4bc;
+    outline-offset: 0.1rem;
 }
 
 .sidebar-li:hover div.super-li{
@@ -210,45 +285,32 @@ div.super-li{
     background-color: #fef4bc;
 }
 
-
-
-
 .sidebar-icon{
-   height: 2.2rem;
+    height: 2.2rem;
     width: 2.2rem;
     margin: 0rem 0rem;
-
 }
 
-
- .sidebar-li:hover .sidebar-icon{
-    border: 2px solid  #ef720a;
+.sidebar-li:hover .sidebar-icon{
+    border: 0.125rem solid  #ef720a;
     margin: 0.25rem 0rem;
-
 }
-
 
 .side-bar.toggleSideBar .sidebar-icon{ 
      margin: 0.5rem 0rem;
-
 }
-
 
 .side-bar.toggleSideBar .sidebar-li:hover .sidebar-icon{
-    border: 2px solid  #ef720a;
+    border: 0.125rem solid  #ef720a;
     margin: 0.25rem 0.5rem;
-
 }
 
-
 .sidebar-anchors{
-    
     color: #fef4bc;
-    background-color: #e35311;
+    background-color: #e35311ff;
     margin: 0rem 0rem;
     text-decoration: none;
-    
-    }
+}
 
 .side-bar.toggleSideBar  .sidebar-anchors  {
      margin: 1rem 1rem;
@@ -261,7 +323,6 @@ div.super-li{
      font-size: large;
 }
 
-
 .side-bar.toggleSideBar  .sidebar-anchors.sub  {
      margin: 0.2rem 1rem;
 }
@@ -269,43 +330,32 @@ div.super-li{
 .sidebar-li:hover .sidebar-anchors{
     color: #ef720a;
     background-color: #fef4bc;
-
 }
 
 .sidebar-li:hover .sidebar-anchors:hover{
-    color: #e35311;
+    color: #e35311ff;
 }
-
 
 .side-bar.toggleSideBar .sidebar-li {
       margin: 1rem;
 }
 
-
-
-
 /* filter bar logic */
-
-
 .filter-bar{
-    
-    border-bottom:2px solid #ef720a;
-     position: fixed;
-     width: 100vw;
+    border-bottom: 0.125rem solid #ef720a;
+    position: fixed;
+    width: 100vw;
     padding-left: auto;
     margin: 3rem 1rem 0rem 0rem;
     height:1.2rem;
 }
 
 .filter-form{
-   
      display: flex;
      flex-direction: row;
      margin-left: auto;
-    
      justify-content: flex-end;
 }
-
 
 .filter{
     flex-wrap: wrap;

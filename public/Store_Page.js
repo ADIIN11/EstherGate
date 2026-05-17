@@ -13,14 +13,22 @@
   
   const mainProductGrid=document.getElementById("main-product-grid")
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
+   
+  const searchInput = document.getElementById('search-inpt')
+  const searchButton = document.getElementById('search-button')
+  const resultsContainer = document.getElementById('searchResultsContainer')
+  const autocompleteDropdown = document.getElementById('autocompleteDropdown')
   const cartBadge=document.getElementById("cart-badge")
+
+  
+  
 
 
   const pageHeading=document.getElementById("page-heading")
 
   let userHasSignedIn=false
 
-
+  let typingTimer
  
 
 
@@ -165,10 +173,6 @@ async function signOut(){
   
 }
 
-const urlParts = window.location.pathname.split("/"); 
-const pageRequest = urlParts[urlParts.length - 1]
-
-
 
 
 let topSellingProducts = []
@@ -279,23 +283,81 @@ async function getMostViewedList(){
 }
 
 
-function getProductList(){
-  if(pageRequest==="Top_Selling"){
-    pageHeading.textContent="Top Selling"
-    getTopSellingList()
-  }else if(pageRequest==="Most_Viewed"){
-    pageHeading.textContent="Most Viewed"
-    getMostViewedList()
-  }else if(pageRequest==="On_Sale"){
-    pageHeading.textContent="On Sale"
-    getOnSaleList() 
+const urlParts = window.location.pathname.split("/")
+const pageRequest = urlParts[urlParts.length - 1]
+const urlParams = new URLSearchParams(window.location.search)
+const searchTerm = urlParams.get('search')
+
+
+let searchResults = []
+let searchResultsRow = ""
+let currentSearchPage = 1
+let searchIsLoading = false
+let searchHasMoreProducts = true
+
+async function getSearchResults(term) {
+  if (searchIsLoading || !searchHasMoreProducts) {
+    return
+  }
+  
+  searchIsLoading = true
+
+  try {
+    const res = await axios.post('/Store/Search', { 
+  searchTerm: term,
+  page: currentSearchPage 
+})
+    currentSearchPage++
+    
+    const products = res.data.products
+    searchResults = searchResults.concat(products)
+    
+    // If no products come back
+    if (products.length === 0) {
+      searchHasMoreProducts = false
+      
+      if (currentSearchPage === 2) {
+        mainProductGrid.innerHTML = "<p style='text-align: center; padding: 2rem;'>No products found matching your search.</p>"
+      }
+      return
+    }
+
+    if (currentSearchPage === 2) {
+      mainProductGrid.innerHTML = ""
+    }
+
+    for (let i = 0; i < products.length; i++) {
+      const finalPrice = products[i].price - ((products[i].price / 100) * products[i].discount)
+      
+      searchResultsRow += ` 
+        <div class="product-card">
+          <a href="/Product/${products[i].name}/${products[i].productId}">
+              <img src="${products[i].productImg1}" alt="Product image" class="product-image">
+                  <h3>${products[i].name}</h3>
+                  
+                  <p>Price: ${products[i].currency} ${finalPrice.toFixed(2)}<sup class="small-p">     ${products[i].discount}% off</sup></p>
+          </a>
+            <button onclick="addToCart('${products[i].productId}')" class="add-to-cart-btn">Add to Cart</button>
+        </div> `
+    }
+    
+    mainProductGrid.insertAdjacentHTML('beforeend', searchResultsRow)
+    searchResultsRow = ""
+    
+  } catch (err) {
+    console.log(`failed to get Search Results`, err)
+    if (currentSearchPage === 1) {
+      mainProductGrid.innerHTML = "<p style='text-align: center; padding: 2rem;'>Something went wrong fetching results.</p>"
+    }
+  } finally {
+    searchIsLoading = false
   }
 }
 
 
-getProductList()
 
-// State variables for On Sale products
+
+
 let onSaleProducts = []
 let onSaleProductsRow = ""
 let currentOnSalePage = 1
@@ -341,17 +403,21 @@ async function getOnSaleList() {
   }
 }
 
-// Updated Dispatcher Function
 function getProductList() {
-  if (pageRequest === "Top_Selling") {
+  if (searchTerm) {
+    pageHeading.textContent = `Search Results for "${searchTerm}"`
+    
+    getSearchResults(searchTerm) 
+  } 
+  else if (pageRequest === "Top_Selling") {
     pageHeading.textContent = "Top Selling"
-    getTopSellingList() 
+    getTopSellingList()
   } else if (pageRequest === "Most_Viewed") {
     pageHeading.textContent = "Most Viewed"
     getMostViewedList()
   } else if (pageRequest === "On_Sale") {
     pageHeading.textContent = "On Sale"
-    getOnSaleList()
+    getOnSaleList() 
   }
 }
 
@@ -386,3 +452,86 @@ async function cartPage(){
   }
   window.location.href="/Auth/Sign_In"
 }
+
+
+
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(typingTimer)
+  const searchTerm = searchInput.value.trim()
+
+  if (!searchTerm) {
+    autocompleteDropdown.classList.add('hidden')
+    return
+  }
+
+  // Waits 300ms after you stop typing to avoid spamming the backend
+  typingTimer = setTimeout(() => {
+    fetchAutocompleteSuggestions(searchTerm)
+  }, 300) 
+})
+
+async function fetchAutocompleteSuggestions(searchTerm) {
+  try {
+    const res = await axios.post('/Search', { searchTerm: searchTerm })
+    const products = res.data.products
+    
+    renderDropdown(products)
+  } catch (error) {
+    console.log("Error fetching suggestions:", error)
+  }
+}
+
+function renderDropdown(products) {
+  if (products.length === 0) {
+    autocompleteDropdown.innerHTML = `<div class="suggestion-item">No results found</div>`
+  } else {
+    let dropdownHTML = ""
+    const limit = Math.min(products.length, 5) 
+    
+    for (let i = 0; i < limit; i++) {
+      const p = products[i]
+      dropdownHTML += `
+        <a href="/Product/${p.name}/${p.productId}" class="suggestion-item">
+          <img src="${p.productImg1}" class="suggestion-img" alt="${p.name}">
+          <div class="suggestion-details">
+            <p class="suggestion-title">${p.name}</p>
+            <p class="suggestion-category">in ${p.category}</p>
+          </div>
+        </a>
+      `
+    }
+    autocompleteDropdown.innerHTML = dropdownHTML
+  }
+  
+  autocompleteDropdown.classList.remove('hidden')
+}
+
+// Hides dropdown if user clicks elsewhere on the screen
+document.addEventListener('click', (e) => {
+  if (!searchInput.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+    autocompleteDropdown.classList.add('hidden')
+  }
+})
+
+// --- FULL SEARCH: Triggers on Button Click or Enter Key ---
+function triggerFullSearch() {
+  const searchTerm = searchInput.value.trim()
+
+  if (!searchTerm) return
+
+  autocompleteDropdown.classList.add('hidden') 
+
+  // Instead of an axios call, we change the page URL!
+  // encodeURIComponent safely handles spaces and special characters (e.g. "ps 5" becomes "ps%205")
+  window.location.href = `/Store?search=${encodeURIComponent(searchTerm)}`
+}
+
+searchButton.addEventListener('click', triggerFullSearch)
+
+searchInput.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault() 
+    triggerFullSearch()
+  }
+})

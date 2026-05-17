@@ -1,6 +1,7 @@
 const fs=require("fs")
 const userModel = require('../models/userModel.js')
 const productModel = require('../models/productModel.js')
+const axios = require('axios')
 const{
   uploadProfileImage,
   deleteImage
@@ -342,5 +343,40 @@ exports.removeProduct = async (req, res) => {
   } catch (err) {
     console.error("Error while removing product from user cart: ", err)
     res.status(500).json({ message: "Failed to remove product" })
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+exports.getExchangeRates = async (req, res) => {
+  try {
+    // 1. Get the currency string from the body
+    let { from } = req.body 
+
+    // 2. FIXED: Sanitize the input! Fallback to USD if empty, and force UPPERCASE
+    if (!from) {
+      from = "USD"
+    } else {
+      from = String(from).trim().toUpperCase()
+    }
+
+    console.log(`Forwarding request to Frankfurter API for base: ${from}`)
+
+    // 3. Make the actual request
+    const apiResponse = await axios.get(`https://api.frankfurter.app/latest?from=${from}`)
+    
+    // Send data back to your frontend
+    res.json(apiResponse.data)
+
+  } catch (err) {
+    // If Frankfurter still rejects it (e.g. invalid currency symbol code like "XYZ")
+    if (err.response) {
+      console.error(`External API Error Status: ${err.response.status}`, err.response.data)
+      return res.status(err.response.status).json({ error: err.response.data.message || "Invalid currency code" })
+    }
+    
+    console.error("Error calling external currency API:", err.message)
+    res.status(500).json({ error: "Failed to fetch currency rates" })
   }
 }

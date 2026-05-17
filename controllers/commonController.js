@@ -1,4 +1,5 @@
 const userModel = require('../models/userModel.js')
+const productModel = require('../models/productModel.js')
 const {
     verifyTokenSignIn,
     isTokenRevoked,
@@ -122,5 +123,47 @@ exports.addProductToCart=async (req,res)=>{
     res.json({ message:"product successfully added to cart"})
   }catch(err){
     console.log("error while adding product to user cart ")
+  }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+exports.searchProducts = async (req, res) => {
+  try {
+    // Instead of req.query.q, you pull it from the body
+    const searchTerm = req.body.searchTerm || ""
+
+    if (!searchTerm.trim()) {
+      return res.json({ products: [] })
+    }
+
+    // ATTEMPT 1: Fast Full-Text Search (Looks for whole words)
+    let products = await productModel.find({
+      $text: { $search: searchTerm }
+    }).limit(20)
+
+    // ATTEMPT 2: Fallback to Regex if full-text finds nothing
+    // This catches partial words (e.g., typing "lap" finds "laptop" for the dropdown)
+    if (products.length === 0) {
+      const searchRegex = new RegExp(searchTerm, 'i')
+      
+      products = await productModel.find({
+        $or: [
+          { name: { $regex: searchRegex } },
+          { sellerName: { $regex: searchRegex } },
+          { category: { $regex: searchRegex } },
+          { type: { $regex: searchRegex } },
+          { tags: { $in: [searchRegex] } } 
+        ]
+      }).limit(20)
+    }
+
+    res.json({ products: products })
+
+  } catch (err) {
+    console.log("Error searching products:", err)
+    res.status(500).json({ error: "Failed to search products" })
   }
 }

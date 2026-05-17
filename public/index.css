@@ -149,6 +149,7 @@ body{
 }
 
 .suggestion-item:hover .suggestion-category {
+    background-color: #feb60b;
     color: #fef4bc;
 }
 
@@ -167,6 +168,10 @@ body{
 
 .suggestion-title {
     font-weight: bold;
+}
+.suggestion-item:hover .suggestion-title {
+    color: #fef4bc;
+    background-color: #feb60b;
 }
 
 /* 

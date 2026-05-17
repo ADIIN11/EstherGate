@@ -11,7 +11,8 @@ const {
     getMyCart,
     incrementQuantity,
     decrementQuantity,
-    removeProduct
+    removeProduct,
+    getExchangeRates
 }=require("../controllers/profileController")
 
 
@@ -52,6 +53,8 @@ router.post("/Cart_page/Increament_Quantity",incrementQuantity)
 router.post("/Cart_page/Decreament_Quantity",decrementQuantity)
 
 router.post("/Cart_page/Remove_Product",removeProduct)
+
+router.post('/My_Cart/Exchange-Rates', getExchangeRates)
 
 
 module.exports = router

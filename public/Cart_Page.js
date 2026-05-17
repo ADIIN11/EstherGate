@@ -15,6 +15,11 @@
   const mostViewedProductsSlide=document.getElementById("most-viewed-products-slide")
   const cartBadge=document.getElementById("cart-badge")
 
+  
+  const searchInput = document.getElementById('search-inpt')
+  const searchButton = document.getElementById('search-button')
+  const resultsContainer = document.getElementById('searchResultsContainer')
+  const autocompleteDropdown = document.getElementById('autocompleteDropdown')
   const myCartProducts=document.getElementById("my-cart-products")
 
   const total=document.querySelector(".total")
@@ -32,6 +37,10 @@
   const totalTotalRow=document.getElementById("total-total-row")
   const totalGrandRow=document.getElementById("total-grand-row")
 
+  
+  let typingTimer
+
+
   let userHasSignedIn=false
   let id
 
@@ -40,6 +49,14 @@
 
   
 const symbolToIsoMap = {
+  // Literal characters (what the browser renders visually)
+  "$": "USD",
+  "₹": "INR", 
+  "£": "GBP",
+  "€": "EUR",
+  "¥": "JPY",
+
+  // HTML Entity strings (in case raw HTML code markup is passed)
   "&#36;": "USD",
   "&#8377;": "INR", 
   "&#163;": "GBP",
@@ -386,19 +403,25 @@ totalCurrencyInpt.addEventListener('change', async (event) => {
 
 async function getConvertedPrices(productsObj, targetCurrencyIso) {
   try {
-    const response = await fetch(`https://api.frankfurter.app/latest?from=${targetCurrencyIso}`)
+    // FIXED: Fetch from your own backend proxy instead of the external API to bypass CORS
+    const response = await fetch('/Profile/My_Cart/Exchange-Rates', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ from: targetCurrencyIso })
+    })
     
     if (!response.ok) throw new Error("Network response was not ok")
     
     const data = await response.json()
     const rates = data.rates
 
-   
     const convertedPricesArray = productsObj.map(product => {
       const productCurrencyIso = symbolToIsoMap[product.currency.trim()]
 
       if (!productCurrencyIso) {
-        console.warn(`Unknown currency symbol: ${product.currency}`);
+        console.warn(`Unknown currency symbol: ${product.currency}`)
         return product.price
       }
 
@@ -409,7 +432,6 @@ async function getConvertedPrices(productsObj, targetCurrencyIso) {
       const exchangeRate = rates[productCurrencyIso]
       if (exchangeRate) {
         const newPrice = product.price / exchangeRate
-        
         return Number(newPrice.toFixed(2))
       } else {
         console.warn(`Rate not found for ${productCurrencyIso}`)
@@ -425,12 +447,92 @@ async function getConvertedPrices(productsObj, targetCurrencyIso) {
   }
 }
 
-
 const isoToSymbolMap = Object.fromEntries(
   Object.entries(symbolToIsoMap).map(([key, value]) => [value, key])
 )
 
-
 const getSymbolString = (isoValue) => {
   return isoToSymbolMap[isoValue]
 }
+
+
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(typingTimer)
+  const searchTerm = searchInput.value.trim()
+
+  if (!searchTerm) {
+    autocompleteDropdown.classList.add('hidden')
+    return
+  }
+
+  // Waits 300ms after you stop typing to avoid spamming the backend
+  typingTimer = setTimeout(() => {
+    fetchAutocompleteSuggestions(searchTerm)
+  }, 300) 
+})
+
+async function fetchAutocompleteSuggestions(searchTerm) {
+  try {
+    const res = await axios.post('/Search', { searchTerm: searchTerm })
+    const products = res.data.products
+    
+    renderDropdown(products)
+  } catch (error) {
+    console.log("Error fetching suggestions:", error)
+  }
+}
+
+function renderDropdown(products) {
+  if (products.length === 0) {
+    autocompleteDropdown.innerHTML = `<div class="suggestion-item">No results found</div>`
+  } else {
+    let dropdownHTML = ""
+    const limit = Math.min(products.length, 5) 
+    
+    for (let i = 0; i < limit; i++) {
+      const p = products[i]
+      dropdownHTML += `
+        <a href="/Product/${p.name}/${p.productId}" class="suggestion-item">
+          <img src="${p.productImg1}" class="suggestion-img" alt="${p.name}">
+          <div class="suggestion-details">
+            <p class="suggestion-title">${p.name}</p>
+            <p class="suggestion-category">in ${p.category}</p>
+          </div>
+        </a>
+      `
+    }
+    autocompleteDropdown.innerHTML = dropdownHTML
+  }
+  
+  autocompleteDropdown.classList.remove('hidden')
+}
+
+// Hides dropdown if user clicks elsewhere on the screen
+document.addEventListener('click', (e) => {
+  if (!searchInput.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+    autocompleteDropdown.classList.add('hidden')
+  }
+})
+
+// --- FULL SEARCH: Triggers on Button Click or Enter Key ---
+function triggerFullSearch() {
+  const searchTerm = searchInput.value.trim()
+
+  if (!searchTerm) return
+
+  autocompleteDropdown.classList.add('hidden') 
+
+  // Instead of an axios call, we change the page URL!
+  // encodeURIComponent safely handles spaces and special characters (e.g. "ps 5" becomes "ps%205")
+  window.location.href = `/Store?search=${encodeURIComponent(searchTerm)}`
+}
+
+searchButton.addEventListener('click', triggerFullSearch)
+
+searchInput.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault() 
+    triggerFullSearch()
+  }
+})

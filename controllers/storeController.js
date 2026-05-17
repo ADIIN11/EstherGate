@@ -53,3 +53,55 @@ exports.getOnSaleProducts = async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching on sale products" })
   }
 }
+
+
+
+exports.searchProducts = async (req, res) => {
+  try {
+    const searchTerm = req.body.searchTerm || ""
+    const page = parseInt(req.body.page) || 1
+    
+    const limit = 10 
+    const skipAmount = (page - 1) * limit
+
+    if (!searchTerm.trim()) {
+      return res.json({ products: [] })
+    }
+
+    let products = []
+    
+    const textSearchCount = await productModel.countDocuments({
+      $text: { $search: searchTerm }
+    })
+
+    if (textSearchCount > 0) {
+      products = await productModel.find(
+        { $text: { $search: searchTerm } },
+        { score: { $meta: "textScore" } } 
+      )
+      .sort({ score: { $meta: "textScore" } }) 
+      .skip(skipAmount)
+      .limit(limit)
+    } else {
+      const searchRegex = new RegExp(searchTerm, 'i')
+      
+      products = await productModel.find({
+        $or: [
+          { name: { $regex: searchRegex } },
+          { sellerName: { $regex: searchRegex } },
+          { category: { $regex: searchRegex } },
+          { type: { $regex: searchRegex } },
+          { tags: { $in: [searchRegex] } } 
+        ]
+      })
+      .skip(skipAmount)
+      .limit(limit)
+    }
+
+    res.json({ products: products })
+
+  } catch (err) {
+    console.log("Error searching products:", err)
+    res.status(500).json({ error: "Failed to search products" })
+  }
+}

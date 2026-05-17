@@ -4,7 +4,8 @@ const {
     tokenVerification,
     userSignOut,
     getProfileImage,
-    addProductToCart
+    addProductToCart,
+    searchProducts
 }=require("../controllers/commonController")
 
 const path = require('path')
@@ -25,6 +26,8 @@ router.post("/Sign_Out",userSignOut )
 router.post("/Get_Profile_Img",getProfileImage )
 
 router.post("/Add_To_Cart",addProductToCart )
+
+router.post('/Search', searchProducts)
 
 
 module.exports = router

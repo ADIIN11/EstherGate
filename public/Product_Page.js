@@ -25,8 +25,15 @@
   const ratingsBox=document.getElementById("ratings-box")
 
   const productDescription=document.getElementById("product-description")
-
+ 
+  const searchInput = document.getElementById('search-inpt')
+  const searchButton = document.getElementById('search-button')
+  const resultsContainer = document.getElementById('searchResultsContainer')
+  const autocompleteDropdown = document.getElementById('autocompleteDropdown')
   const cartBadge=document.getElementById("cart-badge")
+
+  
+  
 
   const addToCartBtn=document.getElementById("add-to-cart-btn")
   const buyProductBtn=document.getElementById("buy-product-btn")
@@ -39,7 +46,7 @@
 
 
   let userHasSignedIn=false
-  
+  let typingTimer
   let productObj
 
  
@@ -540,5 +547,87 @@ reviewSlide.addEventListener('scroll', () => {
   if (isAtBottom) {
     // Call the function using your page's current product ID
     fetchMoreReviews(currentProductId) 
+  }
+})
+
+
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(typingTimer)
+  const searchTerm = searchInput.value.trim()
+
+  if (!searchTerm) {
+    autocompleteDropdown.classList.add('hidden')
+    return
+  }
+
+  // Waits 300ms after you stop typing to avoid spamming the backend
+  typingTimer = setTimeout(() => {
+    fetchAutocompleteSuggestions(searchTerm)
+  }, 300) 
+})
+
+async function fetchAutocompleteSuggestions(searchTerm) {
+  try {
+    const res = await axios.post('/Search', { searchTerm: searchTerm })
+    const products = res.data.products
+    
+    renderDropdown(products)
+  } catch (error) {
+    console.log("Error fetching suggestions:", error)
+  }
+}
+
+function renderDropdown(products) {
+  if (products.length === 0) {
+    autocompleteDropdown.innerHTML = `<div class="suggestion-item">No results found</div>`
+  } else {
+    let dropdownHTML = ""
+    const limit = Math.min(products.length, 5) 
+    
+    for (let i = 0; i < limit; i++) {
+      const p = products[i]
+      dropdownHTML += `
+        <a href="/Product/${p.name}/${p.productId}" class="suggestion-item">
+          <img src="${p.productImg1}" class="suggestion-img" alt="${p.name}">
+          <div class="suggestion-details">
+            <p class="suggestion-title">${p.name}</p>
+            <p class="suggestion-category">in ${p.category}</p>
+          </div>
+        </a>
+      `
+    }
+    autocompleteDropdown.innerHTML = dropdownHTML
+  }
+  
+  autocompleteDropdown.classList.remove('hidden')
+}
+
+// Hides dropdown if user clicks elsewhere on the screen
+document.addEventListener('click', (e) => {
+  if (!searchInput.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+    autocompleteDropdown.classList.add('hidden')
+  }
+})
+
+// --- FULL SEARCH: Triggers on Button Click or Enter Key ---
+function triggerFullSearch() {
+  const searchTerm = searchInput.value.trim()
+
+  if (!searchTerm) return
+
+  autocompleteDropdown.classList.add('hidden') 
+
+  // Instead of an axios call, we change the page URL!
+  // encodeURIComponent safely handles spaces and special characters (e.g. "ps 5" becomes "ps%205")
+  window.location.href = `/Store?search=${encodeURIComponent(searchTerm)}`
+}
+
+searchButton.addEventListener('click', triggerFullSearch)
+
+searchInput.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault() 
+    triggerFullSearch()
   }
 })
