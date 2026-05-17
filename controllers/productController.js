@@ -173,14 +173,13 @@ exports.getMostViewedProducts=async(req,res)=>{
   }
 
 }
-
 exports.getOnSaleProducts = async (req, res) => {
   try {
     const limit = 10
     const skipAmount = (req.body.page - 1) * limit
     
     const onSaleProducts = await productModel.find(
-      {}, 
+      { discount: { $gt: 0 } }, 
       { productId: 1, name: 1, productImg1: 1, currency: 1, price: 1, discount: 1, _id: 0 }
     )
     .sort({ discount: -1 }) 
@@ -196,7 +195,6 @@ exports.getOnSaleProducts = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch on sale products" })
   }
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getProduct=async(req,res)=>{

@@ -3,7 +3,8 @@ const express =require ("express")
 const router = express.Router()
 const {
   getTopSellingProducts,
-  getMostViewedProducts
+  getMostViewedProducts,
+  getOnSaleProducts
    
 }=require("../controllers/storeController")
 module.exports = router
@@ -15,3 +16,5 @@ router.get("/:page", (req, res) => {
 router.post("/Get_Top_Selling_Products", getTopSellingProducts)
 
 router.post("/Get_Most_Viewed_Products", getMostViewedProducts)
+
+router.post('/Get_On_Sale_Products', getOnSaleProducts)

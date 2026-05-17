@@ -286,9 +286,76 @@ function getProductList(){
   }else if(pageRequest==="Most_Viewed"){
     pageHeading.textContent="Most Viewed"
     getMostViewedList()
+  }else if(pageRequest==="On_Sale"){
+    pageHeading.textContent="On Sale"
+    getOnSaleList() 
   }
 }
 
+
+getProductList()
+
+// State variables for On Sale products
+let onSaleProducts = []
+let onSaleProductsRow = ""
+let currentOnSalePage = 1
+let onSaleIsLoading = false
+let onSaleHasMoreProducts = true
+
+// Fetch and render On Sale list
+async function getOnSaleList() {
+  if (onSaleIsLoading || !onSaleHasMoreProducts) return
+  onSaleIsLoading = true
+
+  try {
+    const res = await axios.post("/Store/Get_On_Sale_Products", { page: currentOnSalePage })
+    currentOnSalePage++
+    
+    onSaleProducts = res.data.onSaleProducts 
+    console.log(onSaleProducts)
+    
+    if (onSaleProducts.length === 0) {
+      onSaleHasMoreProducts = false
+      return
+    }
+    
+    for (let i = 0; i < onSaleProducts.length; i++) {
+      onSaleProductsRow += ` 
+        <div class="product-card" >
+          <a href="/Product/${onSaleProducts[i].name}/${onSaleProducts[i].productId}" >
+              <img src="${onSaleProducts[i].productImg1}" alt="Product image" class="product-image">
+                  <h3>${onSaleProducts[i].name}</h3>
+                  <p>Price: ${onSaleProducts[i].currency} ${onSaleProducts[i].price - ((onSaleProducts[i].price / 100) * onSaleProducts[i].discount)}<sup class="small-p">     ${onSaleProducts[i].discount}% off</sup></p>
+          </a>
+            <button onclick="addToCart('${onSaleProducts[i].productId}')" class="add-to-cart-btn" >Add to Cart</button>
+        </div> `
+    }
+    
+    mainProductGrid.insertAdjacentHTML('beforeend', onSaleProductsRow)
+    onSaleProductsRow = ""
+    
+  } catch (err) {
+    console.log(`Failed to get On Sale Products`, err)
+  } finally {
+    onSaleIsLoading = false
+  }
+}
+
+// Updated Dispatcher Function
+function getProductList() {
+  if (pageRequest === "Top_Selling") {
+    pageHeading.textContent = "Top Selling"
+    getTopSellingList() 
+  } else if (pageRequest === "Most_Viewed") {
+    pageHeading.textContent = "Most Viewed"
+    getMostViewedList()
+  } else if (pageRequest === "On_Sale") {
+    pageHeading.textContent = "On Sale"
+    getOnSaleList()
+  }
+}
+
+// Initialize
 getProductList()
 
 

@@ -9,44 +9,38 @@
 </head>
 <body>
 <div class="search-bar">
-        
-       
+    
     <div class="side-bar">
-        <img src="assets/logo-text.png" alt="logo"  class="logo-text" height="100px" >
+        <!-- Your entire sidebar code stays exactly the same here -->
+        <img src="assets/logo-text.png" alt="logo" class="logo-text" height="100px">
         <br>
-         <button class="tab-btn" id="tab-btn" type="button" aria-label="Toggle menu" > 
-            <svg  class="tab-icon"  id="tab-icon" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> 
-                 <rect width="100" height="100" fill="#fef4bc" /> 
+        <button class="tab-btn" id="tab-btn" type="button" aria-label="Toggle menu"> 
+            <svg class="tab-icon" id="tab-icon" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> 
+                <rect width="100" height="100" fill="#fef4bc" /> 
                 <line class="bar" x1="20" y1="30" x2="80" y2="30" stroke="#ef720a" stroke-width="8" stroke-linecap="round" /> 
                 <line class="bar" x1="20" y1="50" x2="80" y2="50" stroke="#ef720a" stroke-width="8" stroke-linecap="round" /> 
                 <line class="bar" x1="20" y1="70" x2="80" y2="70" stroke="#ef720a" stroke-width="8" stroke-linecap="round" />
             </svg>
-         </button>
-
-
-
+        </button>
 
         <ul>
             <li class="sidebar-li">
-
                 <div class="super-li">
-                <a href='/Home' class="sidebar-anchors icon" >
-                    <img src="assets/home-icon.svg" alt="home-icon"  class="sidebar-icon"  >
+                <a href='/Home' class="sidebar-anchors icon">
+                    <img src="assets/home-icon.svg" alt="home-icon" class="sidebar-icon">
                 </a>
-                <a href='/Home'  class="sidebar-anchors">Home</a>
+                <a href='/Home' class="sidebar-anchors">Home</a>
                 </div>
-               <div class="sub-li">
+                <div class="sub-li">
                     <a href="Home/Best_Sellers.html" class="sidebar-anchors sub">Best Sellers</a>
-                    <a href="Home/Categories.html"  class="sidebar-anchors sub">Categories</a>
-               </div>
+                    <a href="Home/Categories.html" class="sidebar-anchors sub">Categories</a>
+                </div>
             </li>
-
-
             
             <li class="sidebar-li">
                 <div class="super-li" id="profile-icon">
-                 <a href="/Auth/Sign_In" class="sidebar-anchors icon" >
-                        <img src="assets/profile-icon.svg"  alt="profile-icon"  class="sidebar-icon"  >
+                 <a href="/Auth/Sign_In" class="sidebar-anchors icon">
+                        <img src="assets/profile-icon.svg" alt="profile-icon" class="sidebar-icon">
                  </a>
                 <a href="/Auth/Sign_In" class="sidebar-anchors" id="sidebar-profile-text">Profile</a>
                 </div>
@@ -54,71 +48,69 @@
                     <a href="/Auth/Sign_Up" class="sidebar-anchors sub">Sign-Up</a>
                     <a href="/Auth/Sign_In" class="sidebar-anchors sub">Sign-In</a>
                 </div>
-            
             </li>
 
             <li class="sidebar-li" id="list-product-li">
-                <div class="super-li" >
+                <div class="super-li">
                     <a href="/Auth/Sign_In" class="sidebar-anchors icon">
-                        <img src="/assets/list-item-icon.svg" alt="list-item-icon"  class="sidebar-icon"  >
+                        <img src="/assets/list-item-icon.svg" alt="list-item-icon" class="sidebar-icon">
                     </a>
-                  
-                <a href="/Auth/Sign_In"  class="sidebar-anchors">List Product</a>
+                <a href="/Auth/Sign_In" class="sidebar-anchors">List Product</a>
                 </div>
             </li>
             
-            <li class="sidebar-li" >
+            <li class="sidebar-li">
                 <div class="super-li">
-                     <a href="Track_Order.html"  class="sidebar-anchors icon">
-                         <img src="assets/track-order-icon.svg" alt="track-order-icon"  class="sidebar-icon"  >
+                     <a href="Track_Order.html" class="sidebar-anchors icon">
+                         <img src="assets/track-order-icon.svg" alt="track-order-icon" class="sidebar-icon">
                      </a>
-               
-                <a href="Track_Order.html"  class="sidebar-anchors">Track Order</a>
+                <a href="Track_Order.html" class="sidebar-anchors">Track Order</a>
                 </div>
             </li>
             
             <li class="sidebar-li">
                  <div class="super-li">
-                     <a href="Help.html"  class="sidebar-anchors icon">
-                        <img src="assets/help-icon.svg" alt="help-icon"  class="sidebar-icon"  >
+                     <a href="Help.html" class="sidebar-anchors icon">
+                        <img src="assets/help-icon.svg" alt="help-icon" class="sidebar-icon">
                      </a>
-                
-                <a href="Help.html"  class="sidebar-anchors">Help</a>
+                <a href="Help.html" class="sidebar-anchors">Help</a>
                 </div>
             </li>
             
             <li class="sidebar-li">
                 <div class="super-li">
-                      <a href="about.html"   class="sidebar-anchors icon">
-                        <img src="assets/about-icon.svg" alt="about-icon"  class="sidebar-icon"  >
+                      <a href="about.html" class="sidebar-anchors icon">
+                        <img src="assets/about-icon.svg" alt="about-icon" class="sidebar-icon">
                       </a>
-                
-                <a href="about.html"  class="sidebar-anchors">about</a>
+                <a href="about.html" class="sidebar-anchors">about</a>
                 </div>
             </li>
         </ul>
-        
-
     </div>
     
+    <!-- === NEW SEARCH WRAPPER START === -->
+    <div class="input-wrapper">
+        <input class="search-inpt" id="search-inpt" type="text" placeholder="Search" autocomplete="off">
+        <div id="autocompleteDropdown" class="autocomplete-dropdown hidden"></div>
+    </div>
+    <!-- === NEW SEARCH WRAPPER END === -->
+
+    <button class="search-btn" id="search-button" type="button"> 
+        <img src="assets/search-icon.svg" alt="icon" class="search-icon" >
+    </button>
     
-        <input class="search-inpt" id="search-inpt" type="text" placeholder="Search">
-        <button class="search-btn" id="search-button" type="button" > 
-            <img src="assets/search-icon.svg" alt="icon"  class="search-icon" height="22px" >
-        </button>
-        
-        <button class="cart-btn" id="cart-button" type="button" onclick="cartPage()"> 
-            <img src="assets/cart-icon.svg" alt="cart" class="cart-icon" height="22px">
-            <span class="cart-badge" id="cart-badge"></span>
-        </button>
+    <button class="cart-btn" id="cart-button" type="button" onclick="cartPage()"> 
+        <img src="assets/cart-icon.svg" alt="cart" class="cart-icon" >
+        <span class="cart-badge" id="cart-badge"></span>
+    </button>
 
-         <div class="filter-bar">
-            <form class="filter-form"action="" method="post">
-            <select  title="filter" class="filter" id="filter" name="filter"> 
-                <option value="0"disabled selected>Filter</option> 
+     <div class="filter-bar">
+        <!-- Your filter code stays the same -->
+        <form class="filter-form" action="" method="post">
+            <select title="filter" class="filter" id="filter" name="filter"> 
+                <option value="0" disabled selected>Filter</option> 
                 <optgroup label="Electronics">
-
-                    <option value="Mobiles">Mobiles </option> 
+                    <option value="Mobiles">Mobiles</option> 
                     <option value="Laptop">Laptop</option>
                 </optgroup>
                 <optgroup label="Clothes">
@@ -127,18 +119,19 @@
             </select>
             
             <select title="sort" class="Sort" id="sort" name="sort"> 
-                
                 <option value="0" disabled selected>Sort</option> 
-                <option value="1">A-Z </option> 
+                <option value="1">A-Z</option> 
                 <option value="2">Z-A</option> 
                 <option value="3">Low to High</option> 
                 <option value="4">High to Low</option> 
                 <option value="5">None</option> 
             </select>
         </form>
-        </div>
     </div>
+</div>
 
+<!-- Place this container somewhere below your navbar in the body -->
+<div id="searchResultsContainer"></div>
      <div class="content">
         
 
@@ -175,7 +168,7 @@
     </div>
 
     <div class="slide-holder On-sale" id="on-sale-slide-holder"> 
-        <h3 class="slide-name">On sale</h3> 
+        <h3 class="slide-name" onclick="window.location.href='/Store/On_Sale';" >On Sale</h3> 
         <div class="products-slide" id="on-sale-product-slide">
 
            
