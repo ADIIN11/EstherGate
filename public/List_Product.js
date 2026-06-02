@@ -3,7 +3,7 @@
   const sidebar = document.querySelector(".side-bar")
   const sidebarProfileText=document.getElementById("sidebar-profile-text")
   const profileSubLi=document.getElementById("profile-sub-li")
-  const profileImgDiv=document.getElementById("profile-img")
+  const profileImgDiv=document.getElementById("profile-icon")
   const profileImgHolder=document.getElementById("profile-img-holder")
   const profileDetails=document.getElementById("profile-datails")
   const verificationContentLi=document.getElementById("content-li verification")
